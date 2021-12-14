@@ -1,0 +1,239 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <h2>Produkt</h2>
+    <div class="row">
+        <div class="col-md-6" id="form_counting">
+            <h3 class="mt-4 mt-md-0">{{ product.name }} - {{ product.Manufacture }}</h3>
+            <div class='info'></div>
+            <hr>
+            {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
+            <div class="form-group">
+                {{ form_label(form.quantity) }}
+                {{ form_widget(form.quantity, {
+                'attr': {
+                
+                }
+            }) }}
+
+                {{ form_label(form.price) }}
+                {{ form_widget(form.price, {
+                'attr': {
+                    'data-value':price
+                }
+})
+                }}
+
+                <div class="invalid-feedback">
+                    {{ form_errors(form.quantity) }}
+                    {{ form_errors(form.price) }}
+                </div>
+            </div>
+            {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning w-50 m-3'}}) }}
+            {{ form_end(form) }}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="palety" class="form-label">Palety</label>
+                    <input type="text" class="form-control" id="palety">
+                </div>
+                <div class="col-md-6">
+                    <label for="m2" class="form-label">Metry kawadratowe/szt</label>
+                    <input type="text" class="form-control" id="m2">
+                </div>
+                <div>
+                    <p class="btn btn-primary" id="show_metres">Chcesz przeliczyć mb ?</p>
+                </div>
+                
+                <div class="hidden row" id="hidden-meters">
+                    <div class="col-md-6">
+                        <label for="mb" class="form-label">Metry bieżące</label>
+                        <input type="text" class="form-control" id="mb">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="sz" class="form-label">Szerokość (cm)</label>
+                        <input type="text" class="form-control" id="sz">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped table-hover table-bordered">
+                <tbody>
+
+                    <tr class="table-dark">
+                        <th>Cena Katalogowa</th>
+                        <td>{{ product.catalogPrice }} zł</td>
+                    </tr>
+
+                    <tr class="table-success">
+                        <th>Cena detal fabryka</th>
+                        <td>{{ product.sellPriceFactoryDetal }} zł</td>
+                    </tr>
+                    <tr class="table-success">
+                        <th>Cena detal plac</th>
+                        <td>{{ product.sellPricePitchDetal }} zł</td>
+                    </tr>
+                    <tr class="table-info">
+                        <th>Cena hurt fabryka</th>
+                        <td>{{ product.sellPriceFactoryContractors }} zł</td>
+                    </tr>
+                    <tr class="table-info">
+                        <th>Cena hurt plac</th>
+                        <td>{{ product.sellPricePitchContractors }} zł</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <th>Cena specjalna fabryka</th>
+                        <td>{{ product.sellPriceFactoryWholesale }} zł</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <th>Cena specjalna plac</th>
+                        <td>{{ product.sellPricePitchWholesale }} zł</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Cena zakupu fabryka brutto/netto</th>
+                        <td><p  class="hidden" id="buy_price">{{ product.buyPrice|number_format(2, '.', ',') }} zł  / {{ (product.buyPrice / 1.23)|number_format(2, '.', ',') }} zł</p><p id="show_buy_price" class="btn btn-primary">Pokaż</p></td>
+                    </tr>
+                    <tr>
+                        <th>Pakowanie m2/szt</th>
+                        <td id="packaging">{{ product.packaging }}</td>
+                    </tr>
+                     <tr>
+                        <th>Minimalna ilość m2/szt</th>
+                        <td id="minimum">{{ product.sprzedazJednostkowa }}</td>
+                    </tr>
+                    <tr>
+                        <th>Waga pal</th>
+                        <td>{{ product.packageWeight }} tony</td>
+                    </tr>
+                    <tr>
+                        <th>Waga jednostkowa</th>
+                        <td>{{ (product.unitWeight*1000)|number_format(2, '.', ',') }} kg</td>
+                    </tr>
+                    {% if product.isCourier %}
+                        <tr>
+                            <th>Wysyłka kurierem</th>
+                            <td>{{ product.isCourier ? '<span class="btn btn-success">Tak</span>' : '<span class="btn btn-danger">Nie</span>' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Koszt kuriera</th>
+                            <td>{{ product.courierCost }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if product.isNotAvailable %}
+                        <tr>
+                            <th>Produkt Niedostępny</th>
+                            <td>{{ product.isNotAvailable ? 'Tak' : 'Nie' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Przewidywany czas dostępności</th>
+                            <td>{{ product.estimatedAvailabilityDate ? product.estimatedAvailabilityDate|date('Y-m-d') : '' }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if product.notices %}
+                    <tr>
+                        <th>Uwagi</th>
+                        <td>{{ product.notices }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div classs="col">
+            <a class="btn btn-primary" href="{{ path('product_index') }}">Lista  produktów</a>
+            <a class="btn btn-info"  href="{{ path('product_edit', {'id': product.id}) }}">Edytuj</a>
+            {{ include('product/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#show_buy_price').on('click', function (event) {
+                $('#show_buy_price').addClass('hidden');
+                $('#buy_price').removeClass('hidden');
+            });
+            $('#show_metres').on('click', function (event) {
+                $('#hidden-meters').removeClass('hidden');
+            });
+            $price = $('#add_to_cart_price').attr('data-value');
+            $('#add_to_cart_price').val($price);
+            $('#palety').on('click', function (event) {
+                $('#palety').val('');
+                $('#m2').val('');
+                $('#mb').val('');
+                $('#add_to_cart_quantity').val('');
+            });
+
+            $('#m2').on('click', function (event) {
+                $('#palety').val('');
+                $('#m2').val('');
+                $('#mb').val('');
+                $('#add_to_cart_quantity').val('');
+            });
+
+            $('#mb').on('click', function (event) {
+                $('#palety').val('');
+                $('#m2').val('');
+                $('#mb').val('');
+                $('#add_to_cart_quantity').val('');
+            });
+
+            $('input').on('keyup', function (event) {
+
+                $palety = $('#palety').val();
+                $mb = $('#mb').val();
+                $m2 = $('#m2').val();
+                
+                $quantity = $('#add_to_cart_quantity').val();
+                $sz = $('#sz').val();
+                
+                if ($palety > 0 && !$mb) {
+                    $('.info').html('<div></div>');
+                    $packaging = $('#packaging').text();
+                    $('#add_to_cart_quantity').val($packaging * $palety);
+                }
+                if ($mb > 0 && !$palety && $sz > 0) {
+                    $packaging = $('#packaging').text();
+                    $palsz = $packaging / $sz * 100;
+                    $ilepalet = $mb / $palsz;
+                    $palety = Math.ceil($ilepalet);
+
+                    $('#add_to_cart_quantity').val($palety * $packaging);
+                    $('#palety').val($palety);
+                }
+
+                if ($m2 > 0) {
+                    $packaging = $('#packaging').text();
+                    $minimum = $('#minimum').text();
+                    $ilepalet = $m2 / $packaging;
+                    $palety = Math.ceil($ilepalet);
+
+                    $minimumceil = Math.ceil($m2/$minimum);
+                    $minimumroundedtofullunit = $minimumceil*$minimum;
+                    if($palety == $ilepalet){
+                        $('.info').html('<div></div>');
+                        $('#add_to_cart_quantity').val($palety * $packaging);
+                        $('#palety').val($palety);
+                    }else{
+                        $('.info').html('<div  class="alert alert-danger" role="alert"> Uwaga towar jest nie pełno paletowy aktualnie na zamówieniu : '+$ilepalet+' palety</div>');
+                        $('#add_to_cart_quantity').val($minimumroundedtofullunit);
+                        $('#palety').val($palety);
+                    }
+                }
+
+            });
+        });
+    </script>
+    <style>
+        .hidden {
+            display:none;
+        }
+    </style>
+{% endblock %}

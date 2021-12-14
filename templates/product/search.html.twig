@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wyszukiwarka produktów{% endblock %}
+
+{% block body %}
+</br>
+    <h3>Sprawdzarka produktów</h3>
+    <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search">
+        <button class="btn btn-outline-success" type="submit" action="{{ path('product_index_search') }}">Szukaj</button>
+      </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Producent</th>
+                <th>Pakowanie</th>
+                <th>Cena katalogowa</th>
+                <th>Cena fabryka</th>
+                <th>Cena plac</th>
+                <th>Uwagi</th>
+                <th>Operacje</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.Manufacture }}</td>
+                <td>{{ product.packaging }}</td>
+                <td>{{ product.catalogPrice }}</td>
+                <td>{{ product.sellPriceFactoryDetal }}</td>
+                <td>{{ product.sellPricePitchDetal }}</td>
+                <td>{{ product.notices }}</td>
+                <td>
+                    <a href="{{ path('product_show', {'id': product.id}) }}">Pokaż</a>
+                    <a href="{{ path('product_edit', {'id': product.id}) }}">Edytuj</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="20">Brak wpisów</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('product_new') }}">Utwórz nowy</a>
+{% endblock %}

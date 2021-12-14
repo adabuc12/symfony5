@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowy kontrahent{% endblock %}
+
+{% block body %}
+    <h1>Utwórz nowego kontrahenta</h1>
+
+    {{ include('kontrahent/_form.html.twig') }}
+
+    <a href="{{ path('kontrahent_index') }}" class='btn btn-primary'>Do Listy</a>
+{% endblock %}

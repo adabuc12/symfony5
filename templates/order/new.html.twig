@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NNowe zamówienie{% endblock %}
+
+{% block body %}
+    <h1>Utwórz nowy</h1>
+
+    {{ include('order/_form.html.twig') }}
+
+    <a href="{{ path('order_index') }}">powrót do listy</a>
+{% endblock %}

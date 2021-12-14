@@ -1,0 +1,282 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BUFOR{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            <form class="">
+                <div class="row p-3 border bg-light">
+                    <div class="col">
+                        <div class="">
+                            <label for="select1" class="form-label">TYP DOKUMENTU</label>
+                            <select class="form-select" aria-label="Default select example" id="select1" name="select1">
+                                <option value="oferta"  {% if offertype == 'oferta' %} selected {% endif %}>OFERTA</option>
+                                <option value="klient" {% if offertype == 'klient' %} selected {% endif %}>ZAMÓWIENIE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="">
+                            <label for="select2" class="form-label">GRUPA KLINTA</label>
+                            <select class="form-select" aria-label="Grupa cenowa" id="select2" name="select2">
+                                <option value="detal" {% if pricetype == 'detal' %} selected {% endif %}>DETALICZNA</option>
+                                <option value="hurt" {% if pricetype == 'hurt' %} selected {% endif %}>HURTOWA</option>
+                                <option value="specjal" {% if pricetype == 'specjal' %} selected {% endif %}>SPECJALNA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="">
+                            <label for="select3" class="form-label">MIEJSCE ZAŁADUNKU</label>
+                            <select class="form-select" aria-label="Miejsce załadunku" id="select3" name="select3">
+                                <option value="pitch" {% if deliverypickup == 'pitch' %} selected {% endif %}>PLAC WIELICZKA</option>
+                                <option value="factory_po" {% if deliverypickup == 'factory_po' %} selected {% endif %}>FABRYKA POLBRUK</option>
+                                <option value="factory_li" {% if deliverypickup == 'factory_li' %} selected {% endif %}>FABRYKA LIBET</option>
+                                <option value="factory_jo" {% if deliverypickup == 'factory_jo' %} selected {% endif %}>FABRYKA JONIEC</option>
+                                <option value="factory_st" {% if deliverypickup == 'factory_st' %} selected {% endif %}>FABRYKA STYROBUD</option>
+                                <option value="factory_pa" {% if deliverypickup == 'factory_pa' %} selected {% endif %}>FABRYKA PATER</option>
+                                <option value="factory_ko" {% if deliverypickup == 'factory_ko' %} selected {% endif %}>FABRYKA KOST-BET</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 border bg-light">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="doladunek" {% if doladunek == true %} checked {% endif %}>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">DOŁADUNEK WIELICZKA</label>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-3 border bg-light">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="przeladunek" {% if przeladunek %} checked {% endif %}>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">PRZEŁADUNEK U KLIENTA</label>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-3">
+                    <div class="col">
+                        <div class="p-3 border bg-light">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="inputprice" class="form-label">Kontrahent</label>
+                                    <input class="form-control me-2" type="text" placeholder="Kontrahent" aria-label="Kontrahent" name="Kontrahent" {% if kontrahent %} value="{{ kontrahent.name }}" {% endif %}> 
+                                </div>
+                                <div class="col">
+                                    <label for="inputprice" class="form-label">Telefon</label>
+                                    <input class="form-control me-2" type="text" placeholder="Telefon" aria-label="Telefon" name="Telefon" {% if telefon %} value="{{ telefon }}" {% endif %}> 
+                                </div>
+                            </div>
+                            <a href="{{ path('kontrahent_new') }}" class="btn btn-success" role="button">Dodaj</a>
+                            <a href="{{ path('kontrahent_index') }}" class="btn btn-primary" role="button">Szukaj</a>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+
+
+                    <div class="col">
+                        <div class="row">
+
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="p-3 border bg-light">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if auto1 %} checked {% endif %} name="auto1">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">14</label>
+                                            </div> 
+                                        </div>
+
+                                        <div class="p-3 border bg-light">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if auto2 %} checked {% endif %} name="auto2">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">8</label>
+                                            </div>  
+                                        </div>
+
+                                        <div class="p-3 border bg-light">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if auto3 %} checked {% endif %} name="auto3">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">6</label>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="p-3 border bg-light">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if auto4 %} checked {% endif %} name="auto4">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">2</label>
+                                            </div> 
+                                        </div>
+
+                                        <div class="p-3 border bg-light">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {% if hds %} checked {% endif %} name="is_hds">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">HDS</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="p-3 border bg-light">
+                                            <label for="inputprice" class="form-label">Adres dostawy (ulica numer, kod pocztowy miejscowość)</label>
+                                            <input class="form-control me-2" type="text" placeholder="Adres dostawy" aria-label="Adres dostawy" name="Adress" {% if adress %} value="{{ adress }}" {% endif %}> 
+                                        </div>
+
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-warning" type="submit" action="{{ path('cart') }}">Przelicz</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="p-3 border bg-light">
+                                    <h4> DYSTANS : {% if dystans %} {{ dystans }} {% endif %} </h4>
+                                    <p>Szacowany czas przejazdu: {% if time %} {{ time }} {% endif %} minut</p>
+                                    <div class="hidden">
+                                        <image src="{% if route_image %} {{ route_image }} {% endif %}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </form>
+        </div>
+    </div>
+    <div>
+        {% if cart.item.count > 0 %}
+            <div class="row mt-4">
+                <!-- Lista produktów -->
+                <div class="col-md-8"></div>
+                <!-- Podsumowanie -->
+                <div class="col-md-4"></div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Koszyk jest pusty, aby wybrać produkty wybierz się na <a href="{{ path('product_index') }}">Lista Produktów</a>.
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        {{ form_start(form) }}
+        <div class="card">
+            <div class="card-header bg-dark text-white d-flex">
+                <div class="row">  
+                    <div class="col">
+                        <h5>Produkty</h5>
+                        <div class="ml-auto">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
+                            {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <tbody>
+                    {% if cart.item.count > 0 %}
+                        {% for item in form.item %}
+                            <tr>
+                                <td>
+                                    <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
+                                </td>
+                                <td>
+                                    <h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5>
+                                </td>
+                                <td>
+                                    {{ form_widget(item.quantity, {
+                            'attr': {
+                                'class': 'form-control form-control-sm ' ~ (item.quantity.vars.valid ? '' : 'is-invalid')
+                            }
+                        }) }}   </td>
+                                <td>{{ form_widget(item.price, {
+                            'attr': {
+                                'class': 'form-control form-control-sm ' ~ (item.price.vars.valid ? '' : 'is-invalid')
+                            }
+                        }) }}
+                                </td>
+                        <div class="invalid-feedback">
+                            {{ form_errors(item.quantity) }}
+                            {{ form_errors(item.price) }}
+                        </div>
+
+                        <td>
+                            {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm'}}) }}
+
+                        </td>
+                        </tr>
+                    {% endfor %}
+
+                    {% if delivery_cost|length > 0 %}
+
+                        {% for key, delivery in delivery_cost %}
+                            <tr>
+                                <td>
+                                    <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
+                                </td>
+                                <td>
+                                    <h5 class="mt-0 mb-0">Auto HDS {{ key }} pal.</h5>
+                                </td>
+                                <td>
+                                    {{ delivery.count }}
+                                </td>
+                                <td>{{delivery.cost * 1.23}}</td>
+
+
+                                <td>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="card mt-4 mt-md-0">
+            <h5 class="card-header bg-dark text-white">Podsumowanie</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    <div><b>Suma</b></div>
+                    <span><b>{{ cart.total + (transporttotal*1.23)}} PLN</b></span>
+                </li>
+            </ul>
+            <div class="card-body">
+                <a href="" class="btn btn-warning w-100 m-1">Zapisz</a>
+                <a href="" class="btn btn-success w-100 m-1">Wydrukuj</a>
+                <a href="" class="btn btn-danger w-100 m-1">Zamów</a>
+                <a href="" class="btn btn-info w-100 m-1">Zapytaj</a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form, {'render_rest': false}) }}
+</div>
+<script>
+    $(document).ready(function ($) {
+        $('body').removeClass('container');
+    });
+</script>
+{% endblock %}
+

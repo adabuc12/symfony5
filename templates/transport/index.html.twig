@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transport{% endblock %}
+
+{% block body %}
+    <h1>Transporty</h1>
+
+    <table class="table table-striped table-hover table-bordered">
+
+        <tbody>
+            <tr>
+                <td>NAZWA</td>
+                {% for transport in transports %}
+                    <td>{{ transport.name }} <a class="btn btn-info" href="{{ path('transport_edit', {'id': transport.id}) }}">Edytuj</a></td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>ŁADOWNOŚĆ</td>
+                {% for transport in transports %}
+                    <td>{{ transport.weight }}</td>
+                {% endfor %}
+            </tr>
+            
+            <tr>
+                <td>5 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price5 *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>10 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price10  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>15 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price15  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>20 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price20  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>25 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price25  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>30 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price30  *1.23 }}</td>
+                {% endfor %}
+            </tr><tr>
+                <td>35 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price35  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>40 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price40  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>45 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price45  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>50 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price50  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>55 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price55  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>60 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price60  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>65 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price65  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>70 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price70  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>75 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price75  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>80 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price80  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>85 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price85  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>90 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price90  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>95 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price95  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>100 KM</td>
+                {% for transport in transports %}
+                    <td>{{ transport.price100  *1.23 }}</td>
+                {% endfor %}
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('transport_new') }}">DODAJ</a>
+{% endblock %}

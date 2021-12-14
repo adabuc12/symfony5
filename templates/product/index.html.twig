@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wyszukiwarka produktów{% endblock %}
+
+{% block body %}
+</br>
+    <h3>Sprawdzarka produktów by Adam</h3>
+<div class="container">
+<form class="">
+  <div class="row ">
+    <div class="col">
+        <div class="p-3 border bg-light">
+            <label for="select1" class="form-label">GRUPA KLINTA</label>
+            <select class="form-select" aria-label="Default select example" id="select1" name="select1">
+                <option value="detal" {% if parameters.select1 == 'detal' %} selected {% endif %}>DETALICZNA</option>
+                <option value="hurt" {% if parameters.select1 == 'hurt' %} selected {% endif %}>HURTOWA</option>
+                <option value="specjal" {% if parameters.select1 == 'specjal' %} selected {% endif %}>SPECJALNA</option>
+              </select>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 border bg-light">
+            <label for="select2" class="form-label">MIEJSCE ZAŁADUNKU</label>
+            <select class="form-select" aria-label="Default select example" id="select2" name="select2">
+                <option value="factory"{% if parameters.select2 == 'factory' %} selected {% endif %}>FABRYKA</option>
+                <option value="pitch"{% if parameters.select2 == 'pitch' %} selected {% endif %}>PLAC WIELICZKA</option>
+            </select>
+        </div>
+    </div>
+    
+<div class="col">
+        <div class="p-3 border bg-light">
+        <label for="factory" class="form-label">PRODUCENT</label>
+        {% if parameters.factory %} <input class="form-control me-2" type="search" placeholder="FABRYKA" aria-label="factory" name="factory" value="{{ parameters.factory }}"> 
+        {% else %}
+        <input class="form-control me-2" type="search" placeholder="PRODUCENT" aria-label="factory" name="factory"> 
+        {% endif %}
+        </div>
+    </div>
+  </div>
+        <div class="row">
+            <div class="col">
+        <div class="p-3 border bg-light">
+        <label for="search" class="form-label">NAZWA</label>
+        {% if parameters.name %} <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search" value="{{ parameters.name }}"> 
+        {% else %}
+        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search"> 
+        {% endif %}
+        </div>
+    </div>
+<div class="d-grid gap-2 p-2">
+ <button class="btn btn-warning" type="submit" action="{{ path('product_index') }}">Filtruj</button>
+</div>
+</form>
+
+  </div>
+</div>
+<div class="row">
+
+</div>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>Nazwa</th>
+                <th>Producent</th>
+                <th>Pakowanie</th>
+                <th class="bg-primary text-light">Cena sprzedaży</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{parameters.select1}}
+        {% for product in products %}
+            {% if parameters.select1 %}
+                {% if product.isNotAvailable == 1 %}
+                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':parameters.select2, 'price':parameters.select1}) }}'>
+                {% else %}
+                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id, 'pickup':parameters.select2, 'price':parameters.select1}) }}'>
+                {% endif %}
+            {% else %}
+                {% if product.isNotAvailable == 1 %}
+                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>
+                {% else %}
+                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>
+                {% endif %}
+             {% endif %}   
+                <td>{{ product.name }}</td>
+                <td class="text-center">{{ product.Manufacture }}</td>
+                <td class="text-center">{{ product.packaging }}</td>
+                
+                <td class="bg-primary text-light text-center"><b>
+                {% if parameters.select1 == 'detal' and parameters.select2 == 'factory' %}
+                    {{ product.sellPriceFactoryDetal }}
+                {% elseif  parameters.select1 == 'detal' and parameters.select2 == 'pitch' %}
+                    {{ product.sellPricePitchDetal }}
+                {% elseif  parameters.select1 == 'hurt' and parameters.select2 == 'factory' %}
+                    {{ product.sellPriceFactoryContractors }}
+                {% elseif  parameters.select1 == 'hurt' and parameters.select2 == 'pitch' %}
+                    {{ product.sellPricePitchContractors }}
+                {% elseif  parameters.select1 == 'specjal' and parameters.select2 == 'factory' %}
+                    {{ product.sellPriceFactoryWholesale }}
+                {% elseif  parameters.select1 == 'specjal' and parameters.select2 == 'pitch' %}
+                    {{ product.sellPricePitchWholesale }}
+                {% else %}
+                    {{ product.sellPriceFactoryDetal }}
+                {% endif %}
+                </b> zł</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="20">Brak produktów</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('product_new') }}">Utwórz nowy</a>
+    <script>
+        $(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                 window.location = $(this).data("href");
+            });
+        });
+    </script>
+{% endblock %}
