@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Witaj!{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -17,73 +17,130 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Kołodomu.pl</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Panel</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/product">Produkty</a>
-        </li>
-       <!-- <li class="nav-item">
-          <a class="nav-link" href="/order">Zamówienia</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/transport">Transporty</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search">
-        <button class="btn btn-outline-success" type="submit" action="{{ path('product_index') }}">Szukaj</button>
-      </form>
-      -->
-        <div class="nav-item p-3">
-            <a href="{{ path('cart') }}" class="btn btn-primary">
-                SCHOWEK
-            </a>
-        </div>
-                <div class="nav-item p-3">
-                {% if app.user %}
-                    <a href="{{ path('app_logout') }}" class="btn btn-danger">
-                    WYLOGUJ
-                </a>
-                {% else %}
-                 <a href="{{ path('login') }}" class="btn btn-success">
-                    ZALOGUJ
-                </a>
-                {% endif %}    
-        
-            
-        </div>
-    </div>
-  </div>
-</nav>
-    <body class="container">
-        <div class="row p-5">
-    {# read and display all flash messages #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
+
+    <body class="">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('product_index') }}">Produkty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('order_index') }}">Zamówienia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Oferty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('transport_index') }}">Transporty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Zadania</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Rozliczenia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Cele</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Kadry</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Statystyki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Ustawienia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Zarządzanie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Eksporty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Reklamacje</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Fabryki</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search">
+                        <button class="btn btn-outline-success" type="submit" action="{{ path('product_index') }}">Szukaj</button>
+                    </form>
+                    <div class="nav-item p-3">
+                        <a href="{{ path('cart') }}" class="btn btn-warning">
+                            SCHOWEK
+                        </a>
+                    </div>
+                    <div class="nav-item p-3">
+                        {% if app.user %}
+                            <a href="{{ path('app_logout') }}" class="text-light">
+                                WYLOGUJ
+                            </a>
+                        {% else %}
+                            <a href="{{ path('login') }}" class="btn btn-success">
+                                ZALOGUJ
+                            </a>
+                        {% endif %}    
+
+
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-    {% endfor %}
+        </nav>
+        <div class="row p-5">
+            {# read and display all flash messages #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
         {% block body %}{% endblock %}
         <div class="p-3"></div>
-        </div>
-    </body>
-    <style>
-        .hidden{
-            display:none;
-        }        .
-    </style>
+    </div>
+    <div class="footer">
+        
+        
+        
+        <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      {% block footer %}{% endblock %}
+      <li class="nav-item"> <a href="" class="btn btn-danger w-100 m-1">Utwórz zadanie</a></li>
+    </ul>
+
+  </div>
+</nav>
+
+    </div>
+</body>
+<style>
+    .hidden{
+        display:none;
+    }     
+    .footer{
+        position: fixed;
+        bottom: 36px;
+        width: 100%;
+    }
+</style>
 </html>

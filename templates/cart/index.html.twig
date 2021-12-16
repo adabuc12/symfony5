@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-3">
+                <div class="row">
                     <div class="col">
                         <div class="p-3 border bg-light">
                             <div class="row">
@@ -72,21 +72,10 @@
                             </div>
                             <a href="{{ path('kontrahent_new') }}" class="btn btn-success" role="button">Dodaj</a>
                             <a href="{{ path('kontrahent_index') }}" class="btn btn-primary" role="button">Szukaj</a>
-
                         </div>
-
-
-
-
-
-
                     </div>
-
-
-
                     <div class="col">
                         <div class="row">
-
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
@@ -151,10 +140,17 @@
                                     </div>
                                 </div>
                             </div>
+                                    <div class="col">
+                        <div class="p-3 border bg-light">
+                            <label for="notices" class="form-label">Uwagi</label>
+                            <input class="form-control me-2" type="textarea" placeholder="Uwagi" aria-label="notices" name="notices"/> 
                         </div>
                     </div>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
-
 
 
 
@@ -263,12 +259,6 @@
                     <span><b>{{ cart.total + (transporttotal*1.23)}} PLN</b></span>
                 </li>
             </ul>
-            <div class="card-body">
-                <a href="" class="btn btn-warning w-100 m-1">Zapisz</a>
-                <a href="" class="btn btn-success w-100 m-1">Wydrukuj</a>
-                <a href="" class="btn btn-danger w-100 m-1">Zamów</a>
-                <a href="" class="btn btn-info w-100 m-1">Zapytaj</a>
-            </div>
         </div>
     </div>
     {{ form_end(form, {'render_rest': false}) }}
@@ -279,4 +269,14 @@
     });
 </script>
 {% endblock %}
+
+{% block footer %}
+    <li class="nav-item"> <a href="" class="btn btn-warning w-100 m-1">Zapisz</a></li>
+    <li class="nav-item"><a href="" class="btn btn-success w-100 m-1">Wydrukuj</a></li>
+    <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Zamów</a></li>
+    <li class="nav-item"><a href="" class="btn btn-info w-100 m-1">Zapytaj</a> </li>
+    <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Usuń</a> </li>
+    <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Wyślij sms</a> </li>
+    <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Dodaj zaliczkę</a> </li>
+    {% endblock %}
 
