@@ -67,14 +67,15 @@
     </thead>
     <tbody>
         {% for product in products %}
+
             {% if parameters.select1 %}
-                {% if product.isNotAvailable == 1 %}
+                {% if product.isNotAvailable != true %}
                     <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':parameters.select2, 'price':parameters.select1}) }}'>
                     {% else %}
                     <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id, 'pickup':parameters.select2, 'price':parameters.select1}) }}'>
                     {% endif %}
                 {% else %}
-                    {% if product.isNotAvailable == 1 %}
+                    {% if product.isNotAvailable != true %}
                     <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>
                     {% else %}
                     <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>

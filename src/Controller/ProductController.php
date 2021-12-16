@@ -336,4 +336,22 @@ if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get
 return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
 }
 
+ /**
+     * @Route("/availability/{id}/", name="product_not_available", methods={"GET", "POST"})
+     */
+    public function changeAvailability(Request $request, Product $product): Response {
+        
+        $availibility = $product->getIsNotAvailable();
+        if($availibility){
+            $product->setIsNotAvailable(false);
+        }else{
+            $product->setIsNotAvailable(true);
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 }

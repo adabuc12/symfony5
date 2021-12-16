@@ -3,7 +3,6 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-    <h2>Produkt</h2>
     <div class="row">
         <div class="col-md-6" id="form_counting">
             <h3 class="mt-4 mt-md-0">{{ product.name }} - {{ product.Manufacture }}</h3>
@@ -126,10 +125,10 @@
                             <td>{{ product.courierCost }}</td>
                         </tr>
                     {% endif %}
-                    {% if product.isNotAvailable %}
+                    {% if product.getIsNotAvailable == false %}
                         <tr>
                             <th>Produkt Niedostępny</th>
-                            <td>{{ product.isNotAvailable ? 'Tak' : 'Nie' }}</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <th>Przewidywany czas dostępności</th>
@@ -239,7 +238,14 @@
     <li class="nav-item"> <a class="nav-link" href="{{ path('product_index') }}">Lista  produktów</a> </li>
      <li class="nav-item">       <a class="nav-link"  href="{{ path('product_edit', {'id': product.id}) }}">Edytuj</a></li>
       <li class="nav-item">      {{ include('product/_delete_form.html.twig') }}</li>
-      <li class="nav-item"> <a class="nav-link" href="">Niedostępny</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{{ path('product_not_available', {'id': product.id}) }}">
+              {% if product.getIsNotAvailable %} 
+                  Niedostępny 
+              {% else %} 
+                  Dostępny 
+              {% endif %}
+          </a> </li>
+      {% if product.getIsNotAvailable != true %}<li class="nav-item"> <a class="nav-link" href="">Powiadom mnie</a> </li>{% endif %}
       <li class="nav-item"> <a class="nav-link" href="">Zapotrzebowanie</a> </li>
       <li class="nav-item"> <a class="nav-link" href="">Promocja</a> </li>
       
