@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Factory{% endblock %}
+
+{% block body %}
+    <h1>Edit Factory</h1>
+
+    {{ include('factory/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('factory_index') }}">back to list</a>
+
+    {{ include('factory/_delete_form.html.twig') }}
+{% endblock %}

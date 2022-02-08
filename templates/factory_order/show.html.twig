@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FactoryOrder{% endblock %}
+
+{% block body %}
+    <h3>Zamówienie nr {{ factory_order.number }}</h3>
+
+    <table class="table table-bordered">
+        <thead>
+            <th>Data utworzenia</th>
+            <th>Date_sended</th>
+            <th>Utworzone przez</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ factory_order.dateCreated ? factory_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ factory_order.dateSended ? factory_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ factory_order.createdBy.name }} {{ factory_order.createdBy.surname }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% if factory_order.getOrderFactoryItems.count  > 0 %}
+    <table class="table table-bordered">
+        <thead>
+            <th>Nazwa</th>
+            <th>Ilość m2/szt</th>
+            <th>Ilość palet</th>
+        </thead>
+        <tbody>
+            {% for item in factory_order.getOrderFactoryItems %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.Quantity }}</td>
+                <td>{{ item.Quantity/item.product.packaging }}</td>
+            </tr>
+            
+            {% endfor %}
+            <tr>
+                <td><a href="{{ path('product_index',{'type': 'factory_order'}) }}" class="btn btn-primary">Dodaj Produkt</a></td>
+                <td></td>
+                <td></td>
+            <tr>
+        </tbody>
+    </table>
+        
+    {% endif %}
+    
+{% endblock %}
+
+{% block footer %}
+    <li class="nav-item"><a href="{{ path('save_order') }}" class="btn btn-warning">Zapisz</a></li>
+    <li class="nav-item"><a href="{{ path('factory_order_index') }}" class="btn btn-primary">Lista zamówień</a></li>
+    <li class="nav-item"><a href="{{ path('factory_order_edit', {'id': factory_order.id}) }}" class="btn btn-primary">Edytuj</a></li>
+    <li class="nav-item">{{ include('factory_order/_delete_form.html.twig') }}</li>
+ {% endblock %}   
+    

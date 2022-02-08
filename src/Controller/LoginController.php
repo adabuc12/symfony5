@@ -14,6 +14,8 @@ class LoginController extends AbstractController
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        
+         
        // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
 

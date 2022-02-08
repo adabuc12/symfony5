@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\KontrahentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Kontrahent
 {
+    
+    public function __toString() {
+        return $this->name;
+    }
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -68,9 +75,31 @@ class Kontrahent
     private $group_name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="kontrahent", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="kontrahent")
      */
-    private $order;
+    private $orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Payments::class, mappedBy="kontrahent")
+     */
+    private $payments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Complaint::class, mappedBy="kontrahent")
+     */
+    private $complaints;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->complaints = new ArrayCollection();
+    }
+
+
+
+
+
 
     public function getId(): ?int
     {
@@ -218,4 +247,97 @@ class Kontrahent
 
         return $this;
     }
+
+ 
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setKontrahent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getKontrahent() === $this) {
+                $order->setKontrahent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @return Collection|Payments[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payments $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setKontrahent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payments $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getKontrahent() === $this) {
+                $payment->setKontrahent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Complaint[]
+     */
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
+    }
+
+    public function addComplaint(Complaint $complaint): self
+    {
+        if (!$this->complaints->contains($complaint)) {
+            $this->complaints[] = $complaint;
+            $complaint->setKontrahent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComplaint(Complaint $complaint): self
+    {
+        if ($this->complaints->removeElement($complaint)) {
+            // set the owning side to null (unless already changed)
+            if ($complaint->getKontrahent() === $this) {
+                $complaint->setKontrahent(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }

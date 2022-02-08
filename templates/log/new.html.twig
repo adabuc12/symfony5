@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowa Notatka{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <h1>Nowa notatka</h1>
+
+            {{ include('log/_form.html.twig') }}
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"><a href="{{ path('log_index') }}" class="nav-link">Powrót</a></li>
+{% endblock %}

@@ -1,45 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Task index{% endblock %}
+{% block title %}Zadania{% endblock %}
+{% block filters %}
+    <h3>Lista Zadań</h3>
 
+    <form class="form">
+        <div class="row">
+            <table class="table table-primary">
+                <td>Status</td>
+                <td>Data utworzenia</td>
+                <td>Data ukończenia</td>
+                <td>Adresat</td>
+                <td>Typ</td>
+                <td>Data realizacji</td>
+                <td>Priorytet</td>
+            </table>
+        </div>
+    </form>
+    {% endblock %}
 {% block body %}
-    <h1>Task index</h1>
-
-    <table class="table">
+     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>Date_created</th>
-                <th>Date_ended</th>
-                <th>Date_to_end</th>
+                <th>Opis</th>
+                <th>Utworzony przez</th>
+                <th>Adresat</th>
+                <th>Data utworzenia</th>
+                <th>Data realizacji</th>
                 <th>Priorytet</th>
-                <th>Type</th>
-                <th>actions</th>
+                <th>Typ</th>
+                <th>Data zakonczenia</th>
             </tr>
         </thead>
         <tbody>
         {% for task in tasks %}
-            <tr>
-                <td>{{ task.id }}</td>
+            <tr class="clickable-row" data-href='{{ path('task_show', {'id': task.id}) }}'>
                 <td>{{ task.description }}</td>
+                <td>{{ task.taskOwner }}</td>
+                <td>{% for user in task.user %}{{ user.name }} {{ user.surname }},{% endfor %}</td>
                 <td>{{ task.dateCreated ? task.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ task.dateEnded ? task.dateEnded|date('Y-m-d H:i:s') : '' }}</td>
+                
                 <td>{{ task.dateToEnd ? task.dateToEnd|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ task.priorytet }}</td>
-                <td>{{ task.type }}</td>
                 <td>
-                    <a href="{{ path('task_show', {'id': task.id}) }}">show</a>
-                    <a href="{{ path('task_edit', {'id': task.id}) }}">edit</a>
+                    {% if task.priorytet == 1 %} Niski {% endif %}
+                    {% if task.priorytet == 2 %} Normalny {% endif %}
+                    {% if task.priorytet == 3 %} Ważny {% endif %}
+                    {% if task.priorytet == 4 %} Pilny {% endif %}
                 </td>
+                <td>
+                    {% if task.type == 'product-list' %} Produkty {% endif %}
+                    {% if 'order' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('order_edit',{'id':orderid.1}) }}" >Zamówienie {{ orderid.1 }} </a>{% endif %}
+                    {% if 'offer' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('order_edit',{'id':orderid.1}) }}" >Oferta {{ orderid.1 }} </a>{% endif %}
+                    {% if 'productid' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('product_edit',{'id':orderid.1}) }}" >Produkt {{ orderid.1 }} </a>{% endif %}
+                    {% if 'kontrahent' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('kontrahent_edit',{'id':orderid.1}) }}" >Kontrahent {{ orderid.1 }} </a>{% endif %}
+                    {% if 'transport' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('transport_edit',{'id':orderid.1}) }}" >Transport {{ orderid.1 }} </a>{% endif %}
+                    {% if task.type == 'task' %} Zadanie {% endif %}
+                    {% if task.type == 'telefon' %} Telefon {% endif %}
+                    {% if task.type == 'email' %} Email {% endif %}
+                    {% if task.type == 'ask' %} Zapytanie dost. {% endif %}
+                    {% if task.type == 'factoryOrder' %} Zamówienie fabr. {% endif %}
+                    {% if task.type == 'reklamacja' %} Reklamacja {% endif %}
+                    {% if task.type == 'rozliczenie' %} Rozliczenia {% endif %}
+                    {% if task.type == 'sms' %} SMS {% endif %}
+                    {% if task.type == 'biuro' %} Biurowe {% endif %}
+                    {% if task.type == 'kadrowe' %} Kadrowe {% endif %}
+                    {% if task.type == 'zgloszenie' %} Zgłoszenie {% endif %}
+                </td>
+                <td>{{ task.dateEnded ? task.dateEnded|date('Y-m-d H:i:s') : 'oczekuje' }}</td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Brak zadań</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('task_new') }}">Create new</a>
+    
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('task_new') }}">Utwórz nowe</a></li>
 {% endblock %}

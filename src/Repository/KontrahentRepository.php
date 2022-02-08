@@ -33,7 +33,16 @@ class KontrahentRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
+    public function findEntitiesByString($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT e
+                FROM AppBundle:Kontrahent e
+                WHERE e.name LIKE :str'
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Kontrahent

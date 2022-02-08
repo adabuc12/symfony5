@@ -13,7 +13,6 @@ class OrderType extends AbstractType
     {
         $builder
             ->add('number')
-            ->add('date')
             ->add('is_ordered')
             ->add('delivery_date')
             ->add('relation')

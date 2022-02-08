@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotion{% endblock %}
+
+{% block body %}
+    <h3>Promocja - {{ promotion.name }}</h3>
+
+    <table class="table table-hover">
+        <thead>
+        
+        </thead>
+        <tbody>
+            <tr>
+                <th>Opis</th>
+                <td>{{ promotion.description }}</td>
+            </tr>
+            <tr>
+                <th>Typ ceny</th>
+                <td>{% if promotion.priceTypes %} 
+                        {% for pricetype in promotion.priceTypes %}
+                            {% if pricetype == 'detal' %}
+                                Cena detaliczna,
+                            {% endif %}
+                            {% if pricetype == 'hurt' %}
+                                Cena dla wykonawców,
+                            {% endif %}
+                            {% if pricetype == 'specjal' %}
+                                Cena dla hurtowni
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% if promotion.cartConditionType %}
+            <tr>
+                <th>Warynek oferty/zamówienia</th>
+                <td>
+                    {% if promotion.cartConditionType == 'm2' %} Metry kwadratowe {% endif %}
+                    {% if promotion.cartConditionType == 'szt' %} Sztuki {% endif %}
+                    {% if promotion.cartConditionType == 'value' %} Wartość {% endif %}
+                    {% if promotion.cartConditionType == 'earnings' %} Zysk {% endif %}
+                     
+                    {% if promotion.cartCondition == '>' %} jest większe niż {% endif %}
+                    {% if promotion.cartCondition == '<' %} jest mniejsze niż {% endif %}
+                    {% if promotion.cartCondition == '=' %} równa się {% endif %}
+                     
+                     {{ promotion.cartConditionValue }}
+
+                    {% if promotion.cartConditionType == 'value' %} zł {% endif %}
+                    {% if promotion.cartConditionType == 'earnings' %} zł {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+            {% if promotion.productConditionType %}
+            <tr>
+                <th>Warunek produktu</th>
+                <td>{{ promotion.productConditionType }} {{ promotion.productCondition }} {{ promotion.productConditionValue }}</td>
+            </tr>
+            {% endif %}
+            {% if promotion.priceConditionType %}
+            <tr>
+                <th>Warunek cenowy</th>
+                <td>{{ promotion.priceConditionType }} {{ promotion.priceCondition }} {{ promotion.priceConditionValue }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Jeżeli warunek zostanie spełniony wtedy :</th>
+                <td>{% if promotion.calculationType == 'cart_value' %} Wartość koszyka {% endif %}
+                    {% if promotion.calculationType == 'product_value' %} Wartość produktu {% endif %}
+                    {% if promotion.calculationType == 'product_price' %} Cena produktu {% endif %}
+                    {% if promotion.calculationType == 'product' %} Produkt {% endif %}
+                    {{ promotion.calculationCountType }} {{ promotion.calculationCountValue }} {% if promotion.calculationCountIsPercent %} % {% else %} zł {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Aktywny?</th>
+                <td>{{ promotion.isEnabled ? 'Tak' : 'Nie' }}</td>
+            </tr>
+            <tr>
+                <th>Data początkowa</th>
+                <td>{{ promotion.startDate ? promotion.startDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Data zakończenia</th>
+                <td>{{ promotion.endDate ? promotion.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+   
+{% endblock %}
+
+{% block footer %}
+    <li class="nav-item"><a class="nav-link btn btn-primary" href="{{ path('promotion_index') }}">Lista</a></li>
+
+    <li class="nav-item"><a class="nav-link btn btn-primary" href="{{ path('promotion_edit', {'id': promotion.id}) }}">Edytuj</a></li>
+
+   <li class="nav-item"> {{ include('promotion/_delete_form.html.twig') }}</li>
+{% endblock %}

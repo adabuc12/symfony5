@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transport
 {
+    
+    public function __toString() {
+        return $this->name;
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -159,9 +163,15 @@ class Transport
      */
     private $orders;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Driver::class, mappedBy="prices")
+     */
+    private $drivers;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -515,6 +525,33 @@ class Transport
     {
         if ($this->orders->removeElement($order)) {
             $order->removeRelation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Driver[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(Driver $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->addPrice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Driver $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            $driver->removePrice($this);
         }
 
         return $this;

@@ -1,46 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Task{% endblock %}
+{% block title %}Zadanie{% endblock %}
 
 {% block body %}
-    <h1>Task</h1>
+    <h1>Zadanie</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ task.id }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
+                <th>Opis</th>
                 <td>{{ task.description }}</td>
             </tr>
             <tr>
-                <th>Date_created</th>
+                <th>Data utworzenia</th>
                 <td>{{ task.dateCreated ? task.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Date_ended</th>
-                <td>{{ task.dateEnded ? task.dateEnded|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Data zakończenia</th>
+                <td>{{ task.dateEnded ? task.dateEnded|date('Y-m-d H:i:s') : 'oczekuje' }}</td>
             </tr>
             <tr>
-                <th>Date_to_end</th>
+                <th>Termin ukończenia</th>
                 <td>{{ task.dateToEnd ? task.dateToEnd|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Priorytet</th>
-                <td>{{ task.priorytet }}</td>
+                <th>Utworzony przez</th>
+                <td>{{ task.taskOwner }}</td>
             </tr>
             <tr>
-                <th>Type</th>
-                <td>{{ task.type }}</td>
+                <th>Osoba odpowiedzialna</th>
+                <td>{% for user in task.user %}{{ user.name }} {{ user.surname }} ,{% endfor %}</td>
+            </tr>
+            <tr>
+                <th>Priorytet</th>
+                <td>{% if task.priorytet == 1 %} Niski {% endif %}
+                    {% if task.priorytet == 2 %} Normalny {% endif %}
+                    {% if task.priorytet == 3 %} Ważny {% endif %}
+                    {% if task.priorytet == 4 %} Pilny {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Typ</th>
+                <td>{% if task.type == 'product-list' %} Produkty {% endif %}
+                    {% if 'order' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('order_edit',{'id':orderid.1}) }}" >Zamówienie {{ orderid.1 }} </a>{% endif %}
+                    {% if 'offer' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('order_edit',{'id':orderid.1}) }}" >Oferta {{ orderid.1 }} </a>{% endif %}
+                    {% if 'productid' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('product_edit',{'id':orderid.1}) }}" >Produkt {{ orderid.1 }} </a>{% endif %}
+                    {% if 'kontrahent' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('kontrahent_edit',{'id':orderid.1}) }}" >Kontrahent {{ orderid.1 }} </a>{% endif %}
+                    {% if 'transport' in task.type %} {% set orderid = task.type|split(' ') %} <a href="{{ path('transport_edit',{'id':orderid.1}) }}" >Transport {{ orderid.1 }} </a>{% endif %}
+                    {% if task.type == 'task' %} Zadanie {% endif %}
+                    {% if task.type == 'telefon' %} Telefon {% endif %}
+                    {% if task.type == 'email' %} Email {% endif %}
+                    {% if task.type == 'ask' %} Zapytanie dost. {% endif %}
+                    {% if task.type == 'factoryOrder' %} Zamówienie fabr. {% endif %}
+                    {% if task.type == 'reklamacja' %} Reklamacja {% endif %}
+                    {% if task.type == 'rozliczenie' %} Rozliczenia {% endif %}
+                    {% if task.type == 'sms' %} SMS {% endif %}
+                    {% if task.type == 'biuro' %} Biurowe {% endif %}
+                    {% if task.type == 'kadrowe' %} Kadrowe {% endif %}
+                    {% if task.type == 'zgloszenie' %} Zgłoszenie {% endif %}</td>
+                
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>{{ task.url|replace({'_':'/'}) }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('task_index') }}">back to list</a>
+    
 
-    <a href="{{ path('task_edit', {'id': task.id}) }}">edit</a>
+    
 
+    
+{% endblock %}
+
+{% block footer %}
+    <li class="nav-item"> <a class="nav-link btn btn-secondary" href="{{ path('task_index') }}">Do listy zadań</a></li>
+    <li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('task_edit', {'id': task.id}) }}">Edytuj</a></li>
+    {% if task.dateEnded == ""%}<li class="nav-item"> <a class="nav-link btn btn-success" href="{{ path('task_end', {'id': task.id}) }}">Zakończ</a></li>{% endif %}
     {{ include('task/_delete_form.html.twig') }}
 {% endblock %}

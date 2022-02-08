@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zamówienia na fabrykę{% endblock %}
+
+{% block filters %}
+    <h1>Lista zamówień na fabrykę</h1>
+    <form class="form">
+        <div class="row">
+            <table class="table table-primary">
+                <div class="form-group">
+                <td><label for="search_kontrahent">Numer</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Producent</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Kontrahent</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Data Utworzenia</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Data wysłania</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Utworzone przez</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><label for="search_kontrahent">Wysłane</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
+                <td><button type="submit" class="btn btn-primary m-4">Filtruj</button></td>
+                </div>
+            </table>
+        </div>
+        
+    </form>
+{% endblock %}
+
+{% block body %}
+    
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numer</th>
+                <th>Producent</th>
+                <th>Data utworzenia</th>
+                <th>Data wysłania</th>
+                
+                <th>Utworzone przez</th>
+                <th>Akcje</th>               
+            </tr>
+        </thead>
+        <tbody>
+            {% for factory_order in factory_orders %}
+                <tr>
+                    <td>{{ factory_order.number }}</td>
+                    <td>{{ factory_order.factory.name }}</td>
+                    <td>{{ factory_order.dateCreated ? factory_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ factory_order.dateSended ? factory_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
+                    
+                    <td>{{ factory_order.createdBy.name }} {{ factory_order.createdBy.surname }}</td>
+                    <td>
+                        <a href="{{ path('factory_order_show', {'id': factory_order.id}) }}">Pokaż</a>
+                        <a href="{{ path('factory_order_edit', {'id': factory_order.id}) }}">Edytuj</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Brak zamówień</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block footer %}
+    <li class="nav-item"><a href="{{ path('product_index', {'type': 'factory_order'}) }}" class="btn btn-warning">Utwórz nowy</a></li>
+{% endblock %}

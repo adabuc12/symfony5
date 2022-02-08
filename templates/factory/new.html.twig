@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Factory{% endblock %}
+
+{% block body %}
+    <h1>Create new Factory</h1>
+
+    {{ include('factory/_form.html.twig') }}
+
+    <a href="{{ path('factory_index') }}">back to list</a>
+{% endblock %}

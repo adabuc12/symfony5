@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Płatności{% endblock %}
+
+{% block body %}
+    <h1>Nowa wpłata/wypłata</h1>
+
+    {{ include('payments/_form.html.twig') }}
+
+    
+    
+    
+{% endblock %}
+
+
+{% block footer %}
+    <li class="nav-item"><a href="{{ path('payments_index') }}" class="nav-link">Lista</a></li>
+{% endblock %}

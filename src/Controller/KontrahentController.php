@@ -71,15 +71,15 @@ class KontrahentController extends AbstractController
             foreach ($kontrahent_csv as $key => $value) {
                 $kontrahent = new Kontrahent();
                 $kontrahent->setName($value['Nazwa kontrahenta']);
-                 $kontrahent->setAdress($value['Miasto']);
-                  $kontrahent->setPhone($value['Nr telefonu']);
-                   $kontrahent->setEmail($value['E-mail kontrahenta']);
-                    $kontrahent->setNip($value['NIP']);
-                     $kontrahent->setNotices($value['Uwagi']);
-                      $kontrahent->setPostCode($value['Kod']);
-                       $kontrahent->setStreet($value['Ulica, nr lokalu']);
-                        $kontrahent->setClassName($value['Nazwa klasyfikacji']);
-                         $kontrahent->setGroupName($value['Nazwa grupy']);
+                $kontrahent->setAdress($value['Miasto']);
+                $kontrahent->setPhone($value['Nr telefonu']);
+                $kontrahent->setEmail($value['E-mail kontrahenta']);
+                $kontrahent->setNip($value['NIP']);
+                $kontrahent->setNotices($value['Uwagi']);
+                $kontrahent->setPostCode($value['Kod']);
+                $kontrahent->setStreet($value['Ulica, nr lokalu']);
+                $kontrahent->setClassName($value['Nazwa klasyfikacji']);
+                $kontrahent->setGroupName($value['Nazwa grupy']);
                 $entityManager->persist($kontrahent);
 
  
@@ -115,7 +115,7 @@ class KontrahentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="kontrahent_show", methods={"GET"})
+     * @Route("/show/{id}", name="kontrahent_show", methods={"GET"})
      */
     public function show(Kontrahent $kontrahent): Response
     {
@@ -125,7 +125,7 @@ class KontrahentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="kontrahent_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="kontrahent_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Kontrahent $kontrahent): Response
     {
@@ -145,7 +145,7 @@ class KontrahentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="kontrahent_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="kontrahent_delete", methods={"POST"})
      */
     public function delete(Request $request, Kontrahent $kontrahent): Response
     {
@@ -170,7 +170,37 @@ class KontrahentController extends AbstractController
         $session->set('kontrahent', $kontrahent);
         $session->getFlashBag()->add('notice', 'Kontrahent wybrany');
         
-        return $this->redirectToRoute('cart', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('kontrahent_index', [], Response::HTTP_SEE_OTHER);
        
     }
+    
+    /**
+     * @Route("/search", name="kontrahent_search")
+     */
+     public function searchAction(Request $request){
+            
+         
+             $searchTerm = $request->get('q');  
+             $em = $this->getDoctrine()->getManager();
+             $results = $em->getRepository(Kontrahent::class)->findByNameField($searchTerm);
+             //$results = $query->getResult();
+ 
+             if(!$results) {
+            $result['entities']['error'] = "brak kontrahenta";
+        } else {
+            $result['entities'] = $this->getRealEntities($results);
+        }
+
+        return new Response(json_encode($result));
+
+             }
+             
+             public function getRealEntities($entities){
+
+            foreach ($entities as $entity){
+                $realEntities[$entity->getId()] = $entity->getName();
+            }
+
+      return $realEntities;
+  }
 }

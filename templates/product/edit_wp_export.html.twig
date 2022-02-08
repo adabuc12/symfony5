@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Eksport do wp{% endblock %}
+{% block filters %}
+    <h3>Edytuj Produkty</h3>
+
+    <form class="form">
+        <div class="row">
+            <table class="table table-primary">
+                <div class="form-group">
+                    <td><label for="search_nazwa">Nazwa</label><br><input class="form-control" type="text" name="search_nazwa" value="{{app.request.get('search_nazwa')}}"></td>
+
+                    <td><button type="submit" class="btn btn-primary m-4" name="filter">Filtruj</button></td>
+                </div>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block body %}
+    <form class="form">
+        <div class="">
+            <table class="table table-dark table-sm">
+                <thead>
+                <th><input type="checkbox" name="show_all" id="show_all"/></th>
+                <th>Wordpress ID</th>
+                <th style="min-width:250px">Nazwa</th>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+
+                        <tr>
+                            <td><input type="checkbox" name="{{ product.id }}-selected" class="to_check"/></td>
+                            <td><input type="text" name="wpid-{{product.id}}" value="{{product.wpid}}"/></td>
+                            <td>{{ product.name }}</td> 
+                            
+                        </tr>   
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        <li><a href="{{ path('saveexportfile')}}" class="btn btn-primary" type="submit" name="export_data">Utwórz export</a></li>
+        <li><button class="btn btn-primary" type="submit" name="save_data">Zapisz dane</button></li>
+    </form>
+    <script>
+        $(document).ready(function () {
+            $('#show_all').click(function () {
+                $('.to_check').trigger('click');
+            });
+        });
+    </script>
+
+{% endblock %}

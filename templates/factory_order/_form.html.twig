@@ -1,0 +1,54 @@
+<h3>Zamówienie nr {{ factory_order.number }}</h3>
+
+<table class="table table-bordered">
+    <thead>
+    <th>Data utworzenia</th>
+    <th>Date_sended</th>
+    <th>Utworzone przez</th>
+    <th>Dotyczy zamówienia</th>
+</thead>
+<tbody>
+    <tr>
+        <td>{{ factory_order.dateCreated ? factory_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ factory_order.dateSended ? factory_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ factory_order.createdBy.name }} {{ factory_order.createdBy.surname }}</td>
+        <td>{% if factory_order.clientOrder %}
+            <a href="{{ path('order_edit', {'id': factory_order.clientOrder.id}) }}" >{{ factory_order.clientOrder.number }} - {{ factory_order.clientOrder.kontrahent.name }}</a>
+        {% endif %}</td>
+    </tr>
+</tbody>
+</table>
+
+
+
+{{ form_start(form) }}
+
+
+<table class="table table-bordered">
+    <thead>
+    <th>Nazwa</th>
+    <th>Fabryka</th>
+    <th>Ilość m2/szt</th>
+    <th>Ilość palet</th>
+    <th>Akcje</th>
+</thead>
+<tbody>
+    {% for item in form.orderFactoryItems %} 
+        <tr>
+            <td>{{ item.vars.data.product.name }}</td>
+            <td>{{ item.vars.data.product.manufacture }}</td>
+            <td>{{ form_widget(item.quantity) }}</td>
+            <td>{{ item.vars.data.quantity/item.vars.data.product.packaging }}</td>
+            <td><a href="" class="btn btn-danger">Usuń</a><button class="btn btn-warning">{{ button_label|default('Zapisz') }}</button></td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td><a href="{{ path('product_index',{'type': 'factory_order'}) }}" class="btn btn-primary">Dodaj Produkt</a></td>
+        <td colspan="4"></td>
+
+    <tr>
+</tbody>
+</table>
+
+{{ form_end(form) }}
+

@@ -20,8 +20,26 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-    certManager.service:
+    cartManager.service:
         class: App\Manager\CartManger
         arguments: [ "@doctrine.orm.entity_manager" ]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    monolog.db_handler:
+        class: App\Util\MonologDBHandler
+        arguments: ['@doctrine.orm.entity_manager']
+        public: true
+    monolog.processor.request:
+        class: App\Util\RequestProcessor
+        arguments: ['@request_stack', '@service_container']
+        tags:
+            - { name: monolog.processor, method: processRecord, handler: db }
+    app.subscriber.abstract_subscriber:
+        class: App\EventSubscriber\AbstractSubscriber
+        arguments: ['@service_container']
+
+    app.subscriber.order_subscriber:
+        class: App\EventSubscriber\OrderSubscriber
+        parent: app.subscriber.abstract_subscriber
+        tags:
+            - { name: kernel.event_subscriber }

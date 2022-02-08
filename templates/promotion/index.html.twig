@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotion index{% endblock %}
+
+{% block body %}
+    <h1>Promotion index</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Aktywna</th>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Start promocji</th>
+                <th>Koniec Promocji</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for promotion in promotions %}
+             <tr class=" clickable-row" data-href='{{ path('promotion_show', {'id': promotion.id}) }}'>
+                <td>{% if promotion.isEnabled %}Aktywna{% else %}Wyłączona{% endif %}</td>
+                <td>{{ promotion.name }}</td>
+                <td>{{ promotion.description }}</td>
+                <td>{{ promotion.startDate|date('d:m:Y') }}</td>
+                <td>{{ promotion.endDate|date('d:m:Y') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Brak Promocji</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"> <a class="nav-link btn btn-info" href="{{ path('promotion_new') }}">Utwórz</a> </li>
+    
+    {% endblock %}

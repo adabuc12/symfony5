@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zapytaj{% endblock %}
+
+{% block body %}
+    <h1>Wyślij zapytanie</h1>
+    <form>
+        <table class="table table-hover">
+    {% for item in factory_order.Item %}
+        <tr>
+            <td><input type="checkbox" name="check-{{ item.id }}" /></td>
+            <td>{{ item.product.name }}</td>
+            <td><input type="text" name="quantity-{{ item.id }}" value="{{ item.quantity }}" /></td>
+            <td>{{ item.product.manufacture }}</td>
+        </tr>
+    {% endfor %}
+        </table>
+    
+
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"> <button class="nav-link btn btn-primary" type="submit" name="send_ask">Wyślij zapytanie</button></li>
+    </form>
+{% endblock %}

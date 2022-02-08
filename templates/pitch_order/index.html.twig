@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PitchOrder index{% endblock %}
+
+{% block body %}
+    <h1>PitchOrder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_created</th>
+                <th>Date_sended</th>
+                <th>Number</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pitch_order in pitch_orders %}
+            <tr>
+                <td>{{ pitch_order.id }}</td>
+                <td>{{ pitch_order.dateCreated ? pitch_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pitch_order.dateSended ? pitch_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pitch_order.number }}</td>
+                <td>
+                    <a href="{{ path('pitch_order_show', {'id': pitch_order.id}) }}">show</a>
+                    <a href="{{ path('pitch_order_edit', {'id': pitch_order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('pitch_order_new') }}">Create new</a>
+{% endblock %}

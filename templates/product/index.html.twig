@@ -69,16 +69,16 @@
         {% for product in products %}
 
             {% if parameters.select1 %}
-                {% if product.isNotAvailable != true %}
-                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':parameters.select2, 'price':parameters.select1}) }}'>
+                {% if product.isNotAvailable == true %}
+                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':parameters.select2, 'price':parameters.select1, 'type':type}) }}'>
                     {% else %}
-                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id, 'pickup':parameters.select2, 'price':parameters.select1}) }}'>
+                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id, 'pickup':parameters.select2, 'price':parameters.select1, 'type':type}) }}'>
                     {% endif %}
                 {% else %}
-                    {% if product.isNotAvailable != true %}
-                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>
+                    {% if product.isNotAvailable == true %}
+                    <tr class="table-danger clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal', 'type':type}) }}'>
                     {% else %}
-                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal'}) }}'>
+                    <tr class="clickable-row" data-href='{{ path('product_show', {'id': product.id,'pickup':'factory', 'price':'detal', 'type':type}) }}'>
                     {% endif %}
                 {% endif %}   
                 <td>{{ product.name }}</td>
@@ -111,17 +111,15 @@
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function ($) {
-        $(".clickable-row").click(function () {
-            window.location = $(this).data("href");
-        });
-    });
-</script>
+
 <style>
 
 </style>
 {% endblock %}
 {% block footer %}
-    <li class="nav-item"> <a href="{{ path('product_new') }}" class="nav-link">Dodaj</a></li>
+    <li class="nav-item"> <a href="{{ path('product_new') }}" class="nav-link btn btn-primary">Dodaj</a></li>
+    <li class="nav-item"> <a href="{{ path('product_group_price_count') }}" class="nav-link btn btn-primary">Zmiana cennika</a></li>
+    <li class="nav-item"> <a href="{{ path('export_save') }}" class="nav-link btn btn-primary">Eksport do www</a></li>
+    <li class="nav-item"> <a href="{{ path('exportexcel') }}" class="nav-link btn btn-primary">Eksport do excela</a></li>
+     <li class="nav-item"> <a href="{{ path('task_new', {'type': 'product-list'}) }}" class="nav-link btn btn-warning">Utwórz zadanie</a></li>
 {% endblock %}

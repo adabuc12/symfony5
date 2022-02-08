@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
+    
+     public function __toString() {
+        return $this->number. ' '.$this->kontrahent->getName();
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -21,19 +25,9 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $number;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="factory_order")
-     */
-    private $products;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
 
     /**
      * @ORM\Column(type="boolean")
@@ -65,7 +59,7 @@ class Order
      *
      * @var string
      */
-    const STATUS_CART = 'cart';
+    const STATUS_CART = 'offer';
     
     /**
      * @ORM\Column(type="datetime")
@@ -88,20 +82,82 @@ class Order
     private $phone;
 
     /**
-     * @ORM\OneToOne(targetEntity=Kontrahent::class, inversedBy="order", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Kontrahent::class, inversedBy="orders", cascade={"persist"}, fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="kontrahent_id", referencedColumnName="id")
      */
     private $kontrahent;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Delivery::class, mappedBy="delivery_order")
+     */
+    private $deliveries;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $allowed_car_size;
+    private $kontrahent_group;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pickup;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_pickup_wieliczka;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_extra_delivery;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $own_pickup;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $notice;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $count_pallets;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PitchOrder::class, mappedBy="client_order")
+     */
+    private $pitchOrders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FactoryOrder::class, mappedBy="client_order")
+     */
+    private $factoryOrders;
+
+
+
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->relation = new ArrayCollection();
         $this->item = new ArrayCollection();
+        $this->deliveries = new ArrayCollection();
+        $this->pitchOrders = new ArrayCollection();
+        $this->factoryOrders = new ArrayCollection();
+ 
     }
 
     public function getId(): ?int
@@ -117,48 +173,6 @@ class Order
     public function setNumber(string $number): self
     {
         $this->number = $number;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setFactoryOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getFactoryOrder() === $this) {
-                $product->setFactoryOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }
@@ -219,7 +233,7 @@ class Order
         return $this->item;
     }
 
-    public function addItem(OrderItem $item): self
+    public function addItem(OrderItem $item, $nknm = 1): self
     {
         $productName = $item->getProduct()->getName();
         
@@ -230,31 +244,36 @@ class Order
                 $packs = $quantity / $packaging;
                 $fullpacksquantity = $packaging*$floredpacks;
                 $restquantity = $quantity - $fullpacksquantity;
-                $restItem = new OrderItem();
-                $restItem->setProduct($item->getProduct());
-                $restItem->setPrice(round($item->getPrice()*1.25, 2));
-                $restItem->setQuantity($restquantity);
-                $restItem->setOrderRef($this);
-                $this->item[] = $restItem;
-
+                
+                if($restquantity > 0){
+                    $restItem = new OrderItem();
+                    $restItem->setProduct($item->getProduct());
+                    $restItem->setPrice(round($item->getPrice()*$nknm, 2));
+                    $restItem->setQuantity($restquantity);
+                    $restItem->setOrderRef($this);
+                    $this->item[] = $restItem;
+                }
             
             
             
                 foreach ($this->getItem() as $existingItem ) {
+              
                     if ($existingItem->equals($item) && $item->getPrice() == $existingItem->getPrice()) {
                         $existingItem->setQuantity(
-                            $existingItem->getQuantity() + $fullpacksquantity
+                                $existingItem->getQuantity() + $fullpacksquantity
                         );
                         return $this;
                     }
                 }
                 if($fullpacksquantity > 0){
+               
                     $item->setQuantity($fullpacksquantity);
                     $this->item[] = $item;
                     $item->setOrderRef($this);
                 }
                 return $this;
             }else{
+          
                 foreach ($this->getItem() as $existingItem ) {
                      if ($existingItem->equals($item)) {
                          $existingItem->setQuantity(
@@ -266,6 +285,7 @@ class Order
                  $this->item[] = $item;
                  $item->setOrderRef($this); 
              }
+  
         return $this;
     }
     /**
@@ -344,7 +364,7 @@ class Order
            $total += $item->getTotal();
        }
 
-       return $total;
+       return round($total, 2);
    }
 
    public function getAdress(): ?string
@@ -394,4 +414,200 @@ class Order
 
        return $this;
    }
+
+   /**
+    * @return Collection|Delivery[]
+    */
+   public function getDeliveries(): Collection
+   {
+       return $this->deliveries;
+   }
+
+   public function addDelivery(Delivery $delivery): self
+   {
+       if (!$this->deliveries->contains($delivery)) {
+           $this->deliveries[] = $delivery;
+           $delivery->addDeliveryOrder($this);
+       }
+
+       return $this;
+   }
+
+   public function removeDelivery(Delivery $delivery): self
+   {
+       if ($this->deliveries->removeElement($delivery)) {
+           $delivery->removeDeliveryOrder($this);
+       }
+
+       return $this;
+   }
+
+   public function getKontrahentGroup(): ?string
+   {
+       return $this->kontrahent_group;
+   }
+
+   public function setKontrahentGroup(string $kontrahent_group): self
+   {
+       $this->kontrahent_group = $kontrahent_group;
+
+       return $this;
+   }
+
+   public function getPickup(): ?string
+   {
+       return $this->pickup;
+   }
+
+   public function setPickup(string $pickup): self
+   {
+       $this->pickup = $pickup;
+
+       return $this;
+   }
+
+   public function getIsPickupWieliczka(): ?bool
+   {
+       return $this->is_pickup_wieliczka;
+   }
+
+   public function setIsPickupWieliczka(?bool $is_pickup_wieliczka): self
+   {
+       $this->is_pickup_wieliczka = $is_pickup_wieliczka;
+
+       return $this;
+   }
+
+   public function getIsExtraDelivery(): ?bool
+   {
+       return $this->is_extra_delivery;
+   }
+
+   public function setIsExtraDelivery(?bool $is_extra_delivery): self
+   {
+       $this->is_extra_delivery = $is_extra_delivery;
+
+       return $this;
+   }
+
+   public function getOwnPickup(): ?bool
+   {
+       return $this->own_pickup;
+   }
+
+   public function setOwnPickup(?bool $own_pickup): self
+   {
+       $this->own_pickup = $own_pickup;
+
+       return $this;
+   }
+
+   public function getType(): ?string
+   {
+       return $this->type;
+   }
+
+   public function setType(string $type): self
+   {
+       $this->type = $type;
+
+       return $this;
+   }
+
+   public function getNotice(): ?string
+   {
+       return $this->notice;
+   }
+
+   public function setNotice(?string $notice): self
+   {
+       $this->notice = $notice;
+
+       return $this;
+   }
+
+   public function getCountPallets(): ?bool
+   {
+       return $this->count_pallets;
+   }
+
+   public function setCountPallets(?bool $count_pallets): self
+   {
+       $this->count_pallets = $count_pallets;
+
+       return $this;
+   }
+
+   public function getUser(): ?User
+   {
+       return $this->user;
+   }
+
+   public function setUser(?User $user): self
+   {
+       $this->user = $user;
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|PitchOrder[]
+    */
+   public function getPitchOrders(): Collection
+   {
+       return $this->pitchOrders;
+   }
+
+   public function addPitchOrder(PitchOrder $pitchOrder): self
+   {
+       if (!$this->pitchOrders->contains($pitchOrder)) {
+           $this->pitchOrders[] = $pitchOrder;
+           $pitchOrder->setClientOrder($this);
+       }
+
+       return $this;
+   }
+
+   public function removePitchOrder(PitchOrder $pitchOrder): self
+   {
+       if ($this->pitchOrders->removeElement($pitchOrder)) {
+           // set the owning side to null (unless already changed)
+           if ($pitchOrder->getClientOrder() === $this) {
+               $pitchOrder->setClientOrder(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|FactoryOrder[]
+    */
+   public function getFactoryOrders(): Collection
+   {
+       return $this->factoryOrders;
+   }
+
+   public function addFactoryOrder(FactoryOrder $factoryOrder): self
+   {
+       if (!$this->factoryOrders->contains($factoryOrder)) {
+           $this->factoryOrders[] = $factoryOrder;
+           $factoryOrder->setClientOrder($this);
+       }
+
+       return $this;
+   }
+
+   public function removeFactoryOrder(FactoryOrder $factoryOrder): self
+   {
+       if ($this->factoryOrders->removeElement($factoryOrder)) {
+           // set the owning side to null (unless already changed)
+           if ($factoryOrder->getClientOrder() === $this) {
+               $factoryOrder->setClientOrder(null);
+           }
+       }
+
+       return $this;
+   }
+
 }

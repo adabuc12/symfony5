@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista Powiadomień{% endblock %}
+
+{% block body %}
+    <h1>Twoje powiadomienia</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr> 
+                <th>Data utworzenia</th>
+                <th>Treść powiadomienia</th>
+                <th>Przeczytane</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notice in notices %}
+            <tr  class="clickable-row" data-href='{{ path('notice_show', {'id': notice.id}) }}'>
+                <td>{{ notice.dateCreated|date('d-m-Y H:i') }}</td>
+                <td>{{ notice.text }}</td>
+                <td>{{ notice.isReaded ? 'Tak' : 'Nie' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Brak powiadomień</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

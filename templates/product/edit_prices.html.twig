@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Przelicz ceny{% endblock %}
+{% block filters %}
+    <h3>Edytuj Produkty</h3>
+
+    <form class="form">
+        <div class="row">
+            <table class="table table-primary">
+                <div class="form-group">
+                    <td><label for="search_nazwa">Nazwa</label><br><input class="form-control" type="text" name="search_nazwa" value="{{app.request.get('search_nazwa')}}"></td>
+                    <td>
+                        <div class="form-group">
+                            <label for="rows">Producent</label>
+                            <select class="form-control" id="rows" name="search_producent">
+                                <option value="" ></option>
+                                {% for key in factories|keys %}
+                                    <option value="{{key}}" {% if app.request.get('search_producent') == key %} selected {% endif %} >{{key}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="search_category">Kategoria</label>
+                            <select class="form-control" id="search_category" name="search_category">
+                                <option value="" ></option>
+                                {% for category in categories %}
+                                    <option value="{{category.name}}" {% if app.request.get('search_category') == category.name %} selected {% endif %} >{{category.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="rows">Ilość wyników na stronie</label>
+                            <select class="form-control" id="rows" name="rows">
+                                <option value="50" {% if app.request.get('rows') == 50 %} selected {% endif %} >50</option>
+                                <option value="100" {% if app.request.get('rows') == 100 %} selected {% endif %}>100</option>
+                                <option value="150" {% if app.request.get('rows') == 150 %} selected {% endif %}>150</option>
+                                <option value="200" {% if app.request.get('rows') == 200 %} selected {% endif %}>200</option>
+                                <option value="500" {% if app.request.get('rows') == 500 %} selected {% endif %}>500</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="rows">Typ wprowadzania</label>
+                            <select class="form-control" id="types" name="types">
+                                <option value="catalog_price" {% if app.request.get('types') == 'catalog_price' %} selected {% endif %} >Ceny katalogowe</option>
+                                <option value="buy_price" {% if app.request.get('types') == 'buy_price' %} selected {% endif %}>Ceny zakupu</option>
+                                <option value="discount" {% if app.request.get('types') == 'discount' %} selected {% endif %}>Rabaty</option>
+                                <option value="min_earnings" {% if app.request.get('types') == 'min_earnings' %} selected {% endif %}>Minimalny narzut</option>
+                                <option value="min_earnings_percent" {% if app.request.get('types') == 'min_earnings_percent' %} selected {% endif %}>Minimalny narzut %</option>
+                                <option value="prices" {% if app.request.get('types') == 'prices' %} selected {% endif %}>Ręcznie</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="show_all" {% if app.request.get('show_all') %} checked {% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Pokaż całą tabelę</label>
+
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="round" {% if app.request.get('round') %} checked {% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Zaokrąglij do 50 gr</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="is_netto" {% if app.request.get('is_netto') %} checked {% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Netto</label>
+                        </div>
+                    </td>
+                    <td><button type="submit" class="btn btn-primary m-4" name="filter">Filtruj</button></td>
+                </div>
+            </table>
+        </div>
+        <p>Opcje automatyczne</p>
+        <div class="row">
+            <table class="table table-primary"> 
+                {% if app.request.get('types') == 'buy_price'  and app.request.get('show_all') == false %}
+                    <td><label for="count_buy_price_from_catalog_price_discount">Rabat od ceny katalogowej</label>
+                        <br><input class="form-control" type="text" name="count_buy_price_from_catalog_price_discount" value="{{app.request.get('count_buy_price_from_catalog_price_discount')}}"></td>
+                    {% endif %}
+                    {% if app.request.get('types') == 'min_earnings'  and app.request.get('show_all') == false %}
+                    <td><label for="min_narzut_detal_zl">Min Narzut zł detal</label>
+                        <br><input class="form-control" type="text" name="min_narzut_detal_zl" value="{{app.request.get('min_narzut_detal_zl')}}"></td>
+                    <td><label for="min_narzut_hurt_zl">Min Narzut zł hurt</label>
+                        <br><input class="form-control" type="text" name="min_narzut_hurt_zl" value="{{app.request.get('min_narzut_hurt_zl')}}"></td>
+                    <td><label for="min_narzut_specjal_zl">Min Narzut zł specjalna</label>
+                        <br><input class="form-control" type="text" name="min_narzut_specjal_zl" value="{{app.request.get('min_narzut_specjal_zl')}}"></td>
+                    {% endif %}
+                    {% if app.request.get('types') == 'min_earnings_percent'  and app.request.get('show_all') == false %}
+                    <td><label for="min_narzut_detal">Min Narzut % detal</label>
+                        <br><input class="form-control" type="text" name="min_narzut_detal" value="{{app.request.get('min_narzut_detal')}}"></td>
+                    <td><label for="min_narzut_hurt">Min Narzut % hurt</label>
+                        <br><input class="form-control" type="text" name="min_narzut_hurt" value="{{app.request.get('min_narzut_hurt')}}"></td>
+                    <td><label for="min_narzut_specjal">Min Narzut % specjalna</label>
+                        <br><input class="form-control" type="text" name="min_narzut_specjal" value="{{app.request.get('min_narzut_specjal')}}"></td>
+                    {% endif %}
+            </table>
+        </div>
+    {% endblock %}
+    {% block body %}
+        {% if products.haveToPaginate %}
+            {{ pagerfanta(products) }}
+        {% endif %}
+        <div class="">
+            <table class="table table-dark table-sm">
+                <thead>
+                <th><input type="checkbox" name="show_all" id="show_all"/></th>
+                <th style="min-width:250px">Nazwa</th>
+                <th>Producent</th>
+                {% if app.request.get('types') == 'catalog_price' or app.request.get('show_all') == 'on' %} <th>Cena katalogowa</th> {% endif %}
+                {% if app.request.get('types') == 'buy_price' or app.request.get('show_all') == 'on'  %} <th>Cena zakupu (n)</th> {% endif %}
+                {% if app.request.get('types') == 'prices'  or app.request.get('show_all') == 'on' %}
+                    <th>Cena detal fabryka</th>
+                    {% endif %}  
+                {% if app.request.get('types') == 'prices'  or app.request.get('show_all') == 'on' %}
+                    <th>Cena detal plac</th>
+                    <th>Cena hurt fabryka</th>
+                    {% endif %}
+                {% if app.request.get('types') == 'prices'  or app.request.get('show_all') == 'on' %}
+                    <th>Cena hurt plac</th>
+                    <th>Cena specjal fabryka</th>
+                    {% endif %}
+                {% if app.request.get('types') == 'prices'  or app.request.get('show_all') == 'on' %}
+                    <th>Cena specjal plac</th>
+                    {% endif %}
+                {% if app.request.get('types') == 'min_earnings' or app.request.get('show_all') == 'on'  %} 
+                    <th>Zysk detal (n)</th>
+                    <th>Zysk hurt (n)</th>
+                    <th>Zysk specjalna (n)</th> 
+                    {% endif %}
+                {% if app.request.get('types') == 'discount' or app.request.get('show_all') == 'on'  %} 
+                    <th>Rabat detal</th>
+                    <th>Rabat hurt</th>
+                    <th>Rabat specjalna</th> 
+                    {% endif %}
+                    
+                    {% if app.request.get('types') == 'min_earnings_percent'  or app.request.get('show_all') == 'on' %} 
+                    <th>Narzut detal</th>
+                    <th>Narzut hurt</th>
+                    <th>Narzut specjalna</th> 
+                    {% endif %}
+                    
+                    {% if app.request.get('types') == 'prices'  and app.request.get('show_all') == false %}
+                    <th>Zysk netto</th>
+                    {% endif %}
+                    
+                    {% if app.request.get('types') == 'prices'  and app.request.get('show_all')  == false %}
+                    <th>Zysk netto</th>
+                    {% endif %}
+                    
+                    {% if app.request.get('types') == 'prices'  and app.request.get('show_all')  == false %}
+                    <th>Zysk netto</th>
+                    {% endif %}
+                    
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        {% if product.packaging == 0 %}
+                            {% set productPackaging = 1 %}
+                        {% else %}
+                            {% set productPackaging = product.packaging %}   
+                        {% endif %}
+                        <tr>
+                            <td><input type="checkbox" name="{{ product.id }}-selected" class="to_check"/></td>
+                            <td>{{ product.name }}</td> 
+                            <td>{{ product.manufacture }}</td> 
+                            {% if app.request.get('types') == 'catalog_price' and app.request.get('show_all') == false %}
+                                <td><input type="text" name="{{ product.id }}-catalogprice" value="{% if app.request.get('is_netto') %}{{ product.catalogPrice/1.23 }}{%else%}{{ product.catalogPrice }}{%endif%}" class="bg-warning"/></td> 
+                                {% endif %}
+                                {% if app.request.get('types') == 'buy_price' and app.request.get('show_all') == false %}    
+                                <td><input type="text" name="{{ product.id }}-buyprice" value="{% if app.request.get('is_netto') %}{{ product.buyPrice/1.23 }}{%else%}{{ product.buyPrice }}{%endif%}"  class="bg-info"/></td>
+                                {% endif %}
+                                {% if app.request.get('types') == 'discount' and app.request.get('show_all') == false %}
+                                <td><input type="text" name="{{ product.id }}-rabatdetal" value="{% if product.sellPriceFactoryDetal != 0 %}{{ 100-((product.sellPriceFactoryDetal*100)/product.catalogPrice) }} %{% endif %}"/></td> 
+                                <td><input type="text" name="{{ product.id }}-rabathurt" value="{% if product.sellPriceFactoryContractors != 0 %}{{ 100-((product.sellPriceFactoryContractors*100)/product.catalogPrice) }} %{% endif %}"/></td> 
+                                <td><input type="text" name="{{ product.id }}-rabatspecjal" value="{% if product.sellPriceFactoryWholesale != 0 %}{{ 100-((product.sellPriceFactoryWholesale*100)/product.catalogPrice) }} %{% endif %}"/></td>
+                                {% endif %}
+                                {% if app.request.get('types') == 'min_earnings' and app.request.get('show_all') == false %} 
+                                <td><input {% if (product.sellPriceFactoryDetal -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %} 
+                                                                                                                  type="text" name="{{ product.id }}-zyskdetal" value="{{ (product.sellPriceFactoryDetal -  product.buyPrice)/1.23 }}"/></td> 
+                                <td><input {% if (product.sellPriceFactoryContractors -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %} 
+                                                                                                                        type="text" name="{{ product.id }}-zyskhurt" value="{{ (product.sellPriceFactoryContractors -  product.buyPrice)/1.23 }}"/></td>
+                                <td><input {% if (product.sellPriceFactoryWholesale -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %} 
+                                                                                                                      type="text" name="{{ product.id }}-zyskspecjal" value="{{ (product.sellPriceFactoryWholesale -  product.buyPrice)/1.23  }}"/></td>
+                                {% endif %}
+                                {% if app.request.get('types') == 'min_earnings_percent' and app.request.get('show_all') == false %} 
+                                <td><input type="text" name="{{ product.id }}-marzadetal" 
+                                           {% if product.buyPrice != 0  %} value="{{ ((100*product.sellPriceFactoryDetal)/product.buyPrice)-100 }}" 
+                                               {% if ((100*product.sellPriceFactoryDetal)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %} 
+                                           {% endif %}/></td> 
+                                <td><input type="text" name="{{ product.id }}-marzahurt" 
+                                           {% if product.buyPrice != 0 %} value="{{ ((100*product.sellPriceFactoryContractors)/product.buyPrice)-100 }}" 
+                                               {% if ((100*product.sellPriceFactoryContractors)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %}
+                                           {% endif %}/></td>
+                                <td><input type="text" name="{{ product.id }}-marzaspecjal"
+                                    {% if product.buyPrice != 0 %} value="{{ ((100*product.sellPriceFactoryWholesale)/product.buyPrice)-100 }}"{% if ((100*product.sellPriceFactoryWholesale)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %}{% endif %}/></td>
+                            {% endif %}
+                            {% if app.request.get('types') == 'prices' and app.request.get('show_all') == false %}
+                            <td><input type="text" name="{{ product.id }}-detalprice" value="{{ product.sellPriceFactoryDetal }}"/></td> 
+                            <td>{{ ((product.sellPriceFactoryDetal -  product.buyPrice)/1.23)|round(2,'ceil') }}</td>
+                            <td>{{ product.sellPricePitchDetal }}</td> 
+                            <td><input type="text" name="{{ product.id }}-hurtprice" value="{{ product.sellPriceFactoryContractors }}"/></td> 
+                            <td>{{ ((product.sellPriceFactoryContractors -  product.buyPrice)/1.23)|round(2,'ceil') }}</td>
+                            <td>{{ product.sellPricePitchContractors }}</td> 
+                            <td><input type="text" name="{{ product.id }}-specjalprice" value="{{ product.sellPriceFactoryWholesale }}"/></td>
+                            <td>{{ ((product.sellPriceFactoryWholesale -  product.buyPrice)/1.23)|round(2,'ceil') }}</td>
+                            <td>{{ product.sellPricePitchWholesale }}</td>
+                        {% endif %}
+                        {% if app.request.get('show_all') %}
+                            <td style="min-width: 130px">{{ product.catalogPrice }}</td>
+                            <td style="min-width: 130px">{{ product.buyPrice/1.23 }}</td>
+                            <td style="min-width: 130px">{{product.sellPriceFactoryDetal}}</td>
+                                    <td style="min-width: 130px">{{product.sellPricePitchDetal}}</td>
+                                    <td style="min-width: 130px">{{product.sellPriceFactoryContractors}}</td>
+                                    <td style="min-width: 130px">{{product.sellPricePitchContractors}}</td>
+                                    <td style="min-width: 130px">{{product.sellPriceFactoryWholesale}}</td>
+                                    <td style="min-width: 130px">{{product.sellPricePitchWholesale}}</td>
+                            <td style="min-width: 130px" {% if (product.sellPriceFactoryDetal -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %}>
+                                {{ ((product.sellPriceFactoryDetal -  product.buyPrice)/1.23)|round(2,'ceil') }}
+                            </td> 
+                            <td style="min-width: 130px" {% if (product.sellPriceFactoryContractors -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %} >
+                                {{ ((product.sellPriceFactoryContractors -  product.buyPrice)/1.23)|round(2,'ceil') }}
+                            </td>
+                            <td style="min-width: 130px" {% if (product.sellPriceFactoryWholesale -  product.buyPrice)/1.23 <= 0 %} class="bg bg-danger"{% endif %} >
+                                {{ ((product.sellPriceFactoryWholesale -  product.buyPrice)/1.23)|round(2,'ceil')  }}
+                            </td>
+                            <td style="min-width: 130px">{% if product.sellPriceFactoryDetal != 0 %}{{ (100-((product.sellPriceFactoryDetal*100)/product.catalogPrice))|round(2,'ceil') }} %{% endif %}</td> 
+                            <td style="min-width: 130px">{% if product.sellPriceFactoryContractors != 0 %}{{ (100-((product.sellPriceFactoryContractors*100)/product.catalogPrice))|round(2,'ceil') }} %{% endif %}</td> 
+                            <td style="min-width: 130px">{% if product.sellPriceFactoryWholesale != 0 %}{{ (100-((product.sellPriceFactoryWholesale*100)/product.catalogPrice))|round(2,'ceil') }} %{% endif %}</td>
+                            
+                            <td style="min-width: 130px" {% if product.buyPrice != 0  %} {% if ((100*product.sellPriceFactoryDetal)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %} >
+                                {{ ((((100*product.sellPriceFactoryDetal)/product.buyPrice))|round(2,'ceil'))-100 }}
+                            {% else %}>
+                            {% endif %}</td> 
+                        <td style="min-width: 130px" {% if product.buyPrice != 0  %} {% if ((100*product.sellPriceFactoryContractors)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %} >
+                            {{ ((((100*product.sellPriceFactoryContractors)/product.buyPrice))|round(2,'ceil'))-100 }}
+                        {% else %}>
+                            {% endif %}</td>
+                            <td style="min-width: 130px" {% if product.buyPrice != 0  %} {% if ((100*product.sellPriceFactoryWholesale)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %} >
+                                {{ ((((100*product.sellPriceFactoryWholesale)/product.buyPrice))|round(2,'ceil'))-100 }}
+                                {% else %}>
+                                    {% endif %}</td>
+                                    
+                                    {% endif %}
+                                    </tr>   
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if products.haveToPaginate %}
+                                {{ pagerfanta(products) }}
+                            {% endif %}
+                            {% endblock %}
+
+                                {% block footer %}
+                                    <li><button class="btn btn-primary" type="submit" name="change_prices">Zmień dane</button></li>
+                                    <li><button class="btn btn-secondary" type="submit" name="calculate_prices">Przelicz ceny</button></li>
+                                    <li><a class="btn btn-secondary" href="{{ path('product_category_index')}}">Kategorie produktów</a></li>
+                                </form>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('#show_all').click(function () {
+                                            $('.to_check').trigger('click');
+                                        });
+                                    });
+                                </script>
+
+                            {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\ProductAvailibilityType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,20 @@ use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
+use App\Manager\FactoryOrderManager;
 use App\Entity\OrderItem;
+use App\Entity\Notice;
+use App\Entity\Order;
+use App\Entity\Factory;
+use App\Entity\Option;
+use App\Entity\OrderFactoryItem;
+use App\Entity\FactoryOrder;
+use App\Entity\ProductCategory;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @Route("/product")
@@ -25,9 +39,9 @@ use App\Entity\OrderItem;
 class ProductController extends AbstractController {
 
     /**
-     * @Route("/", name="product_index", methods={"GET", "POST"})
+     * @Route("/type/{type}", defaults={"type" = "cart"}, name="product_index", methods={"GET", "POST"})
      */
-    public function index(ProductRepository $productRepository, Request $request, CartManager $cartManager): Response {
+    public function index(ProductRepository $productRepository, Request $request, CartManager $cartManager, string $type): Response {
         $data = $request->get('search');
         $parameters = array();
         $parameters['transportPrice'] = $request->get('inputprice');
@@ -72,49 +86,10 @@ class ProductController extends AbstractController {
         return $this->render('product/index.html.twig', [
                     'products' => $products,
                     'parameters' => $parameters,
-//                    'form' => $form->createView(),
+                    'type' => $type,
         ]);
     }
     
-     /**
-     * @Route("/", name="product_index_search", methods={"GET", "POST"})
-     */
-    public function searchByName(Request $request): Response {
-        $data = $request->get('search');
-        $parameters = array();
-        $parameters['transportPrice'] = $request->get('inputprice');
-        $parameters['select1'] = $request->get('select1');
-        $parameters['select2'] = $request->get('select2');
-        $parameters['select3'] = $request->get('select3');
-        $parameters['factory'] = $request->get('factory');
-        $parameters['name'] = $data;
-        $repository = $this->getDoctrine()->getRepository(Product::class);
-        $products = $repository->findByNameField($data);
-        return $this->render('product/index.html.twig', [
-                    'products' => $products,
-                    'parameters' => $parameters,
-        ]);
-    }
-    
-    /**
-     * @Route("/filter", name="product_filter", methods={"GET", "POST"})
-     */
-    public function ajaxSearch(Request $request): Response {
-        $transportPrice = $request->get('inputprice');
-        $name = $request->get('name');
-        $select1 = $request->get('select1');
-        $select2 = $request->get('select2');
-        $select3 = $request->get('select3');
-        $factory = $request->get('factory');
-        $repository = $this->getDoctrine()->getRepository(Product::class);
-        $products = $repository->findByFilters($name,$select1,$select2,$select3,$transportPrice,$factory);
-
-        
-
-      return $this->render('product/index.html.twig', [
-                    'products' => $products,
-        ]);
-    }
     
     
 
@@ -181,6 +156,8 @@ class ProductController extends AbstractController {
                 $product->setSellPriceFactoryWholesale($sell5);
                 $product->setSellPricePitchWholesale($sell6);
                 $product->setSprzedazJednostkowa($sell7);
+                $product->setIsOnPalet($value['paletowane']);
+                $product->setIsSellCost($value['prowizja na sztuki']);
                 $product->setIsCourier(0);
                 $product->setCourierCost(0);
                 $product->setIsNotAvailable(0);
@@ -221,9 +198,9 @@ return $this->renderForm('product/new.html.twig', [
 }
 
     /**
-     * @Route("/show/{price}/{pickup}/{id}/", name="product_show", methods={"GET","POST"}, requirements={"price"=".+"})
+     * @Route("/show/{price}/{pickup}/{id}/{type}", name="product_show", methods={"GET","POST"}, requirements={"price"=".+"})
      */
-    public function show(Product $product, string $pickup, string $price, Request $request, CartManager $cartManager): Response {
+    public function show(Product $product, string $pickup, string $price, string $type, Request $request, CartManager $cartManager, FactoryOrderManager $factoryOrderManager): Response {
 
     $data = $request->get('search');
     $parameters = array();
@@ -234,7 +211,6 @@ return $this->renderForm('product/new.html.twig', [
     $parameters['name'] = $data;
 
     $form = $this->createForm(AddToCartType::class);
-
     $form->handleRequest($request);
     
     if($price == 'detal' && $pickup == 'factory'){
@@ -264,35 +240,54 @@ return $this->renderForm('product/new.html.twig', [
         $item = $form->getData();
         $item->setProduct($product);
         $quantity = $item->getQuantity();
-        $price = $item->getPrice();
+//        $price = $item->getPrice();
         $productPackaging = $product->getPackaging();
         $palets = ceil($quantity/$productPackaging);
         
         $productFactoryName = $product->getManufacture();
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $paletaProduct = $repository->findOneBySomeName('paleta ' . $productFactoryName);
-        $item2 = new OrderItem();
-        $item2->setProduct($paletaProduct);
-        $item2->setQuantity($palets);
-        $item2->setPrice($paletaProduct->getSellPriceFactoryDetal());
+        if($type=='cart'){
+            $item2 = new OrderItem();
+            $item2->setProduct($paletaProduct);
+            $item2->setQuantity($palets);
+            $item2->setPrice($paletaProduct->getSellPriceFactoryDetal());
 
-        $cart = $cartManager->getCurrentCart();
-        if($paletaProduct){
+            $cart = $cartManager->getCurrentCart();
+            if($paletaProduct){
+                $cart
+                ->addItem($item2)
+                ->setUpdatedAt(new \DateTime());
+            }
+
             $cart
-            ->addItem($item2)
-            ->setUpdatedAt(new \DateTime());
+                ->addItem($item)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+            $this->addFlash('success',
+                'Produkt został dodadny do oferty/zamówienia'
+            );
+        }
+        if($type=='factory_order'){
+            $factoryOrderItem = new OrderFactoryItem();
+            $factoryOrderItem->setProduct($item->getProduct());
+            $factoryOrderItem->setIsConfirmed(false);
+            $factoryOrderItem->setQuantity($item->getQuantity());
+            $factoryOrder = $factoryOrderManager->getCurrentFactoryOrder();
+            $factoryOrder->addOrderFactoryItem($factoryOrderItem);
+            $factoryOrderManager->save($factoryOrder);
+            $this->addFlash('success',
+                'Produkt został dodadny do zamówienia na fabrykę'
+            );
+        }
+        if($type=='pitch_order'){
+            $this->addFlash('success',
+                'Produkt został dodadny do przygotowania zamówienia na magazynie'
+            );
         }
         
-        $cart
-            ->addItem($item)
-            ->setUpdatedAt(new \DateTime());
-
-        $cartManager->save($cart);
-        
-        $this->addFlash('success',
-                'Produkt został dodadny'
-            );
-        return $this->redirectToRoute('product_index');
+        return $this->redirectToRoute('product_index',['type'=>$type]);
     }
 
 
@@ -300,7 +295,9 @@ return $this->renderForm('product/new.html.twig', [
         'product' => $product,
         'form' => $form->createView(),
         'parameters' => $parameters,
-        'price' => $pricefloat
+        'price' => $pricefloat,
+        'pricetype' => $price,
+        'type' => $type
     ]);
 }
 
@@ -310,7 +307,6 @@ return $this->renderForm('product/new.html.twig', [
 public function edit(Request $request, Product $product): Response {
 $form = $this->createForm(ProductType::class, $product);
 $form->handleRequest($request);
-
 if ($form->isSubmitted() && $form->isValid()) {
     $this->getDoctrine()->getManager()->flush();
 
@@ -336,17 +332,549 @@ if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get
 return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
 }
 
- /**
+    /**
      * @Route("/availability/{id}/", name="product_not_available", methods={"GET", "POST"})
+     */
+    public function changeNotAvailability(Request $request, Product $product): Response {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $product->setIsNotAvailable(true);
+        $entityManager->persist($product);
+        $entityManager->flush();
+        
+        $form = $this->createForm(ProductAvailibilityType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+             $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('product/set_not_availiable.html.twig', [
+                    'product' => $product,
+                    'form' => $form,
+                ]);
+}
+
+/**
+     * @Route("/availabilityenable/{id}/", name="product_available", methods={"GET", "POST"})
      */
     public function changeAvailability(Request $request, Product $product): Response {
         
-        $availibility = $product->getIsNotAvailable();
-        if($availibility){
-            $product->setIsNotAvailable(false);
+        $entityManager = $this->getDoctrine()->getManager();
+        $product->setIsNotAvailable(false);
+            $usersToNotify = $product->getNotifyUserIfAvaible();
+            foreach ($usersToNotify as $user) {
+                $notice = new Notice;
+                $notice->setOwner($user);
+                $notice->setIsReaded(false);
+                $notice->setType('product-'.$product->getId());
+                $notice->setDateCreated(new DateTime('NOW'));
+                $notice->setText('produkt '.$product->getName().' jest już dostępny');
+                $entityManager->persist($notice);
+            }
+        $entityManager->persist($product);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+
+}
+
+
+            
+    
+    
+    
+    /**
+     * @Route("/productpricecalculate/{page<\d+>}", name="product_group_price_count", methods={"GET","POST"})
+     */
+    public function changeProductsPrices(Request $request, int $page = 1): Response {
+        $nazwa = $request->query->get('search_nazwa');
+        $factory = $request->query->get('search_producent');
+        $nbrows = $request->query->get('rows');
+        $searchCategory = $request->query->get('search_category');
+        $discountPercent = $request->query->get('count_buy_price_from_catalog_price_discount');
+        $is_netto = $request->query->get('is_netto');
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        
+        if($searchCategory == NULL){
+            $products = $repository->findAllPriceGreaterThanZeroNotOnPromotion($nazwa,$factory);
         }else{
-            $product->setIsNotAvailable(true);
+            $products = $repository->findAllPriceGreaterThanZeroNotOnPromotionCategory($nazwa,$factory,$searchCategory);
         }
+
+        $repositoryFactory = $this->getDoctrine()->getRepository(Factory::class);
+        $factories = $repositoryFactory->findAll();
+        if(empty($nbrows)){
+            $nbrows = 50;
+        }
+        $repositoryCategory = $this->getDoctrine()->getRepository(ProductCategory::class);
+        $categories = $repositoryCategory->findAll(); 
+        
+        $pagerfanta = new Pagerfanta(new QueryAdapter($products));
+        $pagerfanta->setMaxPerPage($nbrows);
+        $pagerfanta->setCurrentPage($page);
+        
+        $factoryArray = [];
+        $entityManager = $this->getDoctrine()->getManager();
+    
+        foreach($factories as $factory){
+            $factoryArray[strtolower($factory->getName())] = $factory->getPitchTransportPrice();
+        }
+        if($request->query->get('calculate_prices') !== null){
+            foreach($request->query->all() as $key => $req){
+                 if(strpos($req, ',') !== false){
+                     $req = str_replace(",", ".", $req);
+                 }
+                if(strpos($key, '-') !== false){
+                    $varNameArray = explode('-',$key);
+                    $productId = $varNameArray[0];
+                    $inputType = $varNameArray[1];
+                    
+                    if($inputType == 'selected' && $request->query->get('types') == 'buy_price'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId() ) {
+                                $catalogPrice = $product->getCatalogPrice();
+                                $productBuyPrice = $catalogPrice-($catalogPrice/100*$discountPercent);
+                                $product->setBuyPrice($productBuyPrice);
+                                $entityManager->persist($product);
+                            }
+                        }
+                    }
+                    if($inputType == 'marzadetal'){
+                        if($request->query->get('round')){
+                                    $roundprice = 0.5;
+                                }else{
+                                    $roundprice = 0.1;
+                                }
+                        $minDetal = $request->query->get('min_narzut_detal');
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId()) {
+                                $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal){
+                                    $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
+                                }else{
+                                    $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
+                                }
+                                $product->setSellPriceFactoryDetal($productPrice);
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if(empty($productPckaging)){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                if($productBuyPrice > 0){
+                                    $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
+                                    $product->setSellPricePitchDetal($pricePitch);
+                                }else{
+                                    $product->setSellPricePitchDetal(0);
+                                }
+                                
+                            }
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                        if($inputType == 'marzahurt'){
+                            if($request->query->get('round')){
+                                    $roundprice = 0.5;
+                                }else{
+                                    $roundprice = 0.1;
+                                }
+                        $minDetal = $request->query->get('min_narzut_hurt');
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId()) {
+                                $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal){
+                                    $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
+                                }else{
+                                    $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
+                                }
+                                $product->setSellPriceFactoryContractors($productPrice);
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if(empty($productPckaging)){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                 if($productBuyPrice > 0){
+                                $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
+                                $product->setSellPricePitchContractors($pricePitch);
+                                 }else{
+                                   $product->setSellPricePitchContractors(0);  
+                                 }
+                            }
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                        if($inputType == 'marzaspecjal'){
+                        $minDetal = $request->query->get('min_narzut_specjal');
+                        if($request->query->get('round')){
+                                    $roundprice = 0.5;
+                                }else{
+                                    $roundprice = 0.1;
+                                }
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId()) {
+                                $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal){
+                                    $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
+                                }else{
+                                    $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
+                                }
+                                $product->setSellPriceFactoryWholesale($productPrice);
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if(empty($productPckaging)){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                 if($productBuyPrice > 0){
+                                $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
+                                $product->setSellPricePitchWholesale($pricePitch);
+                                 }else{
+                                     $product->setSellPricePitchWholesale(0);
+                                 }
+                            }
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                }
+            }
+        if($request->query->get('change_prices') !== null){
+            foreach($request->query->all() as $key => $req){
+                 if(strpos($req, ',') !== false){
+                     $req = str_replace(",", ".", $req);
+                 }
+                 
+                if(strpos($key, '-') !== false){
+                    $varNameArray = explode('-',$key);
+                    $productId = $varNameArray[0];
+                    $inputType = $varNameArray[1];
+                    
+                    if($inputType == 'catalogprice'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($is_netto){
+                                $req = floatval($req)*1.23;
+                            }
+                            if($productId == $product->getId() && $product->getCatalogPrice() !== $req) {
+                                $product->setCatalogPrice($req);
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                    if($inputType == 'buyprice'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId() && $product->getBuyPrice() !== $req) {
+                                if($is_netto){
+                                $product->setBuyPrice($req*1.23);
+                            }else{
+                                $product->setBuyPrice($req);
+                            }
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                    if($inputType == 'detalprice'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId() && $product->getSellPriceFactoryDetal() !== $req) {
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if($product->getPackaging() == 0){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                $pricePitch = $factoryNettoTransportPricePerUnit;
+                                if($request->query->get('round')){
+                                    $pricePitch = $this->ceiling($req+$factoryNettoTransportPricePerUnit, 0.5);
+                                    $req = $this->ceiling($req,0.5);
+                                }
+                         
+                                $product->setSellPriceFactoryDetal($req);
+                                $product->setSellPricePitchDetal($pricePitch);
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                    if($inputType == 'hurtprice'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId() && $product->getSellPriceFactoryContractors() !== $req) {
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if($product->getPackaging() == 0){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                $pricePitch = $factoryNettoTransportPricePerUnit;
+                                if($request->query->get('round')){
+                                    $pricePitch = $this->ceiling($req+$factoryNettoTransportPricePerUnit, 0.5);
+                                    $req = $this->ceiling($req,0.5);
+                                }
+                                $product->setSellPriceFactoryContractors($req);
+                                $product->setSellPricePitchContractors($pricePitch);
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                    if($inputType == 'specjalprice'){
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+                            if($productId == $product->getId() && $product->getSellPriceFactoryWholesale() !== $req) {
+                                $productFactory = strtolower($product->getManufacture());
+                                $factoryNettoTransportPrice = $factoryArray[$productFactory];
+                                $productPckaging = $product->getPackaging();
+                                if($product->getPackaging() == 0){
+                                    $productPckaging = 1;
+                                }
+                                $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
+                                $pricePitch = $factoryNettoTransportPricePerUnit;
+                                if($request->query->get('round')){
+                                    $pricePitch = $this->ceiling($req+$factoryNettoTransportPricePerUnit, 0.5);
+                                    $req = $this->ceiling($req,0.5);
+                                }
+                                $product->setSellPriceFactoryWholesale($req);
+                                $product->setSellPricePitchWholesale($pricePitch);
+                                $entityManager->persist($product);
+    
+                            }
+                        }
+                    }
+                    
+                    }
+                
+            }
+            
+        }
+        $entityManager->flush();
+        
+//        $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+//        $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
+//        $nknm = ($nknm->getValue() / 100) + 1;
+        
+        
+
+        return $this->renderForm('product/edit_prices.html.twig', [
+            'products' => $pagerfanta,
+            'factories' => $factoryArray,
+            'categories' => $categories,
+//            'nknm' => $nknm,
+        ]);
+    }
+    
+    public function ceiling($number, $significance = 1)
+    {
+        return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
+    }
+    
+    
+/**
+ * @Route("/saveexport/", name="export_save", methods={"GET","POST"})
+ */
+public function saveExport(Request $request): Response {
+ $repository = $this->getDoctrine()->getRepository(Product::class);
+ $products = $repository->findAll();
+ $productsArray = [];
+ $entityManager = $this->getDoctrine()->getManager();
+ foreach($products as $product){
+     $productsArray[$product->getId()] = $product;
+ }
+ if($request->query->get('save_data') !== null){
+            foreach($request->query->all() as $key => $req){
+                 if(strpos($key, 'wpid') !== false){
+                $productId = explode('-',$key);
+                $productId = $productId[1];
+            if(!empty($req)){
+                $productWpId = $productsArray[$productId]->getWpId();
+                if($productWpId !== $req){
+                    $productsArray[$productId]->setWpId($req);
+                    $entityManager->persist($productsArray[$productId]);
+                }
+            }
+                 }
+    }
+ }
+ 
+ $entityManager->flush();
+
+return $this->render('product/edit_wp_export.html.twig', [
+        'products' => $products,
+        ]);
+}
+
+/**
+ * @Route("/saveexportfile/", name="saveexportfile", methods={"GET","POST"})
+ */
+public function saveExportFile(Request $request): Response {
+ $repository = $this->getDoctrine()->getRepository(Product::class);
+ $products = $repository->findAll();
+
+ $entityManager = $this->getDoctrine()->getManager();
+
+
+            $em = $this->getDoctrine()->getManager();
+
+    $repository = $this->getDoctrine()->getRepository(Product::class);
+    $products = $repository->findAll();
+    $titles = ['ID','Nazwa','Opublikowany','Cena promocyjna', 'Cena'];
+    $rows = array();
+    $rows[] = implode(',', $titles);
+    foreach ($products as $product) {
+        if(empty($product->getSellPriceFactoryDetal()) || $product->getSellPriceFactoryDetal() == 0){
+            $productIsEnabled = -1;
+        }else{
+            $productIsEnabled = 1; 
+        }
+        if($product->getManufacture()== 'POLBRUK' || $product->getManufacture()== 'LIBET' || $product->getManufacture()== 'CHYŻ-BET'){
+            $price = $product->getSellPriceFactoryDetal();
+        }else{
+            $price = $product->getSellPricePitchDetal();
+        }
+        $data = $product->getWpId().',"'. $product->getName().'",'.$productIsEnabled.','.$price.','.$product->getCatalogPrice();
+
+        $rows[] = $data;
+    }
+
+        $content = implode("\n", $rows);
+            $response = new Response($content);
+            $response->headers->set('Content-Type', 'text/csv');
+
+    return $response;
+ }
+
+
+    /**
+     * @Route("/updatewpid", name="wpid_update", methods={"GET"})
+     */
+    
+    public function updatewpid(ProductRepository $productRepository): Response {
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $products = $repository->findAll();
+        foreach($products as $product){
+            $productsArray[$product->getName()] = $product;
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $finder = new Finder();
+        $finder->files()->in(__DIR__)->name('wpid.csv');
+        set_time_limit(1200);
+
+// decoding CSV contents
+        foreach ($finder as $file) {
+            $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+            // instantiation, when using it inside the Symfony framework
+            $contents = $file->getContents();
+            // decoding CSV contents
+            $products_csv = $serializer->decode($contents, 'csv');
+
+            foreach ($products_csv as $key => $value) {
+                $wpid = $value['ID'];
+                $productName = $value['Nazwa'];
+                foreach($products as $product){
+                    if($productName == $product->getName()){
+                        $product->setWpId($wpid);
+                $entityManager->persist($product);
+                }
+                
+                }
+ 
+        }
+        $entityManager->flush();
+        }
+        
+        return $this->render('product/edit_wp_export.html.twig', [
+        'products' => $products,
+        ]);
+}
+
+/**
+     * @Route("/exportexcel",  name="exportexcel")
+     */
+    public function export()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle('Lista Produktów');
+
+        $sheet->getCell('A1')->setValue('Nazwa');
+        $sheet->getCell('B1')->setValue('Producent');
+        $sheet->getCell('C1')->setValue('Pakowanie');
+        $sheet->getCell('D1')->setValue('Cena katalogowa');
+        $sheet->getCell('E1')->setValue('Cena zakupu');
+        $sheet->getCell('F1')->setValue('Cena detal Fabryka');
+        $sheet->getCell('G1')->setValue('Cena detal Plac');
+        $sheet->getCell('H1')->setValue('Cena Wykonawcy Fabryka');
+        $sheet->getCell('I1')->setValue('Cena Wykonawcy Plac');
+        $sheet->getCell('J1')->setValue('Cena Hurtownie Fabryka');
+        $sheet->getCell('K1')->setValue('Cena Hurtownie Plac');
+
+        // Increase row cursor after header write
+            $sheet->fromArray($this->getData(),null, 'A2', true);
+        
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response =  new StreamedResponse(
+            function () use ($writer) {
+                $writer->save('php://output');
+            }
+        );
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', 'attachment;filename="ExportScan.xls"');
+        $response->headers->set('Cache-Control','max-age=0');
+        return $response;
+    }
+    
+    private function getData(): array
+    {
+        /**
+         * @var $user User[]
+         */
+        $list = [];
+        $entityManager = $this->getDoctrine()->getManager();
+        $products = $entityManager->getRepository(Product::class)->findAll();
+
+        foreach ($products as $product) {
+            if($product->getBuyPrice() > 0){
+            $list[] = [
+                $product->getName(),
+                $product->getManufacture(),
+                $product->getPackaging(),
+                $product->getCatalogPrice(),
+                $product->getBuyPrice(),
+                $product->getSellPriceFactoryDetal(),
+                $product->getSellPricePitchDetal(),
+                $product->getSellPriceFactoryContractors(),
+                $product->getSellPricePitchContractors(),
+                $product->getSellPriceFactoryWholesale(),
+                $product->getSellPricePitchWholesale(),
+                
+                
+                
+            ];
+            }
+        }
+        return $list;
+    }
+    
+    /**
+     * @Route("/availabilitynotice/{id}/", name="product_available_notice", methods={"GET", "POST"})
+     */
+    public function setAvailabilityNotice(Request $request, Product $product): Response {
+        
+        $user = $this->getUser();
+        $product->addNotifyUserIfAvaible($user);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
         $entityManager->flush();

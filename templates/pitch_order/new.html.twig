@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PitchOrder{% endblock %}
+
+{% block body %}
+    <h1>Create new PitchOrder</h1>
+
+    {{ include('pitch_order/_form.html.twig') }}
+
+    <a href="{{ path('pitch_order_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factory index{% endblock %}
+
+{% block body %}
+    <h1>Factory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Adress</th>
+                <th>Pitch_transport_price</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for factory in factories %}
+            <tr>
+                <td>{{ factory.id }}</td>
+                <td>{{ factory.name }}</td>
+                <td>{{ factory.phone }}</td>
+                <td>{{ factory.email }}</td>
+                <td>{{ factory.adress }}</td>
+                <td>{{ factory.pitchTransportPrice }}</td>
+                <td>
+                    <a href="{{ path('factory_show', {'id': factory.id}) }}">show</a>
+                    <a href="{{ path('factory_edit', {'id': factory.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('factory_new') }}">Create new</a>
+{% endblock %}

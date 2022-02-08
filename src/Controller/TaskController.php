@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 /**
  * @Route("/task")
@@ -25,13 +26,30 @@ class TaskController extends AbstractController
             'tasks' => $taskRepository->findAll(),
         ]);
     }
+    
+    /**
+     * @Route("/taskend/{id}", name="task_end", methods={"GET"})
+     */
+    public function end(Task $task, EntityManagerInterface $entityManager): Response
+    {
+        $task->setDateEnded(new DateTime('NOW'));
+        $entityManager->persist($task);
+        $entityManager->flush();
+        return $this->redirectToRoute('task_show', [
+            'id' => $task->getId(),
+        ]);
+    }
 
     /**
-     * @Route("/new", name="task_new", methods={"GET", "POST"})
+     * @Route("/new/{type}/{url}", defaults={"type" = "simple", "url" = ""}, name="task_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, string $type, string $url): Response
     {
         $task = new Task();
+        $task->setDateCreated(new DateTime('NOW'));
+        $task->setTaskOwner($this->getUser());
+        $task->setType($type);
+        $task->setUrl($url);
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 

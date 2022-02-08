@@ -1,13 +1,251 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edytuj zamówienie{% endblock %}
+{% block title %}BUFOR{% endblock %}
 
 {% block body %}
-    <h1>Edytuj zamówienie</h1>
+    <h4>Numer {{ cart.getNumber }}</h4>
+    <div class="container mt-4">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="row p-3 border bg-light">
+                <div class="col">
+                    {{ form_row(form.kontrahent) }}
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <ul class="nav nav-second-level" id="entitiesNav">
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    {{ form_row(form.type) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.kontrahent_group) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.pickup) }}
+                </div>
 
-    {{ include('order/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('order_index') }}">Powrót do listy</a>
 
-    {{ include('order/_delete_form.html.twig') }}
-{% endblock %}
+                <div class="col">
+                    {{ form_row(form.phone) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.is_pickup_wieliczka) }}
+
+                    {{ form_row(form.is_extra_delivery) }}
+
+                    {{ form_row(form.own_pickup) }}
+
+                    {{ form_row(form.count_pallets) }}
+                </div>
+            </div>
+
+            <div class="row p-3 border bg-light">
+                <div class="col">
+                    {{ form_row(form.adress) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.notice) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.delivery_date) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.relation) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.count) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                {% if cart.item.count > 0 %}
+                    <div class="row mt-4">
+                        <!-- Lista produktów -->
+                        <div class="col-md-8"></div>
+                        <!-- Podsumowanie -->
+                        <div class="col-md-4"></div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        Koszyk jest pusty, aby wybrać produkty wybierz się na <a href="{{ path('product_index') }}">Lista Produktów</a>.
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+
+                <div class="card">
+                    <div class="card-header bg-dark text-white d-flex">
+                        <div class="row">  
+                            <div class="col">
+                                <h5>Produkty</h5>
+                                <div class="ml-auto">
+                                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
+                                    {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table>
+                        <tbody>
+                            {% if cart.item.count > 0 %}
+                                {% for item in form.item %}
+                                    <tr>
+                                        <td>
+                                            <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
+                                        </td>
+                                        <td>
+                                            <h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5>
+                                        </td>
+                                        <td>
+                                            {{ form_widget(item.quantity, {
+                            'attr': {
+                                'class': 'form-control form-control-sm ' ~ (item.quantity.vars.valid ? '' : 'is-invalid')
+                            }
+                        }) }}   </td>
+                                        <td>{{ form_widget(item.price, {
+                            'attr': {
+                                'class': 'form-control form-control-sm ' ~ (item.price.vars.valid ? '' : 'is-invalid')
+                            }
+                        }) }}
+                                        </td>
+                                <div class="invalid-feedback">
+                                    {{ form_errors(item.quantity) }}
+                                    {{ form_errors(item.price) }}
+                                </div>
+
+                                <td>
+                                    {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm'}}) }}
+
+                                </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="card mt-4 mt-md-0">
+                    <h5 class="card-header bg-dark text-white">Podsumowanie</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div><b>Suma</b></div>
+                            <span><b>{{ cart.total}} PLN</b></span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            {{ form_end(form, {'render_rest': false}) }}
+            {% if cart.factoryOrders.count > 0 %}
+                <h3 class="p-3">Zamówienia</h3>
+                {% for item in cart.factoryOrders %}
+                    <h5 class="p-3">{{ item.number }}</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>Nazwa</th>
+                            <th>Ilość</th>
+                        </thead>
+                        <tbody>
+                            {% for orderItem in item.getOrderFactoryItems %}
+                            <tr>
+                                <td>{{ orderItem.product.name }}</td> 
+                                <td>{{ orderItem.quantity }}</td>
+                            </tr>
+                            {% endfor %}
+
+                    </tbody>
+                </table>
+                {% endfor %}
+            {% endif %}
+                    </div>
+                    </div>
+                    
+                    <script>
+                        $(document).ready(function ($) {
+                            $("#select3").click(function () {
+                                if ($("#pitch").is(':selected')) {
+                                    $('input[name="doladunek"]').removeAttr('checked');
+                                    $('input[name="doladunek"]').attr('checked', false);
+                                }
+                            });
+
+                            $('body').removeClass('container');
+                            $('input[name="osobisty"]').click(function () {
+                                if ($('input[name="osobisty"]').is(':checked')) {
+                                    $('input[name="auto1"]').removeAttr('checked');
+                                    $('input[name="auto2"]').removeAttr('checked');
+                                    $('input[name="auto3"]').removeAttr('checked');
+                                    $('input[name="auto4"]').removeAttr('checked');
+                                    $('input[name="is_hds"]').removeAttr('checked');
+                                } else {
+                                    $('input[name="auto1"]').attr('checked', true);
+                                    $('input[name="auto2"]').attr('checked', true);
+                                    $('input[name="auto3"]').attr('checked', true);
+                                    $('input[name="auto4"]').attr('checked', true);
+                                    $('input[name="is_hds"]').attr('checked', true);
+                                }
+                            });
+
+
+                            var searchRequest = null;
+                            $("#cart_kontrahent").keyup(function () {
+                                var minlength = 3;
+                                var that = this;
+                                var value = $(this).val();
+                                var entitySelector = $("#entitiesNav").html('');
+                                if (value.length >= minlength) {
+                                    if (searchRequest != null)
+                                        searchRequest.abort();
+                                    searchRequest = $.ajax({
+                                        type: "GET",
+                                        url: "{{ path('kontrahent_search') }}",
+                                        data: {
+                                            'q': value
+                                        },
+                                        dataType: "text",
+                                        success: function (msg) {
+                                            //we need to check if the value is the same
+                                            if (value == $(that).val()) {
+                                                var result = JSON.parse(msg);
+                                                $.each(result, function (key, arr) {
+                                                    $.each(arr, function (id, value) {
+                                                        if (key == 'entities') {
+                                                            if (id != 'error') {
+                                                                entitySelector.append('<li><a href="/daten/' + id + '">' + value + '</a></li>');
+                                                            } else {
+                                                                entitySelector.append('<li class="errorLi">' + value + '</li>');
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        );
+                    </script>
+                    {% endblock %}
+
+                        {% block footer %}
+    <li class="nav-item"> <a href="{% if cart.type == 'offer' %}{{ path("save_cart",{'type':'offer'})}}{% else %}{{ path("save_cart")}}{% endif %}" class="btn btn-warning w-100 m-1">Zapisz</a></li>
+    <li class="nav-item"> <a href="{{ path("drop_cart")}}" class="btn btn-primary w-100 m-1">Porzuć</a></li>
+    <li class="nav-item"><a href="{{ path("create_order_pdf", {'id': cart.id})}}" class="btn btn-success w-100 m-1">Wydrukuj</a></li>
+    <li class="nav-item"><a href="{{ path("factory_order_new_cart", {'id': cart.id})}}" class="btn btn-danger w-100 m-1">Zamów</a></li>
+    <li class="nav-item"><a href="" class="btn btn-info w-100 m-1">Zapytaj</a> </li>
+    <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Usuń</a> </li>
+    <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Wyślij sms</a> </li>
+    <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Dodaj zaliczkę</a> </li>
+     <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Ekspor WAPRO</a></li>
+    {% endblock %}
+

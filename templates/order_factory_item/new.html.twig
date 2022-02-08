@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New OrderFactoryItem{% endblock %}
+
+{% block body %}
+    <h1>Create new OrderFactoryItem</h1>
+
+    {{ include('order_factory_item/_form.html.twig') }}
+
+    <a href="{{ path('order_factory_item_index') }}">back to list</a>
+{% endblock %}

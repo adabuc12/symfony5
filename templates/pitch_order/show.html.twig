@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PitchOrder{% endblock %}
+
+{% block body %}
+    <h1>PitchOrder</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pitch_order.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_created</th>
+                <td>{{ pitch_order.dateCreated ? pitch_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_sended</th>
+                <td>{{ pitch_order.dateSended ? pitch_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Number</th>
+                <td>{{ pitch_order.number }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('pitch_order_index') }}">back to list</a>
+
+    <a href="{{ path('pitch_order_edit', {'id': pitch_order.id}) }}">edit</a>
+
+    {{ include('pitch_order/_delete_form.html.twig') }}
+{% endblock %}

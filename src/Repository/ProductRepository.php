@@ -163,6 +163,56 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     
+     /**
+      * @return Product[] Returns an array of Product objects
+      */
+    public function findAllPriceGreaterThanZeroNotOnPromotion($name,$factory)
+    {
+        if(!empty($name) || !empty($factory)){
+            
+            return $this->createQueryBuilder('p')
+            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
+            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
+            ->andWhere('p.catalog_price > 0')
+            ->setParameter('val', '%'.$name.'%')
+            ->setParameter('val1', '%'.$factory.'%')   
+            ->addOrderBy('p.Manufacture', 'DESC')
+            ->addOrderBy('p.name', 'ASC')
+        ;
+        }
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.catalog_price > 0')
+            ->addOrderBy('p.Manufacture', 'ASC')
+        ;
+    }
+        /**
+      * @return Product[] Returns an array of Product objects
+      */
+    public function findAllPriceGreaterThanZeroNotOnPromotionCategory($name,$factory,$searchCategory)
+    {
+        if(!empty($name) || !empty($factory) || !empty($searchCategory)){
+            
+
+            return $this->createQueryBuilder('p')
+            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
+            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)') 
+            ->innerJoin('p.productCategories', "c")
+            ->andWhere('LOWER(c.name) LIKE LOWER(:val2)') 
+            ->andWhere('p.catalog_price > 0')
+            ->setParameter('val', '%'.$name.'%')
+            ->setParameter('val1', '%'.$factory.'%')
+            ->setParameter('val2', '%'.$searchCategory.'%')
+            ->addOrderBy('p.Manufacture', 'DESC')
+            ->addOrderBy('p.name', 'ASC')
+        ;
+        }
+        
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.catalog_price > 0')
+            ->addOrderBy('p.Manufacture', 'ASC')
+        ;
+    }
+    
     /**
       * @return Product[] Returns an array of Product objects
       */
@@ -185,6 +235,16 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
             ->andWhere('p.catalog_price > 0')
             ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
+    public function findOneById($id): ?Product
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id = :val')
+            ->setParameter('val', $id)
             ->getQuery()
             ->getOneOrNullResult()
         ;

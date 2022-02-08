@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}set not available{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

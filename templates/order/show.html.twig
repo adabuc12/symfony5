@@ -3,36 +3,69 @@
 {% block title %}Order{% endblock %}
 
 {% block body %}
-    <h1>Order</h1>
-
+    
     <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>Numer</th>
-                <td>{{ order.number }}</td>
-            </tr>
-            <tr>
-                <th>Data</th>
-                <td>{{ order.date ? order.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Czy zamówione</th>
-                <td>{{ order.isOrdered ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Data zamówienia</th>
-                <td>{{ order.deliveryDate ? order.deliveryDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('order_index') }}">Powrót do listy</a>
+        <thead>
+        <th>Id</th>
+        <th>Numer</th>
+        <th>Kontrahent</th>
+        <th>Data</th>
+        <th>Czy zamówione</th>
+        <th>Data zamówienia</th> 
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ order.id }}</td>
 
-    <a href="{{ path('order_edit', {'id': order.id}) }}">Edytuj</a>
 
-    {{ include('order/_delete_form.html.twig') }}
+
+            <td>{{ order.number }}</td>
+            
+            
+            <td>{{ order.kontrahent }}</td>
+
+
+            <td>{{ order.date ? order.date|date('Y-m-d H:i:s') : '' }}</td>
+
+
+            <td>{{ order.isOrdered ? 'Yes' : 'No' }}</td>
+
+
+            <td>{{ order.deliveryDate ? order.deliveryDate|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+
+
+
+    </tbody>
+</table>
+<table class="table">
+
+    <thead>
+    <th>Nazwa</th>
+    <th>Ilość</th>
+    <th>Cena</th>
+    <th>Czy zamówione</th>
+    <th>Data zamówienia</th> 
+</thead>
+<tbody>
+
+    {% for item in order.item %}
+        <tr>
+            <td> {{ item.product.name }}</td>
+            <td> {{ item.quantity }}</td>
+            <td> {{ item.price }}</td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+
 {% endblock %}
+{% block footer %}
+    <li class="nav-item"> <a href="{{ path('order_index') }}" class="nav-link">Powrót do listy</a> </li>
+    <li class="nav-item"> <a href="{{ path('order_edit', {'id': order.id}) }}" class="nav-link">Edytuj</a> </li>
+    <li class="nav-item"> {{ include('order/_delete_form.html.twig') }} </li>
+    {% endblock %}

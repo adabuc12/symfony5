@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,7 +47,7 @@ class OrderItem
      * @ORM\Column(type="float", nullable=true)
      */
     private $pallets;
-    
+ 
     /**
     * Tests if the given item given corresponds to the same order item.
     *

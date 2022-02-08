@@ -18,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     
     public function __toString() {
-        return $this->name;
+        return $this->name. ' '. $this->surname;
     }
 
     /**
@@ -74,10 +74,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $phone;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payments::class, mappedBy="owner")
+     */
+    private $payments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Complaint::class, mappedBy="owner")
+     */
+    private $complaints;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
+     */
+    private $orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FactoryOrder::class, mappedBy="created_by")
+     */
+    private $factoryOrders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PitchOrder::class, mappedBy="created_by")
+     */
+    private $pitchOrders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notice::class, mappedBy="owner")
+     */
+    private $notices;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="notifyUserIfAvaible")
+     */
+    private $products;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="created_by")
+     */
+    private $logs;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->task_owner = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->complaints = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->factoryOrders = new ArrayCollection();
+        $this->pitchOrders = new ArrayCollection();
+        $this->notices = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->logs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -271,6 +319,243 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payments[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payments $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payments $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getOwner() === $this) {
+                $payment->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Complaint[]
+     */
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
+    }
+
+    public function addComplaint(Complaint $complaint): self
+    {
+        if (!$this->complaints->contains($complaint)) {
+            $this->complaints[] = $complaint;
+            $complaint->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComplaint(Complaint $complaint): self
+    {
+        if ($this->complaints->removeElement($complaint)) {
+            // set the owning side to null (unless already changed)
+            if ($complaint->getOwner() === $this) {
+                $complaint->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FactoryOrder[]
+     */
+    public function getFactoryOrders(): Collection
+    {
+        return $this->factoryOrders;
+    }
+
+    public function addFactoryOrder(FactoryOrder $factoryOrder): self
+    {
+        if (!$this->factoryOrders->contains($factoryOrder)) {
+            $this->factoryOrders[] = $factoryOrder;
+            $factoryOrder->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactoryOrder(FactoryOrder $factoryOrder): self
+    {
+        if ($this->factoryOrders->removeElement($factoryOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($factoryOrder->getCreatedBy() === $this) {
+                $factoryOrder->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PitchOrder[]
+     */
+    public function getPitchOrders(): Collection
+    {
+        return $this->pitchOrders;
+    }
+
+    public function addPitchOrder(PitchOrder $pitchOrder): self
+    {
+        if (!$this->pitchOrders->contains($pitchOrder)) {
+            $this->pitchOrders[] = $pitchOrder;
+            $pitchOrder->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePitchOrder(PitchOrder $pitchOrder): self
+    {
+        if ($this->pitchOrders->removeElement($pitchOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($pitchOrder->getCreatedBy() === $this) {
+                $pitchOrder->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notice[]
+     */
+    public function getNotices(): Collection
+    {
+        return $this->notices;
+    }
+
+    public function addNotice(Notice $notice): self
+    {
+        if (!$this->notices->contains($notice)) {
+            $this->notices[] = $notice;
+            $notice->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotice(Notice $notice): self
+    {
+        if ($this->notices->removeElement($notice)) {
+            // set the owning side to null (unless already changed)
+            if ($notice->getOwner() === $this) {
+                $notice->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addNotifyUserIfAvaible($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            $product->removeNotifyUserIfAvaible($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Log[]
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(Log $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs[] = $log;
+            $log->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Log $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getCreatedBy() === $this) {
+                $log->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowa dostawa{% endblock %}
+
+{% block body %}
+    {{ include('delivery/_form.html.twig') }}
+
+    <a href="{{ path('delivery_index') }}">Do Listy</a>
+{% endblock %}

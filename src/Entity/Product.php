@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Product
 {
+    public function __toString() {
+        return $this->name;
+    }
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -108,11 +114,6 @@ class Product
     private $notices;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="products")
-     */
-    private $factory_order;
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      */
     private $sprzedaz_jednostkowa;
@@ -126,6 +127,43 @@ class Product
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_on_promotion;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_on_palet;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_sell_cost;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderFactoryItem::class, mappedBy="product")
+     */
+    private $orderFactoryItems;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=ProductCategory::class, mappedBy="product")
+     */
+    private $productCategories;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $wpid;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="products")
+     */
+    private $notifyUserIfAvaible;
+
+    public function __construct()
+    {
+        $this->orderFactoryItems = new ArrayCollection();
+        $this->productCategories = new ArrayCollection();
+        $this->notifyUserIfAvaible = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -392,6 +430,123 @@ class Product
     public function setIsOnPromotion(?bool $is_on_promotion): self
     {
         $this->is_on_promotion = $is_on_promotion;
+
+        return $this;
+    }
+
+    public function getIsOnPalet(): ?bool
+    {
+        return $this->is_on_palet;
+    }
+
+    public function setIsOnPalet(?bool $is_on_palet): self
+    {
+        $this->is_on_palet = $is_on_palet;
+
+        return $this;
+    }
+
+    public function getIsSellCost(): ?bool
+    {
+        return $this->is_sell_cost;
+    }
+
+    public function setIsSellCost(?bool $is_sell_cost): self
+    {
+        $this->is_sell_cost = $is_sell_cost;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderFactoryItem[]
+     */
+    public function getOrderFactoryItems(): Collection
+    {
+        return $this->orderFactoryItems;
+    }
+
+    public function addOrderFactoryItem(OrderFactoryItem $orderFactoryItem): self
+    {
+        if (!$this->orderFactoryItems->contains($orderFactoryItem)) {
+            $this->orderFactoryItems[] = $orderFactoryItem;
+            $orderFactoryItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderFactoryItem(OrderFactoryItem $orderFactoryItem): self
+    {
+        if ($this->orderFactoryItems->removeElement($orderFactoryItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderFactoryItem->getProduct() === $this) {
+                $orderFactoryItem->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductCategory[]
+     */
+    public function getProductCategories(): Collection
+    {
+        return $this->productCategories;
+    }
+
+    public function addProductCategory(ProductCategory $productCategory): self
+    {
+        if (!$this->productCategories->contains($productCategory)) {
+            $this->productCategories[] = $productCategory;
+            $productCategory->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCategory(ProductCategory $productCategory): self
+    {
+        if ($this->productCategories->removeElement($productCategory)) {
+            $productCategory->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function getWpid(): ?int
+    {
+        return $this->wpid;
+    }
+
+    public function setWpid(?int $wpid): self
+    {
+        $this->wpid = $wpid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getNotifyUserIfAvaible(): Collection
+    {
+        return $this->notifyUserIfAvaible;
+    }
+
+    public function addNotifyUserIfAvaible(User $notifyUserIfAvaible): self
+    {
+        if (!$this->notifyUserIfAvaible->contains($notifyUserIfAvaible)) {
+            $this->notifyUserIfAvaible[] = $notifyUserIfAvaible;
+        }
+
+        return $this;
+    }
+
+    public function removeNotifyUserIfAvaible(User $notifyUserIfAvaible): self
+    {
+        $this->notifyUserIfAvaible->removeElement($notifyUserIfAvaible);
 
         return $this;
     }

@@ -39,4 +39,17 @@ class OrderRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    
+     /**
+      * @return Order[] Returns an array of Order objects
+      */
+    
+    public function findByType($value)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.status = :val')
+            ->setParameter('val', $value)
+            ->orderBy('o.id', 'DESC')
+        ;
+    }
 }
