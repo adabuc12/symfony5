@@ -641,7 +641,11 @@ class CartController extends AbstractController {
 
             if ($form->getClickedButton() === $form->get('count')) {
 
-                $cart->setKontrahent($kontrahent);
+                $formKontrahent = $form->get('kontrahent')->getData();
+                if($formKontrahent !== $cart->getKontrahent()){
+                    $logger->write($cart->getType(), $cart->getId(), 'Zmiana kontrahenta z '.$cart->getKontrahent()->getName(). ' na '.$formKontrahent->getName(), $this->getUser());
+                    $cart->setKontrahent($formKontrahent);
+                }
                 $delivery_coordinates = $this->getAdressCoordinates($form->get('adress')->getData());
                 $coordinates = $this->getPickupCoordinates($form->get('pickup')->getData());
 
@@ -711,7 +715,6 @@ class CartController extends AbstractController {
 //                    exit;
 //                }
 
-                $cart->setKontrahent($kontrahent);
 
                 $logger->write($cart->getType(), $cart->getId(), 'Utworzono nowy dokument', $this->getUser());
 
@@ -740,7 +743,7 @@ class CartController extends AbstractController {
                     'cart' => $cart,
                     'form' => $form->createView(),
 //                    'adress' => $adress_oryginal,
-                    'kontrahent' => $kontrahent,
+
                     'route_image' => $route_image,
                     'dystans' => $truck_route_distance,
                     'time' => $transport_time,

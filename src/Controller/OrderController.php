@@ -96,7 +96,7 @@ class OrderController extends AbstractController {
     public function edit(Request $request, Order $order): Response {
         $form = $this->createForm(CartType::class, $order);
         $form->handleRequest($request);
-        $this->get('session')->set('cart_id',$order->getId());
+ 
         
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
