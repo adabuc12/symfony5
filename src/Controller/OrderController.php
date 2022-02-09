@@ -37,7 +37,7 @@ class OrderController extends AbstractController {
     }
 
     /**
-     * @Route("/offers/{page<\d+>}", name="offer_index", methods={"GET"})
+     * @Route("/offers/{page<\d+>}", defaults={"page" = 1}, name="offer_index", methods={"GET"})
      */
     public function offerindex(OrderRepository $orderRepository, int $page = 1,Request $request): Response {
         
