@@ -23,9 +23,9 @@ class RegistrationFormType extends AbstractType {
                 ->add('phone')
                 ->add('roles', ChoiceType::class, [
                     'choices' => [
-                        'Administrator' => ["ADMIN_ROLE","SUPER_USER_ROLE"],
-                        'Sprzedawca' => ["ADMIN_ROLE"],
-                        'Użytkownik' => ["USER_ROLE"],
+                        'Administrator' => ["Admin"=>"ADMIN_ROLE","Super Admin"=>"SUPER_USER_ROLE"],
+                        'Sprzedawca' => ["Admin"=>"ADMIN_ROLE"],
+                        'Użytkownik' => ["User"=>"USER_ROLE"],
                     ],
                 ])
                 ->add('agreeTerms', CheckboxType::class, [
