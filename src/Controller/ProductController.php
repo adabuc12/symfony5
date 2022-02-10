@@ -1029,7 +1029,7 @@ public function import(Request $request): Response {
                     $newProduct->setIsCourier($value['Czy Kurier']);
                     $newProduct->setCourierCost($value['Cena Kurier']);
                     $newProduct->setIsNotAvailable($value['Towar Niedostępny']);
-                    $newProduct->setEstimatedAvailabilityDate($value['Przewidywany czas dostępnosci']);
+                    $newProduct->setEstimatedAvailabilityDate(new DateTime($value['Przewidywany czas dostępnosci']));
                     $newProduct->setNotices($value['Uwagi']);
                     $newProduct->setSprzedazJednostkowa($value['Sprzedaz jednostkowa']);
                     $newProduct->setWidth(intval($value['Szerokosc']));
