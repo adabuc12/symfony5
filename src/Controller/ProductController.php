@@ -1010,6 +1010,7 @@ public function import(Request $request): Response {
                     $existingProducts[$id]->setIsOnPalet($value['Na Palecie']);
                     $existingProducts[$id]->setIsSellCost($value['Czy Koszt Sprzedazy']);
                     $existingProducts[$id]->setWpid(intval($value['wpid']));
+                    $entityManager->persist($existingProducts[$id]);
                 }else{
                     $newProduct = new Product();
                     $newProduct->setId($id);
@@ -1037,8 +1038,9 @@ public function import(Request $request): Response {
                     $newProduct->setIsOnPalet($value['Na Palecie']);
                     $newProduct->setIsSellCost($value['Czy Koszt Sprzedazy']);
                     $newProduct->setWpid(intval($value['wpid']));
+                    $entityManager->persist($newProduct);
                 }
-                $entityManager->persist($product);
+                
                 
  
         }
