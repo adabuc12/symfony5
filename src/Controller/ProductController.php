@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\ProductImportType;
 use App\Form\ProductAvailibilityType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,7 @@ use Pagerfanta\Pagerfanta;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @Route("/product")
@@ -881,5 +883,175 @@ public function saveExportFile(Request $request): Response {
         
         return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    /**
+ * @Route("/createexportfile/", name="createexportfile", methods={"GET","POST"})
+ */
+public function saveExportFileAllData(Request $request): Response {
+ $repository = $this->getDoctrine()->getRepository(Product::class);
+ $products = $repository->findAll();
+
+ $entityManager = $this->getDoctrine()->getManager();
+
+    $repository = $this->getDoctrine()->getRepository(Product::class);
+    $products = $repository->findAll();
+    $titles = ['Nazwa','ID','Fabryka','Pakowanie', 'Waga Paczki', 'Waga Jednostki', 'Cena katalogowa', 'Cena zakupu'
+        , 'Cena Detal Fabryka', 'Cena Detal Plac'
+        , 'Cena Wykonawcy Fabryka', 'Cena Wykonawcy Plac'
+        , 'Cena Hurt Fabryka', 'Cena Hurt Plac'
+        , 'Czy Kurier', 'Cena Kurier', 'Towar Niedostępny', 'Przewidywany czas dostępnosci', 'Uwagi', 
+        'Sprzedaz jednostkowa', 'Szerokosc', 'Na Promocji', 'Na Palecie', 'Czy Koszt Sprzedazy', 'wpid'];
+    $rows = array();
+    $rows[] = implode(',', $titles);
+    foreach ($products as $product) {
+
+        $data = '"'. $product->getName().'",'.
+                $product->getId().','.
+                $product->getManufacture().','.
+                $product->getPackaging().','.
+                $product->getPackageWeight().','.
+                $product->getUnitWeight().','.
+                $product->getCatalogPrice().','.
+                $product->getBuyPrice().','.
+                $product->getSellPriceFactoryDetal().','.
+                $product->getSellPricePitchDetal().','.
+                $product->getSellPriceFactoryContractors().','.
+                $product->getSellPricePitchContractors().','.
+                $product->getSellPriceFactoryWholesale().','.
+                $product->getSellPricePitchWholesale().','.
+                $product->getIsCourier().','.
+                $product->getCourierCost().','.
+                $product->getIsNotAvailable().','.
+                $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').','.
+                $product->getNotices().','.
+                $product->getSprzedazJednostkowa().','.
+                $product->getWidth().','.
+                $product->getIsOnPromotion().','.
+                $product->getIsOnPalet().','.
+                $product->getIsSellCost().','.
+                $product->getWpid();
+
+        $rows[] = $data;
+    }
+
+        $content = implode("\n", $rows);
+            $response = new Response($content);
+            $response->headers->set('Content-Type', 'text/csv');
+
+    return $response;
+ }
+ 
+     /**
+ * @Route("/import/", name="product_import", methods={"GET","POST"})
+ */
+public function import(Request $request): Response {
+ 
+    $form = $this->createForm(ProductImportType::class);
+    $form->handleRequest($request);
+     $entityManager = $this->getDoctrine()->getManager();
+    $repository = $this->getDoctrine()->getRepository(Product::class);
+    $products = $repository->findAll();
+    $existingProducts = [];
+    foreach($products as $product){
+        $existingProducts[$product->getId()] = $product;
+    }
+    
+    if ($form->isSubmitted() && $form->isValid()) {
+        $someNewFilename = 'products_'.date('m-d-Y_His').'.csv';
+
+        $file = $form->get('file')->getData();
+        
+            try {$file->move(
+                        $this->getParameter('import_upload_directory'),
+                        $someNewFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+        
+                $finder = new Finder();
+                $finder->files()->in($this->getParameter('import_upload_directory'))->name($someNewFilename);
+                set_time_limit(1200);
+
+// decoding CSV contents
+        foreach ($finder as $file) {
+            $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+            // instantiation, when using it inside the Symfony framework
+            $contents = $file->getContents();
+            // decoding CSV contents
+            $products_csv = $serializer->decode($contents, 'csv');
+            
+            foreach ($products_csv as $key => $value) {
+                
+                $id = $value['ID'];
+
+                if(key_exists($id, $existingProducts)){
+                    $existingProducts[$id]->setName($value['Nazwa']);
+                    $existingProducts[$id]->setManufacture($value['Fabryka']);
+                    $existingProducts[$id]->setPackaging($value['Pakowanie']);
+                    $existingProducts[$id]->setPackageWeight($value['Waga Paczki']);
+                    $existingProducts[$id]->setUnitWeight($value['Waga Jednostki']);
+                    $existingProducts[$id]->setCatalogPrice($value['Cena katalogowa']);
+                    $existingProducts[$id]->setBuyPrice($value['Cena zakupu']);
+                    $existingProducts[$id]->setSellPriceFactoryDetal($value['Cena Detal Fabryka']);
+                    $existingProducts[$id]->setSellPricePitchDetal($value['Cena Detal Plac']);
+                    $existingProducts[$id]->setSellPriceFactoryContractors($value['Cena Wykonawcy Fabryka']);
+                    $existingProducts[$id]->setSellPricePitchContractors($value['Cena Wykonawcy Plac']);
+                    $existingProducts[$id]->setSellPriceFactoryWholesale($value['Cena Hurt Fabryka']);
+                    $existingProducts[$id]->setSellPricePitchWholesale($value['Cena Hurt Plac']);
+                    $existingProducts[$id]->setIsCourier($value['Czy Kurier']);
+                    $existingProducts[$id]->setCourierCost($value['Cena Kurier']);
+                    $existingProducts[$id]->setIsNotAvailable($value['Towar Niedostępny']);
+                    $existingProducts[$id]->setEstimatedAvailabilityDate(new DateTime($value['Przewidywany czas dostępnosci']));
+                    $existingProducts[$id]->setNotices($value['Uwagi']);
+                    $existingProducts[$id]->setSprzedazJednostkowa($value['Sprzedaz jednostkowa']);
+                    $existingProducts[$id]->setWidth(intval($value['Szerokosc']));
+                    $existingProducts[$id]->setIsOnPromotion($value['Na Promocji']);
+                    $existingProducts[$id]->setIsOnPalet($value['Na Palecie']);
+                    $existingProducts[$id]->setIsSellCost($value['Czy Koszt Sprzedazy']);
+                    $existingProducts[$id]->setWpid(intval($value['wpid']));
+                }else{
+                    $newProduct = new Product();
+                    $newProduct->setId($id);
+                    $newProduct->setName($value['Nazwa']);
+                    $newProduct->setManufacture($value['Fabryka']);
+                    $newProduct->setPackaging($value['Pakowanie']);
+                    $newProduct->setPackageWeight($value['Waga Paczki']);
+                    $newProduct->setUnitWeight($value['Waga Jednostki']);
+                    $newProduct->setCatalogPrice($value['Cena katalogowa']);
+                    $newProduct->setBuyPrice($value['Cena zakupu']);
+                    $newProduct->setSellPriceFactoryDetal($value['Cena Detal Fabryka']);
+                    $newProduct->setSellPricePitchDetal($value['Cena Detal Plac']);
+                    $newProduct->setSellPriceFactoryContractors($value['Cena Wykonawcy Fabryka']);
+                    $newProduct->setSellPricePitchContractors($value['Cena Wykonawcy Plac']);
+                    $newProduct->setSellPriceFactoryWholesale($value['Cena Hurt Fabryka']);
+                    $newProduct->setSellPricePitchWholesale($value['Cena Hurt Plac']);
+                    $newProduct->setIsCourier($value['Czy Kurier']);
+                    $newProduct->setCourierCost($value['Cena Kurier']);
+                    $newProduct->setIsNotAvailable($value['Towar Niedostępny']);
+                    $newProduct->setEstimatedAvailabilityDate($value['Przewidywany czas dostępnosci']);
+                    $newProduct->setNotices($value['Uwagi']);
+                    $newProduct->setSprzedazJednostkowa($value['Sprzedaz jednostkowa']);
+                    $newProduct->setWidth(intval($value['Szerokosc']));
+                    $newProduct->setIsOnPromotion($value['Na Promocji']);
+                    $newProduct->setIsOnPalet($value['Na Palecie']);
+                    $newProduct->setIsSellCost($value['Czy Koszt Sprzedazy']);
+                    $newProduct->setWpid(intval($value['wpid']));
+                }
+                $entityManager->persist($product);
+                
+ 
+        }
+        
+        }
+$entityManager->flush();
+
+    return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+}
+
+return $this->renderForm('product/new_product_import.html.twig', [
+            'form' => $form,
+        ]);
+ }
 
 }

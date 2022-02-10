@@ -169,6 +169,13 @@ class Product
     {
         return $this->id;
     }
+    
+    public function setId(int $Id): self
+    {
+        $this->Id = $Id;
+
+        return $this;
+    }
 
     public function getName(): ?string
     {
