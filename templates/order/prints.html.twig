@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wydruki{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+            <th>Szablon</th>
+            <th>Akcja</th>
+        </thead>
+    <tbody>
+        <tr>standard_noagrements
+            <td>Standardowy</td>
+            <td><a href="{{ path("create_order_pdf", {'id': order.id, 'template': 'standard'})}}" class="btn btn-success w-100 m-1">Podgląd</a></td>
+        </tr>
+        <tr>
+            <td>Standardowy bez dopisku</td>
+            <td><a href="{{ path("create_order_pdf", {'id': order.id, 'template': 'standard_noagrements'})}}" class="btn btn-success w-100 m-1">Podgląd</a></td>
+        </tr>
+        <tr>
+            <td>Oszczedności</td>
+             <td><a href="{{ path("create_order_pdf", {'id': order.id,'template':'show_discount'})}}" class="btn btn-success w-100 m-1">Podgląd</a></td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"> <a href="{{ path('order_index') }}" class="nav-link">Powrót do Oferty</a> </li>
+{% endblock %}

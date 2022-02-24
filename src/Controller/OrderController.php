@@ -96,21 +96,25 @@ class OrderController extends AbstractController {
     public function edit(Request $request, Order $order): Response {
         $form = $this->createForm(CartType::class, $order);
         $form->handleRequest($request);
- 
+        
+        $this->get('session')->set('cart_id',$order->getId());
+        
+         return $this->redirectToRoute('cart');
+        
         
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+           
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('cart/index.html.twig', [
-                    'cart' => $order,
+                'cart' => $order,
                     'form' => $form,
                     'kontrahent' => $order->getKontrahent(),
                     'route_image' => '',
                     'dystans' => '',
-                    'time' => '',
+                    'time' => ''      
         ]);
     }
 
@@ -126,11 +130,20 @@ class OrderController extends AbstractController {
 
         return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    /**
+     * @Route("/prints/{id}", name="order_prints")
+     */
+    public function prints(Order $order): Response {
+        return $this->render('order/prints.html.twig', [
+                    'order' => $order,
+        ]);
+    }
 
     /**
-     * @Route("/create_order_pdf/{id}", name="create_order_pdf")
+     * @Route("/create_order_pdf/{id}/{template}", name="create_order_pdf")
      */
-    public function createorderpdf(Order $order): Response {
+    public function createorderpdf(Order $order, string $template = 'standard'): Response {
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -143,12 +156,23 @@ class OrderController extends AbstractController {
         
         $order_agreements_value = $order_agreements_option ->getValue();
 
+        if($template == 'show_discount'){
         // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('./pdf/client_order.html.twig', [
+        $html = $this->renderView('./pdf/client_order_discount.html.twig', [
             'cart' => $order,
             'agreements' => $order_agreements_value,
         ]);
-
+        }else if($template == 'standard'){
+           $html = $this->renderView('./pdf/client_order_standard.html.twig', [
+            'cart' => $order,
+            'agreements' => $order_agreements_value,
+        ]); 
+        }else if($template == 'standard_noagrements'){
+           $html = $this->renderView('./pdf/client_order_standard.html.twig', [
+            'cart' => $order,
+            'agreements' => '',
+        ]); 
+        }
         // Load HTML to Dompdf
         $dompdf->loadHtml($html, 'UTF-8');
 
@@ -157,9 +181,9 @@ class OrderController extends AbstractController {
 
         // Render the HTML as PDF
         $dompdf->render();
-
+        
         // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("client_order.pdf", [
+        $dompdf->stream(str_replace('/', '-',$order->getNumber()).'-'.$order->getId().".pdf", [
             "Attachment" => false
         ]);
         exit;

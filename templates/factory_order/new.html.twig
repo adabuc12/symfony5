@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New FactoryOrder{% endblock %}
+{% block title %}Nowe Zamówienie{% endblock %}
 
 {% block body %}
 
     {{ include('factory_order/_form.html.twig') }}
 
-    <a href="{{ path('factory_order_index') }}">back to list</a>
+{% endblock %}
+{% block footer %}
+    <li><a class="nav-link btn btn-primary" href="">Dodaj Kierowcę</a></li>
+    <li><a class="nav-link btn btn-primary" href="">Wyślij</a></li>
+    <li><a class="nav-link btn btn-primary" href="">Zapisz</a></li>
+    <li><a class="nav-link btn btn-primary" href="">Wyjdź</a></li>
 {% endblock %}

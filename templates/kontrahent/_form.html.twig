@@ -1,4 +1,35 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="row">
+     {{ form_start(form) }}
+<div class="row">
+    <div class="col">
+    {{ form_row(form.name) }}
+    {{ form_row(form.nip) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+    {{ form_row(form.phone) }}
+    {{ form_row(form.post_code) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+    {{ form_row(form.street) }}{{ form_row(form.Adress) }}
+    
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+    {{ form_row(form.email) }}
+    {{ form_row(form.notices) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+    {{ form_row(form.class_name) }}
+    {{ form_row(form.group_name) }}
+    </div>
+</div>
+    <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
 {{ form_end(form) }}
+</div>

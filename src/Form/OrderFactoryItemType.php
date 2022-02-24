@@ -16,6 +16,9 @@ class OrderFactoryItemType extends AbstractType
     {
         $builder
             ->add('quantity')
+            ->add('where_pickup')
+            ->add('where_add')
+            ->add('car_number')
         ;
     }
 

@@ -25,7 +25,7 @@ class FactoryOrder
     private $date_created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_sended;
 
@@ -54,9 +54,20 @@ class FactoryOrder
      */
     private $factory;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Transport::class, inversedBy="factoryOrders")
+     */
+    private $driver;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $delivery_date;
+
     public function __construct()
     {
         $this->orderFactoryItems = new ArrayCollection();
+        $this->driver = new ArrayCollection();
     }
 
    
@@ -164,6 +175,42 @@ class FactoryOrder
     public function setFactory(?Factory $factory): self
     {
         $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transport[]
+     */
+    public function getDriver(): Collection
+    {
+        return $this->driver;
+    }
+
+    public function addDriver(Transport $driver): self
+    {
+        if (!$this->driver->contains($driver)) {
+            $this->driver[] = $driver;
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Transport $driver): self
+    {
+        $this->driver->removeElement($driver);
+
+        return $this;
+    }
+
+    public function getDeliveryDate(): ?\DateTimeInterface
+    {
+        return $this->delivery_date;
+    }
+
+    public function setDeliveryDate(?\DateTimeInterface $delivery_date): self
+    {
+        $this->delivery_date = $delivery_date;
 
         return $this;
     }

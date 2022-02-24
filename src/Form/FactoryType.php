@@ -17,6 +17,7 @@ class FactoryType extends AbstractType
             ->add('email')
             ->add('adress')
             ->add('pitch_transport_price')
+            ->add('price_calculation_mode')
         ;
     }
 

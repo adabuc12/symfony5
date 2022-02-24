@@ -312,6 +312,8 @@
     {% endif %}
     {% if product.getIsNotAvailable != true and issettonotify == false %}<li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('product_available_notice',{'id':product.id}) }}">Powiadom o dostępności</a> </li>{% endif %}
         <li class="nav-item"> <a class="nav-link btn btn-secondary" href="">Zgłoś Zapotrzebowanie</a></li>
+        <li class="nav-item"> <a class="nav-link btn btn-secondary" href="">Zamów</a></li>
+        <li class="nav-item"> <a class="nav-link btn btn-secondary" href="">Zapytaj</a></li>
         <li class="nav-item"> <a class="nav-link btn btn-info" href="{{ path('promotion_index') }}">Promocje</a> </li>
         <li class="nav-item">      {{ include('product/_delete_form.html.twig') }}</li>
         <li class="nav-item"> <a class="nav-link btn btn-warning" href="{{ path('task_new', {'type':'product #{product.id}'}) }}">Dodaj zadanie</a></li>

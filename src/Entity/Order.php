@@ -147,6 +147,11 @@ class Order
      */
     private $factoryOrders;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $order_id;
+
 
 
 
@@ -606,6 +611,18 @@ class Order
                $factoryOrder->setClientOrder(null);
            }
        }
+
+       return $this;
+   }
+
+   public function getOrderId(): ?int
+   {
+       return $this->order_id;
+   }
+
+   public function setOrderId(?int $order_id): self
+   {
+       $this->order_id = $order_id;
 
        return $this;
    }

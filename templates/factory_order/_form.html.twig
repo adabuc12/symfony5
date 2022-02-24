@@ -1,9 +1,10 @@
 <h3>Zamówienie nr {{ factory_order.number }}</h3>
 
+
 <table class="table table-bordered">
     <thead>
     <th>Data utworzenia</th>
-    <th>Date_sended</th>
+    <th>Data wysłania</th>
     <th>Utworzone przez</th>
     <th>Dotyczy zamówienia</th>
 </thead>
@@ -27,8 +28,11 @@
 <table class="table table-bordered">
     <thead>
     <th>Nazwa</th>
-    <th>Fabryka</th>
-    <th>Ilość m2/szt</th>
+    <th>Miejsce odbioru</th>
+    <th>Zrealizowano</th>
+    <th>Do zamówienia</th>
+    <th>Przeładunek</th>
+    <th>Numer Auta</th>
     <th>Ilość palet</th>
     <th>Akcje</th>
 </thead>
@@ -36,8 +40,11 @@
     {% for item in form.orderFactoryItems %} 
         <tr>
             <td>{{ item.vars.data.product.name }}</td>
-            <td>{{ item.vars.data.product.manufacture }}</td>
+            <td>{{ form_widget(item.where_pickup) }}</td>
+            <td>0</td>
             <td>{{ form_widget(item.quantity) }}</td>
+            <td>{{ form_widget(item.where_add) }}</td>
+            <td>{{ form_widget(item.car_number) }}</td>
             <td>{{ item.vars.data.quantity/item.vars.data.product.packaging }}</td>
             <td><a href="" class="btn btn-danger">Usuń</a><button class="btn btn-warning">{{ button_label|default('Zapisz') }}</button></td>
         </tr>

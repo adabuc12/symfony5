@@ -58,12 +58,13 @@ class CartType extends AbstractType {
                 ])
                 ->add('phone', TextType::class, [
                     'label' => 'Telefon',
+                    'required' => false,
                 ])
                 ->add('kontrahent_group', ChoiceType::class, [
                     'choices' => [
                         'Detaliczna' => 'detal',
-                        'Hurtowa' => 'hurt',
-                        'Specjalna' => 'specjal',
+                        'Wykonawcy' => 'hurt',
+                        'Hurtowa' => 'specjal',
                     ],
                     'label' => 'Grupa cenowa'
                 ])
@@ -106,8 +107,8 @@ class CartType extends AbstractType {
                     'entry_type' => CartItemType::class,
                     'allow_delete' => true,
                 ])
-                ->add('count', SubmitType::class, ['label' => 'Przelicz zamówienie'])
-                ->add('save', SubmitType::class, ['label' => 'Zapisz'])
+                ->add('count', SubmitType::class, ['label' => 'Przelicz i Zapisz Dane'])
+                ->add('save', SubmitType::class, ['label' => 'Zapisz produkty'])
                 ->add('clear', SubmitType::class, ['label' => 'Czyść']);
 
         $builder->addEventSubscriber(new RemoveItemListener());

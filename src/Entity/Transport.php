@@ -168,10 +168,16 @@ class Transport
      */
     private $drivers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=FactoryOrder::class, mappedBy="driver")
+     */
+    private $factoryOrders;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->drivers = new ArrayCollection();
+        $this->factoryOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -552,6 +558,33 @@ class Transport
     {
         if ($this->drivers->removeElement($driver)) {
             $driver->removePrice($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FactoryOrder[]
+     */
+    public function getFactoryOrders(): Collection
+    {
+        return $this->factoryOrders;
+    }
+
+    public function addFactoryOrder(FactoryOrder $factoryOrder): self
+    {
+        if (!$this->factoryOrders->contains($factoryOrder)) {
+            $this->factoryOrders[] = $factoryOrder;
+            $factoryOrder->addDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactoryOrder(FactoryOrder $factoryOrder): self
+    {
+        if ($this->factoryOrders->removeElement($factoryOrder)) {
+            $factoryOrder->removeDriver($this);
         }
 
         return $this;

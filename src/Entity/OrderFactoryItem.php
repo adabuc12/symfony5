@@ -42,6 +42,21 @@ class OrderFactoryItem
      */
     private $is_confirmed;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $where_pickup;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $where_add;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $car_number;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +118,42 @@ class OrderFactoryItem
     public function setIsConfirmed(bool $is_confirmed): self
     {
         $this->is_confirmed = $is_confirmed;
+
+        return $this;
+    }
+
+    public function getWherePickup(): ?string
+    {
+        return $this->where_pickup;
+    }
+
+    public function setWherePickup(?string $where_pickup): self
+    {
+        $this->where_pickup = $where_pickup;
+
+        return $this;
+    }
+
+    public function getWhereAdd(): ?string
+    {
+        return $this->where_add;
+    }
+
+    public function setWhereAdd(?string $where_add): self
+    {
+        $this->where_add = $where_add;
+
+        return $this;
+    }
+
+    public function getCarNumber(): ?int
+    {
+        return $this->car_number;
+    }
+
+    public function setCarNumber(?int $car_number): self
+    {
+        $this->car_number = $car_number;
 
         return $this;
     }

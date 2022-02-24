@@ -86,7 +86,7 @@ class FactoryOrderController extends AbstractController {
         }
         $lastNumber = $lastNumber . '/' . date('Y');
         $factoryOrder->setDateCreated($date);
-        $factoryOrder->setDateSended($date);
+
         $factoryOrder->setCreatedBy($this->getUser());
         $factoryOrder->setNumber($lastNumber);
         $factoryOrder->setClientOrder($order);

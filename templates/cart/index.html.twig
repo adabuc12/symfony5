@@ -8,9 +8,11 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Dane</button>
         </li>
+        {% if cart.status == 'order' %}
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Zamówienia</button>
         </li>
+        {% endif %}
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">Historia</button>
         </li>
@@ -18,289 +20,341 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                {{ form_start(form) }}
+            {{ form_start(form) }}
 
-                <div class="row">
-                    <div class="row p-3 border bg-light">
-                        <div class="col">
+            <div class="row">
+                <div class="row p-3 border bg-light">
+                    <div class="col">
 
-                            {{ form_row(form.kontrahent) }}
-                            {{ form_row(form.phone) }}
-                        </div>
-                        <div class="col">
-                            {{ form_row(form.type) }}
-                            {{ form_row(form.kontrahent_group) }}
-                        </div>
-                        <div class="col">
-                             {{ form_row(form.pickup) }}
-                             {{ form_row(form.adress) }}
-                        </div>
-
-                        <div class="col">
-                            {{ form_row(form.is_pickup_wieliczka) }}
-
-                            {{ form_row(form.is_extra_delivery) }}
-
-                            {{ form_row(form.own_pickup) }}
-
-                            {{ form_row(form.count_pallets) }}
-                        </div>
-
-                        <div class="col">
-                            {{ form_row(form.delivery_date) }}
-                            {{ form_row(form.notice) }}
-                        </div>
-                        <div class="col">
-                            Aktywne promocje
-                            {% if promotions is defined %}
-                                {% for promotion in promotions %}
-                                    <label for="promotion-{{ promotion[1].id }}">{{ promotion[1].name }}</label>
-                                    <input type="checkbox" name="promotion-{{ promotion[1].id }}" id="promotion-{{ promotion[1].id }}" checked/>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                        <div class="col">
-                            {{ form_row(form.relation) }}
-                            {{ form_row(form.count) }}
-                        </div>
+                        {{ form_row(form.kontrahent) }}
+                        <a href="{{ path("kontrahent_new")}}" class="btn btn-success w-100 m-1">DODAJ NOWY</a>
+                        {{ form_row(form.phone) }}
                     </div>
-                </div>
+                    <div class="col">
+                        {{ form_row(form.type) }}
+                        {{ form_row(form.kontrahent_group) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(form.pickup) }}
+                        {{ form_row(form.adress) }}
+                    </div>
 
-        
-                <div class="row">
-                    <div>
-                        {% if cart.item.count > 0 %}
-                            <div class="row mt-4">
-                                <!-- Lista produktów -->
-                                <div class="col-md-8"></div>
-                                <!-- Podsumowanie -->
-                                <div class="col-md-4"></div>
-                            </div>
-                        {% else %}
-                            <div class="alert alert-info">
-                                Koszyk jest pusty, aby wybrać produkty wybierz się na <a href="{{ path('product_index') }}">Lista Produktów</a>.
-                            </div>
+                    <div class="col">
+                        {{ form_row(form.is_pickup_wieliczka) }}
+
+                        {{ form_row(form.is_extra_delivery) }}
+
+                        {{ form_row(form.own_pickup) }}
+
+                        {{ form_row(form.count_pallets) }}
+                    </div>
+
+                    <div class="col">
+                        {{ form_row(form.delivery_date) }}
+                        {{ form_row(form.notice) }}
+                    </div>
+                    <div class="col">
+                        Aktywne promocje
+                        {% if promotions is defined %}
+                            {% for promotion in promotions %}
+                                <label for="promotion-{{ promotion[1].id }}">{{ promotion[1].name }}</label>
+                                <input type="checkbox" name="promotion-{{ promotion[1].id }}" id="promotion-{{ promotion[1].id }}" checked/>
+                            {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="col-md-8">
+                    <div class="col">
+                        {{ form_row(form.relation) }}
+                        {{ form_row(form.count) }}
+                    </div>
+                </div>
+            </div>
 
-                        <div class="card">
-                            <div class="card-header bg-dark text-white d-flex">
-                                <div class="row">  
-                                    <div class="col">
-                                        <h5>Produkty</h5>
-                                        <div class="ml-auto">
-                                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
-                                            {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
-                                            <a href="{{ path('product_index') }}" class="btn btn-primary">Dodaj</a>
-                                        </div>
+
+            <div class="row">
+                <div>
+                    {% if cart.item.count > 0 %}
+                        <div class="row mt-4">
+                            <!-- Lista produktów -->
+                            <div class="col-md-8"></div>
+                            <!-- Podsumowanie -->
+                            <div class="col-md-4"></div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Koszyk jest pusty, aby wybrać produkty wybierz się na <a href="{{ path('product_index') }}">Lista Produktów</a>.
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+
+                    <div class="card">
+                        <div class="card-header bg-dark text-white d-flex">
+                            <div class="row">  
+                                <div class="col">
+                                    <h5>Produkty</h5>
+                                    <div class="ml-auto">
+                                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
+                                        {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
+                                        <a href="{{ path('product_index') }}" class="btn btn-primary">Dodaj</a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <table>
-                                <tbody>
-                                    {% if cart.item.count > 0 %}
-                                        {% for item in form.item %}
-                                            <tr>
-                                                <td>
-                                                    <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
-                                                </td>
-                                                <td>
-                                                    <h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5>
-                                                </td>
-                                                <td>
-                                                    {{ form_widget(item.quantity, {
+                        <table>
+                            <tbody>
+                                {% if cart.item.count > 0 %}
+                                    {% for item in form.item %}
+                                    
+                                        <tr>
+                                            <td>
+                                                <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('product_show',{'id':item.vars.data.product.id,'price':'detal','pickup':'pitch','type':'cart'}) }}"><h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5></a>
+                                            </td>
+                                            <td>
+                                        
+                                            
+                                                {{ form_widget(item.quantity, {
                             'attr': {
                                 'class': 'form-control form-control-sm ' ~ (item.quantity.vars.valid ? '' : 'is-invalid')
                             }
                         }) }}   </td>
-                                                <td>{{ form_widget(item.price, {
+                                            <td>{{ form_widget(item.price, {
                             'attr': {
                                 'class': 'form-control form-control-sm ' ~ (item.price.vars.valid ? '' : 'is-invalid')
                             }
                         }) }}
-                                                </td>
-                                        <div class="invalid-feedback">
-                                            {{ form_errors(item.quantity) }}
-                                            {{ form_errors(item.price) }}
-                                        </div>
-
-                                        <td>
-                                            {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm'}}) }}
-
-                                        </td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mt-4 mt-md-0">
-                            <h5 class="card-header bg-dark text-white">Podsumowanie</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <div><b>Suma</b></div>
-                                    <span><b>{{ cart.total}} PLN</b></span>
-                                </li>
-                            </ul>
-                            {% if dystans > 0 %}
-                                <div class="col">
-                                    <div class="p-3 border bg-light">
-                                        <h4> DYSTANS : {% if dystans %} {{ dystans }} {% endif %} </h4>
-                                        <p>Szacowany czas przejazdu: {% if time %} {{ (time)}} {% endif %} minut</p>
-                                        <div class="hidden">
-                                            <image src="{% if route_image %} {{ route_image }} {% endif %}"/>
-                                        </div>
+                                            </td>
+                                    <div class="invalid-feedback">
+                                        {{ form_errors(item.quantity) }}
+                                        {{ form_errors(item.price) }}
                                     </div>
-                                </div>
+
+                                    <td>
+                                        {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm'}}) }}
+
+                                    </td>
+                                    </tr>
+                                {% endfor %}
                             {% endif %}
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
-                    {{ form_end(form, {'render_rest': false}) }}
+
                 </div>
+                <div class="col-md-4">
+                    <div class="card mt-4 mt-md-0">
+                        <h5 class="card-header bg-dark text-white">Podsumowanie</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                {% if dystans > 0 %}
+                                <p> DYSTANS : {% if dystans %} {{ dystans }} {% endif %} </p>
+                                    <p>Szacowany czas przejazdu: {% if time %} {{ (time)}} {% endif %} minut</p>
+                                    <div id="imagemap" class="hidden">
+                                        <image src="{% if route_image %} {{ route_image }} {% endif %}"/>
+                                    </div>
+                                    {% endif %}
+                            </li>
+                        </ul>
+                        
+                            <div class="col">
+                                <div class="p-3 border bg-light">
+                                    
+                                    <div>
+                                          Suma brutto: <h4>{{ cart.total|number_format(2, '.', ' ')}} PLN </h4>
+                                          Suma netto: <h6>{{ (cart.total/1.23)|number_format(2, '.', ' ') }} PLN</h6>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+                {{ form_end(form, {'render_rest': false}) }}
             </div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">         
-                {% if cart.factoryOrders.count > 0 %}
+        </div>
+            </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">         
+            {% if cart.factoryOrders.count > 0 %}
                 <h3 class="p-3">Zamówienia</h3>
                 {% for item in cart.factoryOrders %}
-                    <h5 class="p-3">{{ item.number }}</h5>
-                    <table class="table table-bordered">
+                    <h5 class="p-3"></h5>
+                    <table class="table table-bordered">    
                         <thead>
-                            <th>Nazwa</th>
-                            <th>Ilość</th>
+                        <th>Data</th>
+                        <th>Numer</th>
+                        <th>Zamawiający</th>
+                        <th>Zamówienie</th>
                         </thead>
                         <tbody>
-                            {% for orderItem in item.getOrderFactoryItems %}
                             <tr>
-                                <td>{{ orderItem.product.name }}</td> 
-                                <td>{{ orderItem.quantity }}</td>
-                            </tr>
-                            {% endfor %}
+                                <td>{{ item.dateCreated|date('d-m-Y') }}</td> 
+                                <td>{{ item.number }}</td>
+                                <td>{{ item.createdBy.name }} {{ item.createdBy.surname }}</td>
+                                <td><table class="table table-bordered">
 
-                    </tbody>
-                </table>
+                                        <tbody>
+                                            {% for orderItem in item.getOrderFactoryItems %}
+                                                <tr>
+                                                    <td>{{ orderItem.product.name }}</td> 
+                                                    <td>{{ orderItem.quantity }}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+
                 {% endfor %}
             {% endif %}
-            </div>
-            <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-                
-                <h3 class="p-3">Historia</h3>
-                
-                    <table class="table table-bordered">
-                        <thead>
-                            <th>Data</th>
-                            <th>Wiadomość</th>
-                            <th>Użytkownik</th>
-                        </thead>
-                        <tbody>
-                            {% if logs is defined and logs > 0 %}
-                            {% for log in logs %}
+        </div>
+        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+
+            <h3 class="p-3">Historia</h3>
+
+            <table class="table table-bordered">
+                <thead>
+                <th>Data</th>
+                <th>Wiadomość</th>
+                <th>Użytkownik</th>
+                </thead>
+                <tbody>
+                    {% if logs is defined and logs > 0 %}
+                        {% for log in logs %}
                             <tr>
                                 <td>{{ log.createdAt|date('d-m-Y H:i') }}</td> 
                                 <td>{{ log.message }}</td>
                                 <td>{{ log.createdBy.name }} {{ log.createdBy.surname }}</td>
                             </tr>
-                            {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            {% endif %}
-                    </tbody>
-                </table>
-            
-            </div>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
         </div>
+    </div>
+    
 
 
 
+    <script>
+        $(document).ready(function ($) {
+            $("#select3").click(function () {
+                if ($("#pitch").is(':selected')) {
+                    $('input[name="doladunek"]').removeAttr('checked');
+                    $('input[name="doladunek"]').attr('checked', false);
+                }
+            });
 
-        <script>
-            $(document).ready(function ($) {
-                $("#select3").click(function () {
-                    if ($("#pitch").is(':selected')) {
-                        $('input[name="doladunek"]').removeAttr('checked');
-                        $('input[name="doladunek"]').attr('checked', false);
-                    }
-                });
-
-                $('body').removeClass('container');
-                $('input[name="osobisty"]').click(function () {
-                    if ($('input[name="osobisty"]').is(':checked')) {
-                        $('input[name="auto1"]').removeAttr('checked');
-                        $('input[name="auto2"]').removeAttr('checked');
-                        $('input[name="auto3"]').removeAttr('checked');
-                        $('input[name="auto4"]').removeAttr('checked');
-                        $('input[name="is_hds"]').removeAttr('checked');
-                    } else {
-                        $('input[name="auto1"]').attr('checked', true);
-                        $('input[name="auto2"]').attr('checked', true);
-                        $('input[name="auto3"]').attr('checked', true);
-                        $('input[name="auto4"]').attr('checked', true);
-                        $('input[name="is_hds"]').attr('checked', true);
-                    }
-                });
-
+            $('body').removeClass('container');
+            $('input[name="osobisty"]').click(function () {
+                if ($('input[name="osobisty"]').is(':checked')) {
+                    $('input[name="auto1"]').removeAttr('checked');
+                    $('input[name="auto2"]').removeAttr('checked');
+                    $('input[name="auto3"]').removeAttr('checked');
+                    $('input[name="auto4"]').removeAttr('checked');
+                    $('input[name="is_hds"]').removeAttr('checked');
+                } else {
+                    $('input[name="auto1"]').attr('checked', true);
+                    $('input[name="auto2"]').attr('checked', true);
+                    $('input[name="auto3"]').attr('checked', true);
+                    $('input[name="auto4"]').attr('checked', true);
+                    $('input[name="is_hds"]').attr('checked', true);
+                }
+            });
 
 
-                var searchRequest = null;
-                $("#cart_kontrahent").keyup(function () {
-                    var minlength = 3;
-                    var that = this;
-                    var value = $(this).val();
-                    var entitySelector = $("#entitiesNav").html('');
-                    if (value.length >= minlength) {
-                        if (searchRequest != null)
-                            searchRequest.abort();
-                        searchRequest = $.ajax({
-                            type: "GET",
-                            url: "{{ path('kontrahent_search') }}",
-                            data: {
-                                'q': value
-                            },
-                            dataType: "text",
-                            success: function (msg) {
-                                //we need to check if the value is the same
-                                if (value == $(that).val()) {
-                                    var result = JSON.parse(msg);
-                                    $.each(result, function (key, arr) {
-                                        $.each(arr, function (id, value) {
-                                            if (key == 'entities') {
-                                                if (id != 'error') {
-                                                    entitySelector.append('<li><a href="/daten/' + id + '">' + value + '</a></li>');
-                                                } else {
-                                                    entitySelector.append('<li class="errorLi">' + value + '</li>');
-                                                }
+
+            var searchRequest = null;
+            $("#cart_kontrahent").keyup(function () {
+                var minlength = 3;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('kontrahent_search') }}",
+                        data: {
+                            'q': value
+                        },
+                        dataType: "text",
+                        success: function (msg) {
+                            //we need to check if the value is the same
+                            if (value == $(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function (key, arr) {
+                                    $.each(arr, function (id, value) {
+                                        if (key == 'entities') {
+                                            if (id != 'error') {
+                                                entitySelector.append('<li><a href="/daten/' + id + '">' + value + '</a></li>');
+                                            } else {
+                                                entitySelector.append('<li class="errorLi">' + value + '</li>');
                                             }
-                                        });
+                                        }
                                     });
-                                }
+                                });
                             }
-                        });
-                    }
-                });
-            }
-            );
-        </script>
-    {% endblock %}
+                        }
+                    });
+                }
+            });
+        }
+        );
+    </script>
+{% endblock %}
 
-    {% block footer %}
-        <li class="nav-item"> <a href="{% if cart.type == 'offer' %}{{ path("save_cart",{'type':'offer','id':cart.id})}}{% else %}{{ path("save_cart",{'id':cart.id})}}{% endif %}" class="btn btn-warning w-100 m-1">Zapisz</a></li>
-        <li class="nav-item"> <a href="{{ path("drop_cart")}}" class="btn btn-primary w-100 m-1">Porzuć</a></li>
-            {% if cart.id != '' %}
-            <li class="nav-item"><a href="{{ path("create_order_pdf", {'id': cart.id})}}" class="btn btn-success w-100 m-1">Wydrukuj</a></li>
-            <li class="nav-item"><a href="{{ path("factory_order_new_cart", {'id': cart.id})}}" class="btn btn-danger w-100 m-1">Zamów</a></li>
-            <li class="nav-item"><a href="{{ path("factory_order_ask", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zapytaj</a> </li>
-            {% endif %}
-        <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Usuń</a> </li>
-        <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Wyślij sms</a> </li>
-        <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Dodaj zaliczkę</a> </li>
-        <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Ekspor WAPRO</a></li>
-        {% endblock %}
+{% block footer %}
+    <li class="nav-item"> 
+        <a href="{% if cart.status == 'offer' %}
+           {{ path("save_cart",{'type':'offer','id':cart.id})}}
+                {% else %}
+           {{ path("save_cart",{'id':cart.id})}}
+               {% endif %}" class="btn btn-warning w-100 m-1">Zapisz</a>
+           </li>
+           {% if cart.id == null %}
+                <li class="nav-item"> <a href="{{ path("drop_cart")}}" class="btn btn-primary w-100 m-1">Porzuć</a></li>
+           {% endif %}
+               {% if cart.id != '' and cart.status == 'order' %}
+               <li class="nav-item"><a href="{{ path("factory_order_new_cart", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zamów Fabryka</a></li>
+               {% endif %}
+
+           {% if cart.id != '' and cart.isOrdered == false and cart.status == 'order' %}
+               <li class="nav-item"><a href="{{ path("offer_to_order", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zamów</a></li>
+               {% endif %}
+           {% if cart.id != '' %}
+               <li class="nav-item"><a href="{{ path("order_prints", {'id': cart.id})}}" class="btn btn-success w-100 m-1">Wydrukuj</a></li>
+               
+               <li class="nav-item"><a href="{{ path("factory_order_ask", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zapytania</a> </li>
+               {% endif %}
+           {% if cart.id != '' and cart.status == 'offer' %}
+                <li class="nav-item"><a href="" class="btn btn-info w-100 m-1">Warianty</a> </li>
+           {% endif %}
+           
+           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Wiadomości</a> </li>
+           {% if cart.status == 'order' %}
+           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Rozliczenia</a> </li>
+           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Transporty</a> </li>
+           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Ekspor WAPRO</a></li>
+           {% endif %}
+           
+           
+           <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Anuluj</a></li>
+           <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Usuń</a> </li>
+               {% endblock %}
 

@@ -120,71 +120,77 @@ class CartController extends AbstractController {
         $pricefloat = 0;
 //        $activeOnPromotions[$promotion->getId()] = [$itemsOnPromotion, $promotion];
         $promotionsTypes = [];
-        foreach($activeOnPromotions as $value){
+        foreach ($activeOnPromotions as $value) {
             $itemsOnPromotion = $value[0];
             $promotion = $value[1];
             $pricetypes = $promotion->getPriceTypes();
-            if(in_array($item, $itemsOnPromotion)){
-                if(in_array('detal', $pricetypes)){
-                    $promotionsTypes['detal'] =  $promotion;
+            if (in_array($item, $itemsOnPromotion)) {
+                if (in_array('detal', $pricetypes)) {
+                    $promotionsTypes['detal'] = $promotion;
                 }
-                if(in_array('hurt', $pricetypes)){
-                    $promotionsTypes['hurt'] =  $promotion;
+                if (in_array('hurt', $pricetypes)) {
+                    $promotionsTypes['hurt'] = $promotion;
                 }
-                if(in_array('specjal', $pricetypes)){
-                    $promotionsTypes['specjal'] =  $promotion;
+                if (in_array('specjal', $pricetypes)) {
+                    $promotionsTypes['specjal'] = $promotion;
                 }
             }
         }
+     
         if ($price_group == 'detal' && $pickupbolean && key_exists('detal', $promotionsTypes)) {
             $whatToDo = $promotionsTypes['detal']->getCalculationCountType();
             $howMuch = $promotionsTypes['detal']->getCalculationCountValue();
-            if($whatToDo == '-'){
-                $pricefloat = $item->getProduct()->getSellPriceFactoryDetal()-$howMuch;
+            if ($whatToDo == '-') {
+                $pricefloat = $item->getProduct()->getSellPriceFactoryDetal() - $howMuch;
             }
-        }else if($price_group == 'detal' && $pickupbolean){
+        } else if ($price_group == 'detal' && $pickupbolean) {
             $pricefloat = $item->getProduct()->getSellPriceFactoryDetal();
         }
         if ($price_group == 'hurt' && $pickupbolean && key_exists('hurt', $promotionsTypes)) {
             $whatToDo = $promotionsTypes['hurt']->getCalculationCountType();
             $howMuch = $promotionsTypes['hurt']->getCalculationCountValue();
-            if($whatToDo == '-'){
-                $pricefloat = $item->getProduct()->getSellPriceFactoryContractors()-$howMuch;
+            if ($whatToDo == '-') {
+                $pricefloat = $item->getProduct()->getSellPriceFactoryContractors() - $howMuch;
             }
-        }else if ($price_group == 'hurt' && $pickupbolean) {
+        } else if ($price_group == 'hurt' && $pickupbolean) {
             $pricefloat = $item->getProduct()->getSellPriceFactoryContractors();
         }
         if ($price_group == 'specjal' && $pickupbolean && key_exists('specjal', $promotionsTypes)) {
-             $whatToDo = $promotionsTypes['specjal']->getCalculationCountType();
+            $whatToDo = $promotionsTypes['specjal']->getCalculationCountType();
             $howMuch = $promotionsTypes['specjal']->getCalculationCountValue();
-            if($whatToDo == '-'){
-                $pricefloat = $item->getProduct()->getSellPriceFactoryWholesale()-$howMuch;
+          
+            if ($whatToDo == '-') {
+                $pricefloat = $item->getProduct()->getSellPriceFactoryWholesale() - $howMuch;
             }
         } else if ($price_group == 'specjal' && $pickupbolean) {
+            
             $pricefloat = $item->getProduct()->getSellPriceFactoryWholesale();
+
         }
         if ($price_group == 'detal' && !$pickupbolean && key_exists('detal', $promotionsTypes)) {
             $whatToDo = $promotionsTypes['detal']->getCalculationCountType();
             $howMuch = $promotionsTypes['detal']->getCalculationCountValue();
-            if($whatToDo == '-'){
-                $pricefloat = $item->getProduct()->getSellPricePitchDetal()-$howMuch;
+            if ($whatToDo == '-') {
+                $pricefloat = $item->getProduct()->getSellPricePitchDetal() - $howMuch;
             }
-        }else if ($price_group == 'detal' && !$pickupbolean) {
+        } else if ($price_group == 'detal' && !$pickupbolean) {
+           
             $pricefloat = $item->getProduct()->getSellPricePitchDetal();
+             
         }
         if ($price_group == 'hurt' && !$pickupbolean && key_exists('hurt', $promotionsTypes)) {
             $whatToDo = $promotionsTypes['hurt']->getCalculationCountType();
             $howMuch = $promotionsTypes['hurt']->getCalculationCountValue();
-            if($whatToDo == '-'){
-                $pricefloat = $item->getProduct()->getSellPricePitchContractors()-$howMuch;
+            if ($whatToDo == '-') {
+                $pricefloat = $item->getProduct()->getSellPricePitchContractors() - $howMuch;
             }
         } else if ($price_group == 'hurt' && !$pickupbolean) {
             $pricefloat = $item->getProduct()->getSellPricePitchContractors();
         }
         if ($price_group == 'specjal' && !$pickupbolean && key_exists('specjal', $promotionsTypes)) {
-             $whatToDo = $promotionsTypes['specjal']->getCalculationCountType();
+            $whatToDo = $promotionsTypes['specjal']->getCalculationCountType();
             $howMuch = $promotionsTypes['specjal']->getCalculationCountValue();
-            if($whatToDo == '-'){
+            if ($whatToDo == '-') {
                 $pricefloat = $item->getProduct()->getSellPricePitchWholesale();
             }
         } else if ($price_group == 'specjal' && !$pickupbolean) {
@@ -193,7 +199,7 @@ class CartController extends AbstractController {
         return $pricefloat;
     }
 
-    public function getPalletsCount($form, $cartManager,$activeOnPromotions) {
+    public function getPalletsCount($form, $cartManager, $activeOnPromotions) {
 
         $cart = $cartManager->getCurrentCart();
         $cartItems = $cart->getItem();
@@ -208,14 +214,16 @@ class CartController extends AbstractController {
                 }
 
                 $pricefloat = $this->getProductPrice($form->get('kontrahent_group')->getData(), $pickupbolean, $item, $activeOnPromotions);
-
+       
                 $quantity = $item->getQuantity();
                 $packaging = $item->getProduct()->getPackaging();
                 $unit_weight = $item->getProduct()->getUnitWeight();
 
                 $checkedFullPacks = $item->getQuantity() / $item->getProduct()->getPackaging();
-                $floredPacks = floor($item->getQuantity() / $item->getProduct()->getPackaging());
+                $checkedFullPacks = round($checkedFullPacks,2);
 
+                $floredPacks = floor($checkedFullPacks);
+            
                 if ($form->get('count_pallets')->getData() == true && $item->getProduct()->getIsOnPalet() == true) {
 
                     $manufactureName = $item->getProduct()->getManufacture();
@@ -243,10 +251,13 @@ class CartController extends AbstractController {
                 }
 
                 if ($checkedFullPacks - $floredPacks == 0) {
+
                     $item->setPrice($pricefloat);
                 } elseif ($form->get('pickup')->getData() !== 'pitch') {
                     $item->setPrice(round($priceProductPitchDetal) * $nknm, 2);
                     $cart->setIsPickupWieliczka(true);
+                }else{
+                    $item->setPrice($pricefloat); 
                 }
 
                 $value = $quantity / $packaging;
@@ -489,8 +500,8 @@ class CartController extends AbstractController {
             }
         }
     }
-    
-    public function getPromotions($entityManager,$cart){
+
+    public function getPromotions($entityManager, $cart) {
         $repositoryPromotion = $this->getDoctrine()->getRepository(Promotion::class);
         $promotions = $repositoryPromotion->findEnabled();
         $activeOnPromotions = [];
@@ -531,88 +542,94 @@ class CartController extends AbstractController {
                 }
             }
             $toCalculateConditions = [
-                $promotion->getCalculationType(), 
-                $promotion->getCalculationCountType(), 
-                $promotion->getCalculationCountValue(), 
+                $promotion->getCalculationType(),
+                $promotion->getCalculationCountType(),
+                $promotion->getCalculationCountValue(),
                 $promotion->getcalculationCountIsPercent()
-                    ];
-            
-            if($condition == '>'){
-                if($itemQuantity > $conditionValue) {
+            ];
+
+            if ($condition == '>') {
+                if ($itemQuantity > $conditionValue) {
                     $activeOnPromotions[$promotion->getId()] = [$itemsOnPromotion, $promotion];
                 }
             }
-            if($condition == '<'){
-                if($itemQuantity < $conditionValue) {
+            if ($condition == '<') {
+                if ($itemQuantity < $conditionValue) {
                     $activeOnPromotions[$promotion->getId()] = [$itemsOnPromotion, $promotion];
                 }
             }
-            if($condition == '='){
-                if($conditionValue == $itemQuantity) {
+            if ($condition == '=') {
+                if ($conditionValue == $itemQuantity) {
                     $activeOnPromotions[$promotion->getId()] = [$itemsOnPromotion, $promotion];
                 }
             }
         }
-            $samePriceType = [];
-            $samePriceType['detal'] = [];
-            $samePriceType['hurt'] = [];
-            $samePriceType['specjal'] = [];
-            $sameConditionType = [];
-            foreach($activeOnPromotions as $promotion){
-                if(in_array('detal',$promotion[1]->getPriceTypes())){
-                     array_push($samePriceType['detal'],$promotion);
-                }
-                if(in_array('hurt',$promotion[1]->getPriceTypes())){
-                    array_push($samePriceType['hurt'],$promotion);
-                }
-                if(in_array('specjal',$promotion[1]->getPriceTypes())){
-                    array_push($samePriceType['specjal'],$promotion);
-                }
+        $samePriceType = [];
+        $samePriceType['detal'] = [];
+        $samePriceType['hurt'] = [];
+        $samePriceType['specjal'] = [];
+        $sameConditionType = [];
+        foreach ($activeOnPromotions as $promotion) {
+            if (in_array('detal', $promotion[1]->getPriceTypes())) {
+                array_push($samePriceType['detal'], $promotion);
             }
-            foreach($samePriceType as $key => $value){
-                foreach($value as $promotion){
-                    if(key_exists($key.$promotion[1]->getCartConditionType().$promotion[1]->getCartCondition(), $sameConditionType)){
-                        if($promotion[1]->getCartConditionValue() > $sameConditionType[$key.$promotion[1]->getCartConditionType().$promotion[1]->getCartCondition()][0]){
-                            $sameConditionType[$key.$promotion[1]->getCartConditionType().$promotion[1]->getCartCondition()] = [$promotion[1]->getCartConditionValue(),$promotion];
-                        }
-                    }else{
-                        $sameConditionType[$key.$promotion[1]->getCartConditionType().$promotion[1]->getCartCondition()]=[$promotion[1]->getCartConditionValue(),$promotion];
+            if (in_array('hurt', $promotion[1]->getPriceTypes())) {
+                array_push($samePriceType['hurt'], $promotion);
+            }
+            if (in_array('specjal', $promotion[1]->getPriceTypes())) {
+                array_push($samePriceType['specjal'], $promotion);
+            }
+        }
+        foreach ($samePriceType as $key => $value) {
+            foreach ($value as $promotion) {
+                if (key_exists($key . $promotion[1]->getCartConditionType() . $promotion[1]->getCartCondition(), $sameConditionType)) {
+                    if ($promotion[1]->getCartConditionValue() > $sameConditionType[$key . $promotion[1]->getCartConditionType() . $promotion[1]->getCartCondition()][0]) {
+                        $sameConditionType[$key . $promotion[1]->getCartConditionType() . $promotion[1]->getCartCondition()] = [$promotion[1]->getCartConditionValue(), $promotion];
                     }
-                    
+                } else {
+                    $sameConditionType[$key . $promotion[1]->getCartConditionType() . $promotion[1]->getCartCondition()] = [$promotion[1]->getCartConditionValue(), $promotion];
                 }
             }
-            $promotionIds = [];
+        }
+        $promotionIds = [];
 
-            foreach($sameConditionType as $key =>$value){
-                array_push($promotionIds, $value[1][1]->getId());
-            }
+        foreach ($sameConditionType as $key => $value) {
+            array_push($promotionIds, $value[1][1]->getId());
+        }
 
-            foreach($activeOnPromotions as $key => $promotion){
-                if(in_array($key, $promotionIds)){
-                    
-                }else{
-                    unset($activeOnPromotions[$key]);
-                }
+        foreach ($activeOnPromotions as $key => $promotion) {
+            if (in_array($key, $promotionIds)) {
+                
+            } else {
+                unset($activeOnPromotions[$key]);
             }
-           return $activeOnPromotions;
-            
-        
+        }
+        return $activeOnPromotions;
     }
 
     /**
      * @Route("/", name="cart")
      */
     public function index(CartManager $cartManager, Request $request, DbLog $logger): Response {
-
-
-        $cart = $cartManager->getCurrentCart();
+        
         $entityManager = $this->getDoctrine()->getManager();
+       
+        if($this->get('session')->has('cart_id')){
+            $repositoryCart = $entityManager->getRepository(Order::class);
+            $cart = $repositoryCart->findOneBy(['id'=>$this->get('session')->get('cart_id')]);
+            $cartManager->setCart($cart);
+        }else{
+            $cart = $cartManager->getCurrentCart();
+        }
+        
+
+        
         $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
         $repositoryLog = $entityManager->getRepository(Log::class);
-        $logs = $repositoryLog->findByType($cart->getType(),$cart->getId());
-        
-        $activeOnPromotions = $this->getPromotions($entityManager,$cart);
+        $logs = $repositoryLog->findByType($cart->getType(), $cart->getId());
+
+        $activeOnPromotions = $this->getPromotions($entityManager, $cart);
         $route_image = null;
 
         if (!$this->get('session')->has('transport_time')) {
@@ -642,8 +659,8 @@ class CartController extends AbstractController {
             if ($form->getClickedButton() === $form->get('count')) {
 
                 $formKontrahent = $form->get('kontrahent')->getData();
-                if($formKontrahent !== $cart->getKontrahent()){
-                    $logger->write($cart->getType(), $cart->getId(), 'Zmiana kontrahenta z '.$cart->getKontrahent()->getName(). ' na '.$formKontrahent->getName(), $this->getUser());
+                if ($formKontrahent !== $cart->getKontrahent()) {
+                    $logger->write($cart->getType(), $cart->getId(), 'Zmiana kontrahenta z ' . $cart->getKontrahent()->getName() . ' na ' . $formKontrahent->getName(), $this->getUser());
                     $cart->setKontrahent($formKontrahent);
                 }
                 $delivery_coordinates = $this->getAdressCoordinates($form->get('adress')->getData());
@@ -662,27 +679,31 @@ class CartController extends AbstractController {
 
                 $this->removeAutoHds($cartManager);
                 $this->removepallets($cartManager);
+                
+                    $packages = $this->getPalletsCount($form, $cartManager, $activeOnPromotions);
+                    
+                    if($form->get('own_pickup')->getData() == false){
 
-                $packages = $this->getPalletsCount($form, $cartManager,$activeOnPromotions);
+                    if ($truck_route_distance > 100 || empty($truck_route_distance)) {
+                        $this->addFlash(
+                                'danger', 'Trasa większa niż 100 km, lub brak trasy'
+                        );
+                        return $this->redirectToRoute('cart');
+                    }
+                
+                
+                    $transport_type = $this->getTransportTypes($packages, $form, $truck_route_distance);
+                    $roud_up_by_10_distance = ((ceil($truck_route_distance / 5)) * 5);
+                    if ($roud_up_by_10_distance < 5) {
+                        $roud_up_by_10_distance = 5;
+                    }
 
+                    $transport_bag = $this->getTransportsArray($transport_type, $roud_up_by_10_distance, $form);
 
-                if ($truck_route_distance > 100 || empty($truck_route_distance)) {
-                    $this->addFlash(
-                            'danger', 'Trasa większa niż 100 km, lub brak trasy'
-                    );
-                    return $this->redirectToRoute('cart');
+                    $this->saveAutoHds($entityManager, $form, $transport_bag, $cartManager);
+                    
                 }
-
-                $transport_type = $this->getTransportTypes($packages, $form, $truck_route_distance);
-
-                $roud_up_by_10_distance = ((ceil($truck_route_distance / 5)) * 5);
-                if ($roud_up_by_10_distance < 5) {
-                    $roud_up_by_10_distance = 5;
-                }
-
-                $transport_bag = $this->getTransportsArray($transport_type, $roud_up_by_10_distance, $form);
-
-                $this->saveAutoHds($entityManager, $form, $transport_bag, $cartManager);
+                
 
                 return $this->redirectToRoute('cart');
             }
@@ -719,14 +740,13 @@ class CartController extends AbstractController {
                 $logger->write($cart->getType(), $cart->getId(), 'Utworzono nowy dokument', $this->getUser());
 
                 if ($form->get('type')->getData() == 'order') {
-                    
+
                     $delivery = new Delivery();
                     $delivery->addDeliveryOrder($cart);
                     $entityManager->persist($delivery);
                     $entityManager->flush();
-                    
-                    $logger->write($cart->getType(), $cart->getId(), 'Utworzono nową dostawę '.$delivery->getId(), $this->getUser());
 
+                    $logger->write($cart->getType(), $cart->getId(), 'Utworzono nową dostawę ' . $delivery->getId(), $this->getUser());
                 }
                 $cart->setUpdatedAt(new \DateTime());
 
@@ -743,7 +763,6 @@ class CartController extends AbstractController {
                     'cart' => $cart,
                     'form' => $form->createView(),
 //                    'adress' => $adress_oryginal,
-
                     'route_image' => $route_image,
                     'dystans' => $truck_route_distance,
                     'time' => $transport_time,
@@ -768,12 +787,15 @@ class CartController extends AbstractController {
      */
     public function clear(CartManager $cartManager, Request $request, DbLog $logger): Response {
         $cart = $cartManager->getCart();
-        if($cart->getType() == 'offer'){
+
+        
+
+        if ($cart->getType() == 'offer') {
             $type = 'ofertę';
-        }else if($cart->getType() == 'order'){
-           $type = 'zamówienie'; 
+        } else if ($cart->getType() == 'order') {
+            $type = 'zamówienie';
         }
-        $logger->write($cart->getType(), $cart->getId(), 'Wyczyszczono '.$type, $this->getUser());
+        $logger->write($cart->getType(), $cart->getId(), 'Wyczyszczono ' . $type, $this->getUser());
         return $this->redirectToRoute('cart');
     }
 
@@ -804,17 +826,20 @@ class CartController extends AbstractController {
      */
     public function save_cart(Order $cart, CartManager $cartManager, Request $request, DbLog $logger): Response {
 
-    
-        if($cart->getType() == 'offer'){
+        if ($cart->getType() == 'offer' || $cart->getType() == null) {
             $type = 'ofertę';
-        }else if($cart->getType() == 'order'){
-           $type = 'zamówienie'; 
+            $cart->setType('offer');
+        } else if ($cart->getType() == 'order') {
+            $type = 'zamówienie';
         }
-        
-        $logger->write($cart->getType(), $cart->getId(), 'Zapisano '.$type, $this->getUser());
+
+        $logger->write($cart->getType(), $cart->getId(), 'Zapisano ' . $type, $this->getUser());
+
         $cartType = $cart->getType();
+
         $cartManager->save($cart);
         // musi zebrać extra dane z request i zapisać je do $cart;
+
         if ($this->get('session')->has('cart_id')) {
             $this->get('session')->remove('cart_id');
         }
@@ -832,15 +857,93 @@ class CartController extends AbstractController {
      */
     public function drop(CartManager $cartManager, Request $request, DbLog $logger): Response {
         $cart = $cartManager->getCart();
-        if($cart->getType() == 'offer'){
+        if ($cart->getType() == 'offer') {
             $type = 'Oferta';
-        }else if($cart->getType() == 'order'){
-           $type = 'Zamówienie'; 
+        } else if ($cart->getType() == 'order') {
+            $type = 'Zamówienie';
         }
-        $logger->write($cart->getType(), $cart->getId(), $type.' zostało porzucone', $this->getUser());
+        $logger->write($cart->getType(), $cart->getId(), $type . ' zostało porzucone', $this->getUser());
         if ($this->get('session')->has('cart_id')) {
             $this->get('session')->remove('cart_id');
         }
+
+        return $this->redirectToRoute('order_index');
+    }
+
+    /**
+     * @Route("/orderoffer/{id}", name="offer_to_order")
+     */
+    public function orderoffer(Order $offer, Request $request, DbLog $logger): Response {
+
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $repository = $entityManager->getRepository(Order::class);
+        $results = $repository->findBy(array('status'=>'order'), array('id' => 'DESC'), 1, 0);
+        $resultAll = $repository->findBy(array(), array('id' => 'DESC'), 1, 0);
+        
+        $offer->setIsOrdered(true);
+        $offer->setOrderId($resultAll[0]->getId());
+        $order = new Order;
+        $entityManager->persist($offer);
+
+        
+      
+        
+        
+        if (!empty($results)) {
+            $number = explode('/', $results[0]->getNumber());
+            $number = $number[0];
+            $number = $number + 1;
+        } else {
+            $number = 1;
+        }
+        $number = $number . '/' . date("Y");
+        
+        $order->setNumber($number);
+                $order->setIsOrdered(true);
+                foreach($offer->getRelation() as $relation){
+                   $order->addRelation($relation); 
+                }
+                $order->setDeliveryDate($offer->getDeliveryDate());
+                foreach($offer->getItem() as $item){
+                   $order->addItem($item); 
+                }
+                
+                $order->setStatus('order');
+                $order->setCreatedAt($offer->getCreatedAt());
+                $order->setUpdatedAt($offer->getUpdatedAt());
+                $order->setAdress($offer->getAdress());
+                $order->setPhone($offer->getPhone());
+                $order->setKontrahent($offer->getKontrahent());
+//                $order->setAllowedCarSize($offer->getAllowedCarSize());
+                foreach($offer->getDeliveries() as $delivery){
+                   $order->addDelivery($delivery); 
+                }
+                
+                $order->setKontrahentGroup($offer->getKontrahentGroup());
+                $order->setPickup($offer->getPickup());
+                $order->setIsPickupWieliczka($offer->getIsPickupWieliczka());
+                $order->setIsExtraDelivery($offer->getIsExtraDelivery());
+                $order->setOwnPickup($offer->getOwnPickup());
+                $order->setType($offer->getType());
+                $order->setNotice($offer->getNotice());
+                $order->setCountPallets($offer->getCountPallets());
+                $order->setUser($this->getUser());
+                foreach($offer->getPitchOrders() as $po){
+                   $order->addPitchOrder($po);
+                }
+                
+                foreach($offer->getFactoryOrders() as $fo){
+                   $order->addFactoryOrder($fo);
+                }
+                
+                $entityManager->persist($order);
+                
+                $entityManager->flush();
+
+        $logger->write($order->getType(), $order->getId(), 'Oferta '.$offer->getNumber().' została zmieniona na zamówienie', $this->getUser());
+        
 
         return $this->redirectToRoute('order_index');
     }
