@@ -979,26 +979,26 @@ public function import(Request $request): Response {
             // instantiation, when using it inside the Symfony framework
             $contents = $file->getContents();
             // decoding CSV contents
-            $products_csv = $serializer->decode($contents, 'csv');
-            
-            foreach ($products_csv as $key => $value) {
-                
-                $id = $value['ID'];
+            $context = [",", '"', "\\", "." ];
+            $products_csv = $serializer->decode($contents, 'csv', $context);
 
+            foreach ($products_csv as $key => $value) {
+                $id = $value['ID'];
+                
                 if(key_exists($id, $existingProducts)){
                     $existingProducts[$id]->setName($value['Nazwa']);
                     $existingProducts[$id]->setManufacture($value['Fabryka']);
-                    $existingProducts[$id]->setPackaging($value['Pakowanie']);
-                    $existingProducts[$id]->setPackageWeight($value['Waga Paczki']);
-                    $existingProducts[$id]->setUnitWeight($value['Waga Jednostki']);
-                    $existingProducts[$id]->setCatalogPrice($value['Cena katalogowa']);
-                    $existingProducts[$id]->setBuyPrice($value['Cena zakupu']);
-                    $existingProducts[$id]->setSellPriceFactoryDetal($value['Cena Detal Fabryka']);
-                    $existingProducts[$id]->setSellPricePitchDetal($value['Cena Detal Plac']);
-                    $existingProducts[$id]->setSellPriceFactoryContractors($value['Cena Wykonawcy Fabryka']);
-                    $existingProducts[$id]->setSellPricePitchContractors($value['Cena Wykonawcy Plac']);
-                    $existingProducts[$id]->setSellPriceFactoryWholesale($value['Cena Hurt Fabryka']);
-                    $existingProducts[$id]->setSellPricePitchWholesale($value['Cena Hurt Plac']);
+                    $existingProducts[$id]->setPackaging(floatval($value['Pakowanie']));
+                    $existingProducts[$id]->setPackageWeight(floatval($value['Waga Paczki']));
+                    $existingProducts[$id]->setUnitWeight(floatval($value['Waga Jednostki']));
+                    $existingProducts[$id]->setCatalogPrice(floatval($value['Cena katalogowa']));
+                    $existingProducts[$id]->setBuyPrice(floatval($value['Cena zakupu']));
+                    $existingProducts[$id]->setSellPriceFactoryDetal(floatval($value['Cena Detal Fabryka']));
+                    $existingProducts[$id]->setSellPricePitchDetal(floatval($value['Cena Detal Plac']));
+                    $existingProducts[$id]->setSellPriceFactoryContractors(floatval($value['Cena Wykonawcy Fabryka']));
+                    $existingProducts[$id]->setSellPricePitchContractors(floatval($value['Cena Wykonawcy Plac']));
+                    $existingProducts[$id]->setSellPriceFactoryWholesale(floatval($value['Cena Hurt Fabryka']));
+                    $existingProducts[$id]->setSellPricePitchWholesale(floatval($value['Cena Hurt Plac']));
                     $existingProducts[$id]->setIsCourier($value['Czy Kurier']);
                     $existingProducts[$id]->setCourierCost($value['Cena Kurier']);
                     $existingProducts[$id]->setIsNotAvailable($value['Towar Niedostępny']);
@@ -1016,17 +1016,17 @@ public function import(Request $request): Response {
                     $newProduct->setId($id);
                     $newProduct->setName($value['Nazwa']);
                     $newProduct->setManufacture($value['Fabryka']);
-                    $newProduct->setPackaging($value['Pakowanie']);
-                    $newProduct->setPackageWeight($value['Waga Paczki']);
-                    $newProduct->setUnitWeight($value['Waga Jednostki']);
-                    $newProduct->setCatalogPrice($value['Cena katalogowa']);
-                    $newProduct->setBuyPrice($value['Cena zakupu']);
-                    $newProduct->setSellPriceFactoryDetal($value['Cena Detal Fabryka']);
-                    $newProduct->setSellPricePitchDetal($value['Cena Detal Plac']);
-                    $newProduct->setSellPriceFactoryContractors($value['Cena Wykonawcy Fabryka']);
-                    $newProduct->setSellPricePitchContractors($value['Cena Wykonawcy Plac']);
-                    $newProduct->setSellPriceFactoryWholesale($value['Cena Hurt Fabryka']);
-                    $newProduct->setSellPricePitchWholesale($value['Cena Hurt Plac']);
+                    $newProduct->setPackaging(floatval($value['Pakowanie']));
+                    $newProduct->setPackageWeight(floatval($value['Waga Paczki']));
+                    $newProduct->setUnitWeight(floatval($value['Waga Jednostki']));
+                    $newProduct->setCatalogPrice(floatval($value['Cena katalogowa']));
+                    $newProduct->setBuyPrice(floatval($value['Cena zakupu']));
+                    $newProduct->setSellPriceFactoryDetal(floatval($value['Cena Detal Fabryka']));
+                    $newProduct->setSellPricePitchDetal(floatval($value['Cena Detal Plac']));
+                    $newProduct->setSellPriceFactoryContractors(floatval($value['Cena Wykonawcy Fabryka']));
+                    $newProduct->setSellPricePitchContractors(floatval($value['Cena Wykonawcy Plac']));
+                    $newProduct->setSellPriceFactoryWholesale(floatval($value['Cena Hurt Fabryka']));
+                    $newProduct->setSellPricePitchWholesale(floatval($value['Cena Hurt Plac']));
                     $newProduct->setIsCourier($value['Czy Kurier']);
                     $newProduct->setCourierCost($value['Cena Kurier']);
                     $newProduct->setIsNotAvailable($value['Towar Niedostępny']);

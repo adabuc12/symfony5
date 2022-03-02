@@ -92,8 +92,8 @@ class CartController extends AbstractController {
         return $truck_route;
     }
 
-    public function removeAutoHds($cartManager) {
-        $cart = $cartManager->getCurrentCart();
+    public function removeAutoHds($cart) {
+
         $cartItems = $cart->getItem();
         foreach ($cartItems as $item) {
             $productName = $item->getProduct()->getName();
@@ -101,11 +101,11 @@ class CartController extends AbstractController {
                 $cart->removeItem($item);
             }
         }
-        $cartManager->save($cart);
+        return $cart;
     }
 
-    public function removepallets($cartManager) {
-        $cart = $cartManager->getCurrentCart();
+    public function removepallets($cart) {
+
         $cartItems = $cart->getItem();
         foreach ($cartItems as $item) {
             $productName = $item->getProduct()->getName();
@@ -113,7 +113,7 @@ class CartController extends AbstractController {
                 $cart->removeItem($item);
             }
         }
-        $cartManager->save($cart);
+        return $cart;
     }
 
     public function getProductPrice($price_group, $pickupbolean, $item, $activeOnPromotions) {
@@ -199,13 +199,13 @@ class CartController extends AbstractController {
         return $pricefloat;
     }
 
-    public function getPalletsCount($form, $cartManager, $activeOnPromotions) {
+    public function getPalletsCount($form, $cartManager, $activeOnPromotions, $cart) {
 
-        $cart = $cartManager->getCurrentCart();
         $cartItems = $cart->getItem();
         $extra_weight_packages = 0;
         $packages = 0;
         $extra_weight = 0;
+       
         foreach ($cartItems as $item) {
             if (strpos($item->getProduct()->getName(), 'paleta') == false && strpos($item->getProduct()->getName(), 'Auto') == false) {
                 $pickupbolean = false;
@@ -272,7 +272,7 @@ class CartController extends AbstractController {
 
         $extra_weight_packages = $extra_weight / 1400;
         $packages = $packages + ceil($extra_weight_packages);
-
+        
         $cartManager->save($cart);
 
 
@@ -452,9 +452,9 @@ class CartController extends AbstractController {
         return $transport_bag;
     }
 
-    public function saveAutoHds($entityManager, $form, $transport_bag, $cartManager) {
+    public function saveAutoHds($entityManager, $form, $transport_bag, $cartManager, $cart) {
 
-        $cart = $cartManager->getCurrentCart();
+
         $repositoryProduct = $entityManager->getRepository(Product::class);
         if (!$form->get('own_pickup')->getData()) {
 
@@ -622,7 +622,7 @@ class CartController extends AbstractController {
             $cart = $cartManager->getCurrentCart();
         }
         
-
+        
         
         $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
@@ -657,7 +657,7 @@ class CartController extends AbstractController {
             }
 
             if ($form->getClickedButton() === $form->get('count')) {
-
+                
                 $formKontrahent = $form->get('kontrahent')->getData();
                 if ($formKontrahent !== $cart->getKontrahent()) {
                     $logger->write($cart->getType(), $cart->getId(), 'Zmiana kontrahenta z ' . $cart->getKontrahent()->getName() . ' na ' . $formKontrahent->getName(), $this->getUser());
@@ -669,18 +669,18 @@ class CartController extends AbstractController {
                 $car_type = 'truck';
 
                 $truck_route = $this->routeCalculate($car_type, $coordinates, $delivery_coordinates, $form->get('is_pickup_wieliczka')->getData());
-
+                
                 if (isset($truck_route['routes'])) {
                     $truck_route_distance = ($truck_route['routes'][0]['sections'][0]['summary']['length']) / 1000;
                     $this->get('session')->set('truck_route_distance', $truck_route_distance);
                     $transport_time = ceil(($truck_route['routes'][0]['sections'][0]['summary']['typicalDuration']) / 60);
                     $this->get('session')->set('transport_time', $transport_time);
                 }
-
-                $this->removeAutoHds($cartManager);
-                $this->removepallets($cartManager);
                 
-                    $packages = $this->getPalletsCount($form, $cartManager, $activeOnPromotions);
+                $cart = $this->removeAutoHds($cart);
+                $cart = $this->removepallets($cart);
+   
+                $packages = $this->getPalletsCount($form, $cartManager, $activeOnPromotions,$cart);
                     
                     if($form->get('own_pickup')->getData() == false){
 
@@ -691,17 +691,17 @@ class CartController extends AbstractController {
                         return $this->redirectToRoute('cart');
                     }
                 
-                
+                    
                     $transport_type = $this->getTransportTypes($packages, $form, $truck_route_distance);
                     $roud_up_by_10_distance = ((ceil($truck_route_distance / 5)) * 5);
                     if ($roud_up_by_10_distance < 5) {
                         $roud_up_by_10_distance = 5;
                     }
-
-                    $transport_bag = $this->getTransportsArray($transport_type, $roud_up_by_10_distance, $form);
-
-                    $this->saveAutoHds($entityManager, $form, $transport_bag, $cartManager);
                     
+                    $transport_bag = $this->getTransportsArray($transport_type, $roud_up_by_10_distance, $form);
+                    
+                    $this->saveAutoHds($entityManager, $form, $transport_bag, $cartManager, $cart);
+                 
                 }
                 
 

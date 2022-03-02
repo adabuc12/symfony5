@@ -334,7 +334,7 @@
                <li class="nav-item"><a href="{{ path("factory_order_new_cart", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zamów Fabryka</a></li>
                {% endif %}
 
-           {% if cart.id != '' and cart.isOrdered == false and cart.status == 'order' %}
+           {% if cart.id != '' and cart.isOrdered == false and cart.status == 'offer' %}
                <li class="nav-item"><a href="{{ path("offer_to_order", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zamów</a></li>
                {% endif %}
            {% if cart.id != '' %}
@@ -342,19 +342,20 @@
                
                <li class="nav-item"><a href="{{ path("factory_order_ask", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zapytania</a> </li>
                {% endif %}
-           {% if cart.id != '' and cart.status == 'offer' %}
+           {% if cart.id != '' and cart.status == 'offer' and cart.type == 'set' %}
                 <li class="nav-item"><a href="" class="btn btn-info w-100 m-1">Warianty</a> </li>
            {% endif %}
            
-           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Wiadomości</a> </li>
+           <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path("message_index")}}">Wiadomości</a> </li>
            {% if cart.status == 'order' %}
            <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Rozliczenia</a> </li>
            <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Transporty</a> </li>
            <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Ekspor WAPRO</a></li>
            {% endif %}
            
-           
-           <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="">Anuluj</a></li>
-           <li class="nav-item"><a href="" class="btn btn-danger w-100 m-1">Usuń</a> </li>
+           {% if cart.id != '' %}
+                <li class="nav-item"> <a class="btn btn-danger w-100 m-1" href="{{ path("change_type", {'id': cart.id,'type':'canceled'})}}">Anuluj</a></li>
+                <li class="nav-item"><a href="{{ path("change_status", {'id': cart.id,'status':'deleted'})}}" class="btn btn-danger w-100 m-1">Usuń</a> </li>
+           {% endif %}
                {% endblock %}
 

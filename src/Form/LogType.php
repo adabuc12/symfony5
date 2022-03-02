@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Log;
+use App\Entity\Notice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,7 +26,7 @@ class LogType extends AbstractType
                     ],
                     'label' => 'Typ'
                 ])
-            ->add('kontrahent')
+          
         ;
     }
 

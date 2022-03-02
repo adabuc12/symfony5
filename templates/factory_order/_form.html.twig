@@ -12,7 +12,9 @@
     <tr>
         <td>{{ factory_order.dateCreated ? factory_order.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
         <td>{{ factory_order.dateSended ? factory_order.dateSended|date('Y-m-d H:i:s') : '' }}</td>
-        <td>{{ factory_order.createdBy.name }} {{ factory_order.createdBy.surname }}</td>
+        {% if factory_order.createdBy != null %}
+            <td>{{ factory_order.createdBy.name }} {{ factory_order.createdBy.surname }}</td>
+        {% endif %}
         <td>{% if factory_order.clientOrder %}
             <a href="{{ path('order_edit', {'id': factory_order.clientOrder.id}) }}" >{{ factory_order.clientOrder.number }} - {{ factory_order.clientOrder.kontrahent.name }}</a>
         {% endif %}</td>

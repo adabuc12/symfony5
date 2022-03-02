@@ -54,7 +54,7 @@ class CartManager {
      */
     public function getCurrentCart(): Order {
         $cart = $this->cartSessionStorage->getCart();
-        
+
         if (!$cart) {
             $cart = $this->cartFactory->create();
         }
@@ -71,7 +71,11 @@ class CartManager {
 
         $dateImmutable = new \DateTime();
         if (empty($cart->getNumber())) {
-            $lastOrder = $this->em->getRepository('App:Order')->findOneBy(['status'=>'offer'], ['id' => 'desc']);
+            if($cart->getStatus()=='offer'){
+                $lastOrder = $this->em->getRepository('App:Order')->findOneBy(['status'=>'offer'], ['id' => 'desc']);
+            }elseif($cart->getStatus()=='order'){
+                $lastOrder = $this->em->getRepository('App:Order')->findOneBy(['status'=>'order'], ['id' => 'desc']);
+            }
             if (empty($lastOrder)) {
                 $cart->setIsOrdered(false);
                 $cart->setDeliveryDate($dateImmutable);

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Centrum Wiadomości{% endblock %}
+
+{% block body %}
+    <h1>Centrum Wiadomości</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data utworzenia</th>
+                <th>Treść</th>
+                <th>Typ</th>
+                
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.dataCreated ? message.dataCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message.type }}</td>
+                <td>{{ message.text }}</td>
+                <td>{{ message.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Brak wiadomości</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"><a class="nav-link btn btn-primary" href="{{ path('message_new') }}">Utwórz nową</a></li>
+{% endblock %}

@@ -7,7 +7,7 @@
 {% block filters %}
     {% if app.request.get('_route') == 'order_index' %} <h3>Lista zamówień</h3>{% endif %}
     {% if app.request.get('_route') == 'offer_index' %} <h3>Lista ofert</h3>{% endif %}
-   
+
     <form class="form">
         <div class="row">
             <table class="table table-primary">
@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             {% for order in orders %}
-                <tr class="clickable-row {% if order.isOrdered == true and order.status == 'offer' %}table-success{% endif %}" data-href='{{ path('order_edit', {'id': order.id}) }}'>
+                <tr class="clickable-row {% if order.type == 'canceled' %}table-danger {% endif %} {% if order.isOrdered == true and order.status == 'offer' %}table-success{% endif %}" data-href='{{ path('order_edit', {'id': order.id}) }}'>
                     <td>{{ order.number }}</td>
                     <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ order.kontrahent }}</td>
@@ -50,34 +50,46 @@
                     <td>{{ order.user.name }} {{ order.user.surname }}</td>
                     <td style="text-align: right;">{{ order.total|number_format(2, '.', ' ') }}</p></td>
                         {% if order.status == 'offer' %}
-                        <td>{% if order.isOrdered == true and order.orderId > 0 %}
+
+                        <td>
+                         {% if order.type == 'canceled' %}
+                            <a href="">
+                                <i class="fa-solid fa-rectangle-xmark" style="color:red"></i>
+                            </a> 
+                        {% endif %}
+                            {% if order.isOrdered == true and order.orderId > 0 %}
                             <a href="{{ path('order_edit', {'id': order.orderId}) }}">
                                 <i class="fa-solid fa-basket-shopping"></i>
                             </a>{% endif %}
                         </td>{% endif %}
                         {% if order.status == 'order' %}
                             <td>
-                                <a href="">
-                                    <i class="fa-solid fa-industry"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-truck"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-print"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                </a>
-                                <a href="">
-                                    <i class="fa-solid fa-rectangle-xmark"></i>
-                                </a>
+                                {% if order.type == '' %}
+                                    <a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa-solid fa-truck"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa-solid fa-print"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </a>
+                                {% endif %}
+                                {% if order.type == 'canceled' %}
+                                    <a href="">
+                                        <i class="fa-solid fa-rectangle-xmark"></i>
+                                    </a>
+                                {% endif %}
+
                             </td>{% endif %}
                         </tr>
                     {% else %}

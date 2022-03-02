@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\Option;
 use App\Form\CartType;
+use App\Manager\CartManager;
 use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,10 +94,10 @@ class OrderController extends AbstractController {
     /**
      * @Route("/edit/{id}", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $order): Response {
+    public function edit(Request $request, Order $order,CartManager $cartManager): Response {
         $form = $this->createForm(CartType::class, $order);
         $form->handleRequest($request);
-        
+
         $this->get('session')->set('cart_id',$order->getId());
         
          return $this->redirectToRoute('cart');
@@ -189,6 +190,34 @@ class OrderController extends AbstractController {
         exit;
     }
     
+    /**
+     * @Route("/changetype/{id}/{type}", name="change_type", methods={"GET"})
+     */
+    public function changeType(Order $order,string $type): Response {
+        
+        $order->setType($type);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($order);
+        $entityManager->flush();
+        
+        if($order->getStatus() == 'offer'){
+            return $this->redirectToRoute('offer_index', [], Response::HTTP_SEE_OTHER);
+        }elseif($order->getStatus() == 'order'){
+            return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
     
+    /**
+     * @Route("/changestatus/{id}/{status}", name="change_status", methods={"GET"})
+     */
+    public function changeStatus(Order $order,string $status): Response {
+        
+        $order->setStatus($status);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+    }
 
 }
