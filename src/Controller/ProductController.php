@@ -453,6 +453,11 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal < 10){
+                                  $percentValue = floatval('0.'.$minDetal); 
+                                }else{
+                                  $percentValue = floatval('1.'.$minDetal); 
+                                }
                                 if($minDetal){
                                     $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
                                 }else{
@@ -488,6 +493,11 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal < 10){
+                                  $percentValue = floatval('0.'.$minDetal); 
+                                }else{
+                                  $percentValue = floatval('1.'.$minDetal); 
+                                }
                                 if($minDetal){
                                     $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
                                 }else{
@@ -522,8 +532,13 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
+                                if($minDetal < 10){
+                                  $percentValue = floatval('0.'.$minDetal); 
+                                }else{
+                                  $percentValue = floatval('1.'.$minDetal); 
+                                }
                                 if($minDetal){
-                                    $productPrice =  $this->ceiling(($productBuyPrice*floatval('1.'.$minDetal)),$roundprice);
+                                    $productPrice =  $this->ceiling(($productBuyPrice*$percentValue),$roundprice);
                                 }else{
                                     $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
                                 }
