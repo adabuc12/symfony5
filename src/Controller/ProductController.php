@@ -454,7 +454,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
                                 if($minDetal < 10){
-                                  $percentValue = floatval('0.'.$minDetal); 
+                                  $percentValue = floatval('1.0'.$minDetal); 
                                 }else{
                                   $percentValue = floatval('1.'.$minDetal); 
                                 }
@@ -494,7 +494,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
                                 if($minDetal < 10){
-                                  $percentValue = floatval('0.'.$minDetal); 
+                                  $percentValue = floatval('1.0'.$minDetal); 
                                 }else{
                                   $percentValue = floatval('1.'.$minDetal); 
                                 }
@@ -533,7 +533,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                             if($productId == $product->getId()) {
                                 $productBuyPrice = $product->getBuyPrice();
                                 if($minDetal < 10){
-                                  $percentValue = floatval('0.'.$minDetal); 
+                                  $percentValue = floatval('1.0'.$minDetal); 
                                 }else{
                                   $percentValue = floatval('1.'.$minDetal); 
                                 }
