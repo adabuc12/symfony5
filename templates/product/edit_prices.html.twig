@@ -141,10 +141,13 @@
                     
                     {% if app.request.get('types') == 'min_earnings_percent'  or app.request.get('show_all') == 'on' %} 
                     <th>Narzut detal</th>
+                    <th>Cena b</th>
                     <th>Zysk n</th>
                     <th>Narzut hurt</th>
+                    <th>Cena b</th>
                     <th>Zysk n</th>
                     <th>Narzut specjalna</th> 
+                    <th>Cena b</th>
                     <th>Zysk n</th>
                     {% endif %}
                     
@@ -196,15 +199,18 @@
                                            {% if product.buyPrice != 0  %} value="{{ ((100*product.sellPriceFactoryDetal)/product.buyPrice)-100 }}" 
                                                {% if ((100*product.sellPriceFactoryDetal)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %} 
                                            {% endif %}/></td> 
+                                 <td>{{ (product.sellPriceFactoryDetal)|number_format(2) }}</td>
                                 <td>{{ (product.sellPriceFactoryDetal/1.23 - product.buyPrice/1.23)|number_format(2) }}</td>
                                 <td><input type="text" name="{{ product.id }}-marzahurt" 
                                            {% if product.buyPrice != 0 %} value="{{ ((100*product.sellPriceFactoryContractors)/product.buyPrice)-100 }}" 
                                                {% if ((100*product.sellPriceFactoryContractors)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %}
                                            {% endif %}/></td>
+                                <td>{{(product.sellPriceFactoryContractors)|number_format(2) }}</td>
                                 <td>{{(product.sellPriceFactoryContractors/1.23 - product.buyPrice/1.23)|number_format(2) }}</td>
                                 <td><input type="text" name="{{ product.id }}-marzaspecjal"
                                     {% if product.buyPrice != 0 %} value="{{ ((100*product.sellPriceFactoryWholesale)/product.buyPrice)-100 }}"{% if ((100*product.sellPriceFactoryWholesale)/product.buyPrice)-100 <= 0 %} class="bg bg-danger"{% endif %}{% endif %}/></td>
-                                <td>{{(product.sellPriceFactoryWholesale/1.23 - product.buyPrice/1.23)|number_format(2) }}</td>
+                                <td>{{(product.sellPriceFactoryWholesale)|number_format(2) }}</td>
+                            <td>{{(product.sellPriceFactoryWholesale/1.23 - product.buyPrice/1.23)|number_format(2) }}</td>
                             {% endif %}
                             {% if app.request.get('types') == 'prices' and app.request.get('show_all') == false %}
                             <td><input type="text" name="{{ product.id }}-detalprice" value="{{ product.sellPriceFactoryDetal }}"/></td> 
