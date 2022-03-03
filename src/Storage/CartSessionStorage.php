@@ -50,19 +50,12 @@ class CartSessionStorage
      */
     public function getCart(): ?Order
     {
-        if($this->getCartId() == null){
+
             return $this->cartRepository->findOneBy([
                  'ID' => $this->getCartId(),
                 'status' => Order::STATUS_CART
             ]);
-        }else{
-            return $this->cartRepository->findOneBy([
-               
-                'status' => Order::STATUS_CART
-            ]);
         }
-        
-    }
 
     /**
      * Sets the cart in session.
