@@ -52,7 +52,7 @@ class CartSessionStorage
     {
 
             return $this->cartRepository->findOneBy([
-                 'ID' => $this->getCartId(),
+                'id' => $this->getCartId(),
                 'status' => Order::STATUS_CART
             ]);
         }
