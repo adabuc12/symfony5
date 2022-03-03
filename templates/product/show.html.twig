@@ -311,7 +311,7 @@
         {% endfor %}
     {% endif %}
     {% if product.getIsNotAvailable != true and issettonotify == false %}<li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('product_available_notice',{'id':product.id}) }}">Powiadom o dostępności</a> </li>{% endif %}
-        <li class="nav-item"> <a class="nav-link btn btn-danger" href="{{ path('disable_product') }}">Wycofaj</a></li>
+        <li class="nav-item"> <a class="nav-link btn btn-danger" href="{{ path('disable_product',{'id': product.id}) }}">Wycofaj</a></li>
         {% if flase %}
         <li class="nav-item"> <a class="nav-link btn btn-secondary" href="">Zgłoś Zapotrzebowanie</a></li>
         <li class="nav-item"> <a class="nav-link btn btn-secondary" href="">Zamów</a></li>
