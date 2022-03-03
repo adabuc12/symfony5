@@ -1070,5 +1070,19 @@ return $this->renderForm('product/new_product_import.html.twig', [
             'form' => $form,
         ]);
  }
+ 
+  /**
+     * @Route("/productdisable/{id}/", name="disable_product", methods={"GET", "POST"})
+     */
+    public function setDisableProduct(Request $request, Product $product): Response {
+        
+        $user = $this->getUser();
+        $product->addNotifyUserIfAvaible($user);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+    }
 
 }

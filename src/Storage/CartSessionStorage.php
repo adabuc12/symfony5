@@ -50,10 +50,17 @@ class CartSessionStorage
      */
     public function getCart(): ?Order
     {
-        return $this->cartRepository->findOneBy([
-            'id' => $this->getCartId(),
-            'status' => Order::STATUS_CART
-        ]);
+        if($this->getCartId() != null){
+            return $this->cartRepository->findOneBy([
+                'status' => Order::STATUS_CART
+            ]);
+        }else{
+            return $this->cartRepository->findOneBy([
+                'id' => $this->getCartId(),
+                'status' => Order::STATUS_CART
+            ]);
+        }
+        
     }
 
     /**
