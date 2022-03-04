@@ -15,7 +15,7 @@ class LogType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('text', TextareaType::class, [
+            ->add('message', TextareaType::class, [
                     'label' => 'Tekst',
                 ])
             ->add('type', ChoiceType::class, [
