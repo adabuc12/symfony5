@@ -215,6 +215,10 @@ return $this->renderForm('product/new.html.twig', [
     $form = $this->createForm(AddToCartType::class);
     $form->handleRequest($request);
     
+     $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+        $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
+        $nknm = ($nknm->getValue() / 100) + 1;
+    
     if($price == 'detal' && $pickup == 'factory'){
             $pricefloat  = $product->getSellPriceFactoryDetal();
         }
@@ -296,6 +300,7 @@ return $this->renderForm('product/new.html.twig', [
     return $this->render('product/show.html.twig', [
         'product' => $product,
         'form' => $form->createView(),
+        'nknm' => $nknm,
         'parameters' => $parameters,
         'price' => $pricefloat,
         'pricetype' => $price,

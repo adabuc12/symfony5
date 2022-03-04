@@ -88,6 +88,12 @@
                                 <th>Cena detal plac</th>
                                 <td>{{ product.sellPricePitchDetal }} zł</td>
                             </tr>
+                            {% if product.sprzedazJednostkowa != 0 %}
+                             <tr class="table-success">
+                                <th>Cena detal plac m2/szt</th>
+                                <td>{{ (product.sellPricePitchDetal*nknm)|number_format(2) }} zł</td>
+                            </tr>   
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -258,9 +264,18 @@
                     $palsz = $packaging / $sz * 100;
                     $ilepalet = $mb / $palsz;
                     $palety = Math.ceil($ilepalet);
-
-                    $('#add_to_cart_quantity').val($palety * $packaging);
-                    $('#palety').val($palety);
+                    {% if product.sprzedazJednostkowa != 0 %}
+                                $ilembw = {{product.sprzedazJednostkowa}} / $sz ;
+                                $ilembw = $ilembw * 100 ;
+                                $ilem2 = $mb / $ilembw;
+                                $ilewarstw = Math.ceil($ilem2);
+                                $('#add_to_cart_quantity').val($ilewarstw*{{product.sprzedazJednostkowa}});
+                       
+                            {% else %}
+                                $('#add_to_cart_quantity').val($palety * $packaging);
+                    
+                            {% endif %}
+                    
                 }
 
                 if ($m2 > 0) {
