@@ -34,7 +34,7 @@ class LogController extends AbstractController
         $log = new Log();
         $form = $this->createForm(LogType::class, $log);
         $form->handleRequest($request);
-        $log->setDate(new \DateTime());
+        $log->setCreatedAt(new \DateTime());
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($log);
             $entityManager->flush();
