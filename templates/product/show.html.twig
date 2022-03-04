@@ -114,6 +114,12 @@
                                 <th>Cena hurt plac</th>
                                 <td>{{ product.sellPricePitchContractors }} zł</td>
                             </tr>
+                            {% if product.sprzedazJednostkowa != 0 %}
+                             <tr class="table-success">
+                                <th>Cena hurt plac m2/szt</th>
+                                <td>{{ (product.sellPricePitchContractors *nknm)|number_format(2) }} zł</td>
+                            </tr>   
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
