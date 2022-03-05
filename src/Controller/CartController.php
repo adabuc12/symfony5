@@ -832,6 +832,8 @@ class CartController extends AbstractController {
             $cart->setType('offer');
         } else if ($cart->getType() == 'order') {
             $type = 'zamówienie';
+        }else{
+            $type = 'dokumnet';
         }
 
         $logger->write($cart->getType(), $cart->getId(), 'Zapisano ' . $type, $this->getUser());

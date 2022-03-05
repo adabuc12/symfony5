@@ -102,6 +102,7 @@ class CartType extends AbstractType {
                     'expanded' => false,
                     'attr' =>['class' => 'chosen-select'],
                     'label' => 'Kontrahent',
+                    'placeholder' => 'Wybierz kontrahenta'
                 ])
                 ->add('item', CollectionType::class, [
                     'entry_type' => CartItemType::class,
