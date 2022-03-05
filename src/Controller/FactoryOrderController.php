@@ -77,13 +77,15 @@ class FactoryOrderController extends AbstractController {
         $date = new \DateTime();
         $repository = $this->getDoctrine()->getRepository(FactoryOrder::class);
         $lastEntity = $repository->findBy(array(), array('id' => 'DESC'), 1, 0);
-        if ($lastEntity[0]) {
-            $lastNumber = $lastEntity[0]->getNumber();
-            $lastNumber = explode('/', $lastNumber);
-            $lastNumber = $lastNumber[0] + 1;
-        } else {
-            $lastNumber = 1;
+        $lastNumber = 1;
+        if (!empty($lastEntity)) {
+            if ($lastEntity[0]) {
+                $lastNumber = $lastEntity[0]->getNumber();
+                $lastNumber = explode('/', $lastNumber);
+                $lastNumber = $lastNumber[0] + 1;
+            }
         }
+
         $lastNumber = $lastNumber . '/' . date('Y');
         $factoryOrder->setDateCreated($date);
 
@@ -210,16 +212,16 @@ class FactoryOrderController extends AbstractController {
         }
         return $this->redirectToRoute('factory_order_index', [], Response::HTTP_SEE_OTHER);
     }
-    
+
     /**
      * @Route("/ask/{id}", name="factory_order_ask", methods={"GET", "POST"})
      */
     public function sendAsk(Order $factoryOrder, Request $request): Response {
-                if($request->query->get('send_ask') !== null){
-                    foreach($request->query->all() as $key => $req){
-                        
-                    }
-                }
+        if ($request->query->get('send_ask') !== null) {
+            foreach ($request->query->all() as $key => $req) {
+                
+            }
+        }
         return $this->render('factory_order/ask.html.twig', [
                     'factory_order' => $factoryOrder,
         ]);
