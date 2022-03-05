@@ -663,11 +663,12 @@ class CartController extends AbstractController {
                     $logger->write($cart->getType(), $cart->getId(), 'Zmiana kontrahenta z ' . $cart->getKontrahent()->getName() . ' na ' . $formKontrahent->getName(), $this->getUser());
                     $cart->setKontrahent($formKontrahent);
                 }
+                if($form->get('own_pickup')->getData() == false){
                 $delivery_coordinates = $this->getAdressCoordinates($form->get('adress')->getData());
                 $coordinates = $this->getPickupCoordinates($form->get('pickup')->getData());
 
                 $car_type = 'truck';
-
+                
                 $truck_route = $this->routeCalculate($car_type, $coordinates, $delivery_coordinates, $form->get('is_pickup_wieliczka')->getData());
                 
                 if (isset($truck_route['routes'])) {
@@ -676,7 +677,7 @@ class CartController extends AbstractController {
                     $transport_time = ceil(($truck_route['routes'][0]['sections'][0]['summary']['typicalDuration']) / 60);
                     $this->get('session')->set('transport_time', $transport_time);
                 }
-                
+                }
                 $cart = $this->removeAutoHds($cart);
                 $cart = $this->removepallets($cart);
    
