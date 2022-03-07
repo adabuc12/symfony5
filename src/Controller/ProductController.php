@@ -570,6 +570,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                 }
             }
         if($request->query->get('change_prices') !== null){
+   
             foreach($request->query->all() as $key => $req){
                  if(strpos($req, ',') !== false){
                      $req = str_replace(",", ".", $req);
@@ -581,11 +582,13 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                     $inputType = $varNameArray[1];
                     
                     if($inputType == 'catalogprice'){
-                        foreach($pagerfanta->getCurrentPageResults() as $product){
-                            if($is_netto){
+                        if($is_netto){
                                 $req = round(floatval($req)*1.23, 2);
                             }
+                        foreach($pagerfanta->getCurrentPageResults() as $product){
+
                             if($productId == $product->getId() && $product->getCatalogPrice() !== $req) {
+                                
                                 $product->setCatalogPrice($req);
                                 $entityManager->persist($product);
     
