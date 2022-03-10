@@ -221,11 +221,11 @@ class CartController extends AbstractController {
 
                 $checkedFullPacks = $item->getQuantity() / $item->getProduct()->getPackaging();
                 $checkedFullPacks = round($checkedFullPacks,2);
-
+                
                 $floredPacks = floor($checkedFullPacks);
             
                 if ($form->get('count_pallets')->getData() == true && $item->getProduct()->getIsOnPalet() == true) {
-
+                   
                     $manufactureName = $item->getProduct()->getManufacture();
                     $repository = $this->getDoctrine()->getRepository(Product::class);
                     $paletaProduct = $repository->findOneBySomeName('paleta ' . $manufactureName);
@@ -234,14 +234,23 @@ class CartController extends AbstractController {
                     $item2->setQuantity(ceil($checkedFullPacks));
                     $item2->setPrice($paletaProduct->getSellPriceFactoryDetal());
 
-                    $cart = $cartManager->getCurrentCart();
+
                     if ($paletaProduct) {
                         $cart
                                 ->addItem($item2)
                                 ->setUpdatedAt(new \DateTime());
                     }
                 }
-                $priceProductPitchDetal = $item->getProduct()->getSellPricePitchDetal();
+                
+                if($form->get('kontrahent_group')->getData() == 'detal'){
+                    $priceProductPitchDetal = $item->getProduct()->getSellPricePitchDetal();
+                }
+                if($form->get('kontrahent_group')->getData() == 'hurt'){
+                    $priceProductPitchDetal = $item->getProduct()->getSellPricePitchContractors();
+                }
+                if($form->get('kontrahent_group')->getData() == 'specjal'){
+                    $priceProductPitchDetal = $item->getProduct()->getSellPricePitchWholesale();
+                }
                 $optionRepository = $this->getDoctrine()->getRepository(Option::class);
                 $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
                 $nknm = ($nknm->getValue() / 100) + 1;
@@ -251,13 +260,12 @@ class CartController extends AbstractController {
                 }
 
                 if ($checkedFullPacks - $floredPacks == 0) {
-
                     $item->setPrice($pricefloat);
                 } elseif ($form->get('pickup')->getData() !== 'pitch') {
-                    $item->setPrice(round($priceProductPitchDetal) * $nknm, 2);
+                    $item->setPrice(round($priceProductPitchDetal * $nknm), 2);
                     $cart->setIsPickupWieliczka(true);
                 }else{
-                    $item->setPrice($pricefloat); 
+                    $item->setPrice(round($pricefloat * $nknm), 2); 
                 }
 
                 $value = $quantity / $packaging;
@@ -440,11 +448,15 @@ class CartController extends AbstractController {
                 }
 
                 if ($form->get('is_pickup_wieliczka')->getData() && $form->get('pickup')->getData() !== 'pitch') {
-                    $transport_bag['przeladunek']['cost'] = 50;
+                    $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+                    $doladunek = $optionRepository->findOneBy(['shortcode' => 'doladunek']);
+                    $transport_bag['przeladunek']['cost'] = $doladunek->getValue();
                     $transport_bag['przeladunek']['count'] = 1;
                 }
                 if ($form->get('is_extra_delivery')->getData()) {
-                    $transport_bag['doladunek']['cost'] = 150;
+                    $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+                    $przeladunek = $optionRepository->findOneBy(['shortcode' => 'przeladunek']);
+                    $transport_bag['doladunek']['cost'] = $przeladunek->getValue();
                     $transport_bag['doladunek']['count'] = 1;
                 }
             }
@@ -685,13 +697,18 @@ class CartController extends AbstractController {
                     
                     if($form->get('own_pickup')->getData() == false){
 
-                    if ($truck_route_distance > 100 || empty($truck_route_distance)) {
+                    if ($truck_route_distance > 100) {
                         $this->addFlash(
-                                'danger', 'Trasa większa niż 100 km, lub brak trasy'
+                                'danger', 'Trasa większa niż 100 km'
                         );
                         return $this->redirectToRoute('cart');
                     }
-                
+                    if (empty($truck_route_distance)) {
+                        $this->addFlash(
+                                'danger', 'Brak adresu lub adres jest błędny'
+                        );
+                        return $this->redirectToRoute('cart');
+                    }
                     
                     $transport_type = $this->getTransportTypes($packages, $form, $truck_route_distance);
                     $roud_up_by_10_distance = ((ceil($truck_route_distance / 5)) * 5);

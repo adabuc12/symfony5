@@ -246,10 +246,10 @@ return $this->renderForm('product/new.html.twig', [
         $item = $form->getData();
         $item->setProduct($product);
         $quantity = $item->getQuantity();
-//        $price = $item->getPrice();
+        $price = $item->getPrice();
         $productPackaging = $product->getPackaging();
         $palets = ceil($quantity/$productPackaging);
-        
+        $fullPallets = floor($quantity/$productPackaging);
         $productFactoryName = $product->getManufacture();
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $paletaProduct = $repository->findOneBySomeName('paleta ' . $productFactoryName);
@@ -265,10 +265,31 @@ return $this->renderForm('product/new.html.twig', [
                 ->addItem($item2)
                 ->setUpdatedAt(new \DateTime());
             }
-
-            $cart
-                ->addItem($item)
-                ->setUpdatedAt(new \DateTime());
+            if($fullPallets == $palets){
+                 $cart
+                    ->addItem($item)
+                    ->setUpdatedAt(new \DateTime());
+            }else{
+ 
+                $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+                $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
+                $nknm = ($nknm->getValue() / 100) + 1;
+                $item->setQuantity($fullPallets*$product->getPackaging());
+                $cart
+                    ->addItem($item)
+                    ->setUpdatedAt(new \DateTime());
+                $extraQuantity =$quantity-($fullPallets*$product->getPackaging());
+                $item3 = new OrderItem();
+                $item3->setProduct($product);
+                $item3->setQuantity($extraQuantity);
+                $item3->setPrice(round($price) * $nknm, 2);
+                $cart
+                    ->addItem($item3)
+                    ->setUpdatedAt(new \DateTime());
+            }
+           
+            
+            
 
             $cartManager->save($cart);
             $this->addFlash('success',
