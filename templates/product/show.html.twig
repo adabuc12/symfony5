@@ -314,8 +314,8 @@
 {% endblock %}
 {% block footer %}
     <li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('product_index') }}">Lista  produktów</a> </li>
-    <li class="nav-item">       <a class="nav-link btn btn-primary"  href="{{ path('product_edit', {'id': product.id}) }}">Edytuj</a></li>
-
+    <li class="nav-item"> <a class="nav-link btn btn-primary"  href="{{ path('product_edit', {'id': product.id}) }}">Edytuj</a></li>
+    <li class="nav-item"> <a class="nav-link btn btn-warning" href="{{ path('duplicate_product',{'id': product.id}) }}">Powiel</a></li>
 
     {% if product.getIsNotAvailable %} 
         <li class="nav-item"> <a class="nav-link btn btn-primary" href="{{ path('product_available', {'id': product.id}) }}">Ustaw dostępny</a> </li>

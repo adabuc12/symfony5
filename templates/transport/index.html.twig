@@ -20,7 +20,12 @@
                     <td>{{ transport.weight }}</td>
                 {% endfor %}
             </tr>
-            
+            <tr>
+                <td>-</td>
+                {% for transport in transports %}
+                    <td>brutto / netto</td>
+                {% endfor %}
+            </tr>
             <tr>
                 <td>5 KM</td>
                 {% for transport in transports %}

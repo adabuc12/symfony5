@@ -18,6 +18,10 @@ class Factory
      * @ORM\Column(type="integer")
      */
     private $id;
+    
+    public function __toString() {
+        return $this->name;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)

@@ -1112,5 +1112,43 @@ return $this->renderForm('product/new_product_import.html.twig', [
         
         return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
     }
-
+    
+    
+    
+     /**
+     * @Route("/productduplicate/{id}/", name="duplicate_product", methods={"GET", "POST"})
+     */
+    public function duplicateProduct(Request $request, Product $product): Response {
+        
+        $newProduct = new Product();
+        $newProduct->setName($product->getName().'(Kopia)');
+        $newProduct->setManufacture($product->getManufacture());
+        $newProduct->setPackaging($product->getPackaging());
+        $newProduct->setPackageWeight($product->getPackageWeight());
+        $newProduct->setUnitWeight($product->getUnitWeight());
+        $newProduct->setCatalogPrice($product->getCatalogPrice());
+        $newProduct->setBuyPrice($product->getBuyPrice());
+        $newProduct->setSellPriceFactoryDetal($product->getSellPriceFactoryDetal());
+        $newProduct->setSellPricePitchDetal($product->getSellPricePitchDetal());
+        $newProduct->setSellPriceFactoryContractors($product->getSellPriceFactoryContractors());
+        $newProduct->setSellPricePitchContractors($product->getSellPricePitchContractors());
+        $newProduct->setSellPriceFactoryWholesale($product->getSellPriceFactoryWholesale());
+        $newProduct->setSellPricePitchWholesale($product->getSellPricePitchWholesale());
+        $newProduct->setIsCourier($product->getIsCourier());
+        $newProduct->setCourierCost($product->getCourierCost());
+        $newProduct->setIsNotAvailable($product->getIsNotAvailable());
+        $newProduct->setEstimatedAvailabilityDate($product->getEstimatedAvailabilityDate());
+        $newProduct->setNotices($product->getNotices());
+        $newProduct->setSprzedazJednostkowa($product->getSprzedazJednostkowa());
+        $newProduct->setWidth($product->getWidth());
+        $newProduct->setIsOnPromotion($product->getIsOnPromotion());
+        $newProduct->setIsOnPalet($product->getIsOnPalet());
+        $newProduct->setIsSellCost($product->getIsSellCost());
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($newProduct);
+        $entityManager->flush();
+        
+        $id = $newProduct->getId();
+        return $this->redirectToRoute('product_edit', ['id'=>$id], Response::HTTP_SEE_OTHER);
+    }
 }
