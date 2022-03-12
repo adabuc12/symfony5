@@ -26,10 +26,6 @@ class ProductType extends AbstractType
                     'label' => 'Fabryka',
                     'required' => true,
                 ])
-            ->add('is_on_promotion', CheckboxType::class, [
-                    'label' => 'Na promocji',
-                    'required' => false,
-                ])
             ->add('packaging', TextType::class, [
                     'label' => 'Pakowanie',
                     'required' => true,
@@ -39,7 +35,7 @@ class ProductType extends AbstractType
                     'required' => true,
                 ])
             ->add('unit_weight', TextType::class, [
-                    'label' => 'Waga /m2/szt',
+                    'label' => 'Waga /m2/szt (w ton.)',
                     'required' => true,
                 ])
             ->add('catalog_price', TextType::class, [
@@ -94,8 +90,28 @@ class ProductType extends AbstractType
                     'placeholder' => 'Wybierz',
                     'input' => 'datetime'
                 ])
-            ->add('notices', TextareaType::class, [
+            ->add('notices', TextType::class, [
                     'label' => 'Uwagi',
+                    'required' => false,
+                ])
+                ->add('sprzedaz_jednostkowa', TextType::class, [
+                    'label' => 'Minimalna ilość',
+                    'required' => false,
+                ])
+                ->add('width', TextType::class, [
+                    'label' => 'Szerokość',
+                    'required' => false,
+                ])
+                ->add('is_on_promotion', CheckboxType::class, [
+                    'label' => 'Na promocji ?',
+                    'required' => false,
+                ])
+                ->add('is_on_palet', CheckboxType::class, [
+                    'label' => 'Na palecie ?',
+                    'required' => false,
+                ])
+                ->add('is_sell_cost', CheckboxType::class, [
+                    'label' => 'Czy cena jest wyższa przy sprzedaży niepełnopaletowej ?',
                     'required' => false,
                 ])
         ;
