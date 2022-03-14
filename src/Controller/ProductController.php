@@ -253,7 +253,7 @@ return $this->renderForm('product/new.html.twig', [
         $productFactoryName = $product->getManufacture();
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $paletaProduct = $repository->findOneBySomeName('paleta ' . $productFactoryName);
-        if($type=='cart'){
+        if($type=='cart' && $product->getIsOnPalet() !== null){
             $item2 = new OrderItem();
             $item2->setProduct($paletaProduct);
             $item2->setQuantity($palets);

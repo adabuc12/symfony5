@@ -1,4 +1,97 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.Manufacture) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.packaging) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.package_weight) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.unit_weight) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.catalog_price) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.buy_price) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.sell_price_factory_detal) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.sell_price_pitch_detal) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.sell_price_factory_contractors) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.sell_price_pitch_contractors) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.sell_price_factory_wholesale) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.sell_price_pitch_wholesale) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.is_courier) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.is_not_available) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.courier_cost) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.estimated_availability_date) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.sprzedaz_jednostkowa) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.width) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.is_on_promotion) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.is_on_palet) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.is_sell_cost) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.wpid) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.notices) }}
+    </div>
+</div>
+<button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
 {{ form_end(form) }}

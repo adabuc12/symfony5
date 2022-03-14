@@ -88,9 +88,10 @@ class ProductType extends AbstractType
                     'attr' => ['class' => 'datepicker'],
                     'html5' => false,
                     'placeholder' => 'Wybierz',
-                    'input' => 'datetime'
+                    'input' => 'datetime',
+                    'required' => false,
                 ])
-            ->add('notices', TextType::class, [
+            ->add('notices', TextareaType::class, [
                     'label' => 'Uwagi',
                     'required' => false,
                 ])
@@ -112,6 +113,10 @@ class ProductType extends AbstractType
                 ])
                 ->add('is_sell_cost', CheckboxType::class, [
                     'label' => 'Czy cena jest wyższa przy sprzedaży niepełnopaletowej ?',
+                    'required' => false,
+                ])
+                ->add('wpid', TextType::class, [
+                    'label' => 'Wordpress id',
                     'required' => false,
                 ])
         ;
