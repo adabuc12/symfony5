@@ -233,6 +233,8 @@
                                 <td>{{ log.message }}</td>
                                 {% if log.createdBy != null %}
                                     <td>{{ log.createdBy.name }} {{ log.createdBy.surname }}</td>
+                                {% else %}
+                                    <td></td>
                                 {% endif %}
                             </tr>
                         {% endfor %}
