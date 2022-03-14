@@ -231,7 +231,9 @@
                             <tr>
                                 <td>{{ log.createdAt|date('d-m-Y H:i') }}</td> 
                                 <td>{{ log.message }}</td>
-                                <td>{{ log.createdBy.name }} {{ log.createdBy.surname }}</td>
+                                {% if log.createdBy != null %}
+                                    <td>{{ log.createdBy.name }} {{ log.createdBy.surname }}</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     {% else %}
