@@ -29,7 +29,9 @@
 
 <table class="table table-bordered">
     <thead>
+    <th><input type="checkbox"/></td>
     <th>Nazwa</th>
+    <th>Ilość na zamówieniu</th>
     <th>Miejsce odbioru</th>
     <th>Zrealizowano</th>
     <th>Do zamówienia</th>
@@ -41,6 +43,7 @@
 <tbody>
     {% for item in form.orderFactoryItems %} 
         <tr>
+            <td><input type="checkbox" name="" /></td>
             <td>{{ item.vars.data.product.name }}</td>
             <td>{{ form_widget(item.where_pickup) }}</td>
             <td>0</td>

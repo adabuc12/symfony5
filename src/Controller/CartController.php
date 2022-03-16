@@ -261,11 +261,11 @@ class CartController extends AbstractController {
 
                 if ($checkedFullPacks - $floredPacks == 0) {
                     $item->setPrice($pricefloat);
-                } elseif ($form->get('pickup')->getData() !== 'pitch') {
-                    $item->setPrice(round($priceProductPitchDetal * $nknm), 2);
+                } elseif ($form->get('pickup')->getData() !== 'pitch' ) {
+                    $item->setPrice(round(($priceProductPitchDetal * $nknm), 2));
                     $cart->setIsPickupWieliczka(true);
                 }else{
-                    $item->setPrice(round($pricefloat * $nknm), 2); 
+                    $item->setPrice(round(($pricefloat * $nknm), 2)); 
                 }
 
                 $value = $quantity / $packaging;

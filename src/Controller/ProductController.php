@@ -253,41 +253,50 @@ return $this->renderForm('product/new.html.twig', [
         $productFactoryName = $product->getManufacture();
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $paletaProduct = $repository->findOneBySomeName('paleta ' . $productFactoryName);
-        if($type=='cart' && $product->getIsOnPalet() !== null){
+        
+        if($type=='cart'){
+            if($product->getIsOnPalet() !== null){
             $item2 = new OrderItem();
             $item2->setProduct($paletaProduct);
             $item2->setQuantity($palets);
             $item2->setPrice($paletaProduct->getSellPriceFactoryDetal());
-
+            
             $cart = $cartManager->getCurrentCart();
             if($paletaProduct){
                 $cart
                 ->addItem($item2)
                 ->setUpdatedAt(new \DateTime());
             }
+            }
             if($fullPallets == $palets){
                  $cart
                     ->addItem($item)
                     ->setUpdatedAt(new \DateTime());
             }else{
- 
-                $optionRepository = $this->getDoctrine()->getRepository(Option::class);
-                $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
-                $nknm = ($nknm->getValue() / 100) + 1;
-                $item->setQuantity($fullPallets*$product->getPackaging());
-                $cart
-                    ->addItem($item)
-                    ->setUpdatedAt(new \DateTime());
-                $extraQuantity =$quantity-($fullPallets*$product->getPackaging());
-                $item3 = new OrderItem();
-                $item3->setProduct($product);
-                $item3->setQuantity($extraQuantity);
-                $item3->setPrice(round($price) * $nknm, 2);
-                $cart
-                    ->addItem($item3)
-                    ->setUpdatedAt(new \DateTime());
+                if($item->getProduct()->getIsSellCost() == true){
+                    $optionRepository = $this->getDoctrine()->getRepository(Option::class);
+                    $nknm = $optionRepository->findOneBy(['shortcode' => 'nknm']);
+                    $nknm = ($nknm->getValue() / 100) + 1;
+                    $item->setQuantity($fullPallets*$product->getPackaging());
+                    $cart
+                        ->addItem($item)
+                        ->setUpdatedAt(new \DateTime());
+                    $extraQuantity =$quantity-($fullPallets*$product->getPackaging());
+                    $item3 = new OrderItem();
+                    $item3->setProduct($product);
+                    $item3->setQuantity($extraQuantity);
+                    var_dump($price);exit;
+                    $item3->setPrice(round($price) * $nknm, 2);
+                    $cart
+                        ->addItem($item3)
+                        ->setUpdatedAt(new \DateTime());
+                }else{
+                    $cart
+                        ->addItem($item)
+                        ->setUpdatedAt(new \DateTime());
+                }
+                
             }
-           
             
             
 
