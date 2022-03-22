@@ -285,7 +285,6 @@ return $this->renderForm('product/new.html.twig', [
                     $item3 = new OrderItem();
                     $item3->setProduct($product);
                     $item3->setQuantity($extraQuantity);
-                    var_dump($price);exit;
                     $item3->setPrice(round($price) * $nknm, 2);
                     $cart
                         ->addItem($item3)
