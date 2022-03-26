@@ -973,7 +973,9 @@ public function saveExportFileAllData(Request $request): Response {
                 $product->getIsCourier().','.
                 $product->getCourierCost().','.
                 $product->getIsNotAvailable().','.
-                $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').','.
+                if($product->getEstimatedAvailabilityDate()){
+                    $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').','.
+                }
                 $product->getNotices().','.
                 $product->getSprzedazJednostkowa().','.
                 $product->getWidth().','.

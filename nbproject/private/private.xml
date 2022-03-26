@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Adam/kolodomu_panel/src/Controller/ProductController.php</file>
             <file>file:/C:/Users/Adam/kolodomu_panel/src/Form/FactoryOrderType.php</file>
             <file>file:/C:/Users/Adam/kolodomu_panel/templates/cart/index.html.twig</file>
             <file>file:/C:/Users/Adam/kolodomu_panel/src/Form/OrderFactoryItemType.php</file>
             <file>file:/C:/Users/Adam/kolodomu_panel/templates/factory_order/_form.html.twig</file>
+            <file>file:/C:/Users/Adam/kolodomu_panel/templates/order/index.html.twig</file>
             <file>file:/C:/Users/Adam/kolodomu_panel/templates/factory_order/new.html.twig</file>
         </group>
     </open-files>
