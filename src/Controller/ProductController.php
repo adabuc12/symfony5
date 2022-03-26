@@ -973,8 +973,10 @@ public function saveExportFileAllData(Request $request): Response {
                 $product->getIsCourier().','.
                 $product->getCourierCost().','.
                 $product->getIsNotAvailable().',';
-                if($product->getEstimatedAvailabilityDate()){
+                if($product->getEstimatedAvailabilityDate() != null){
                     $data = $data . $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').',';
+                }else{
+                    $data = $data . $product->getEstimatedAvailabilityDate().',';
                 }
                 $data = $data . $product->getNotices().','.
                 $product->getSprzedazJednostkowa().','.
