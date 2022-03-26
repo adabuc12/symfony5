@@ -972,11 +972,11 @@ public function saveExportFileAllData(Request $request): Response {
                 $product->getSellPricePitchWholesale().','.
                 $product->getIsCourier().','.
                 $product->getCourierCost().','.
-                $product->getIsNotAvailable().','.
+                $product->getIsNotAvailable().',';
                 if($product->getEstimatedAvailabilityDate()){
-                    $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').','.
+                    $data = $data . $product->getEstimatedAvailabilityDate()->format('Y-m-d H:i:s').',';
                 }
-                $product->getNotices().','.
+                $data = $data . $product->getNotices().','.
                 $product->getSprzedazJednostkowa().','.
                 $product->getWidth().','.
                 $product->getIsOnPromotion().','.
