@@ -255,13 +255,13 @@ return $this->renderForm('product/new.html.twig', [
         $paletaProduct = $repository->findOneBySomeName('paleta ' . $productFactoryName);
         
         if($type=='cart'){
-            if($product->getIsOnPalet() !== null){
+             $cart = $cartManager->getCurrentCart();
+            if($product->getIsOnPalet()){
             $item2 = new OrderItem();
             $item2->setProduct($paletaProduct);
             $item2->setQuantity($palets);
             $item2->setPrice($paletaProduct->getSellPriceFactoryDetal());
-            
-            $cart = $cartManager->getCurrentCart();
+
             if($paletaProduct){
                 $cart
                 ->addItem($item2)
