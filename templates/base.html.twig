@@ -82,7 +82,7 @@
                                   <li><a class="dropdown-item" href="#">Statystyki</a></li> -->
                                 <li><a class="dropdown-item" href="{{ path('transport_index') }}">Transporty ceny</a></li>
                                 <li><a class="dropdown-item" href="{{ path('driver_index') }}">Transporty auta</a></li>
-                                {% if is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_SUPERADMIN') %}
                                 <li><a class="dropdown-item" href="{{ path('option_index') }}">Opcje</a></li>
                                 <li><a class="dropdown-item" href="{{ path('user_index') }}">Użytkownicy</a></li>
                                 <li><a class="dropdown-item" href="{{ path('promotion_index') }}">Promocje</a></li>

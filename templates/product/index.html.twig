@@ -118,10 +118,12 @@
 {% endblock %}
 {% block footer %}
     <li class="nav-item"> <a href="{{ path('product_new') }}" class="nav-link btn btn-primary">Dodaj</a></li>
+    {% if is_granted('ROLE_SUPERADMIN') %}
     <li class="nav-item"> <a href="{{ path('product_group_price_count') }}" class="nav-link btn btn-primary">Zmiana cen</a></li>
     <li class="nav-item"> <a href="{{ path('export_save') }}" class="nav-link btn btn-primary">Eksport WP</a></li>
     <li class="nav-item"> <a href="{{ path('exportexcel') }}" class="nav-link btn btn-primary">Utwórz plik excel</a></li>
     <li class="nav-item"> <a href="{{ path('createexportfile') }}" class="nav-link btn btn-primary">Export</a></li>
     <li class="nav-item"> <a href="{{ path('product_import') }}" class="nav-link btn btn-primary">Import</a></li>
+    {% endif %}
     <li class="nav-item"> <a href="{{ path('task_new', {'type': 'product-list'}) }}" class="nav-link btn btn-warning">Utwórz zadanie</a></li>
 {% endblock %}
