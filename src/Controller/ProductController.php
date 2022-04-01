@@ -430,6 +430,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
         $nbrows = $request->query->get('rows');
         $searchCategory = $request->query->get('search_category');
         $discountPercent = $request->query->get('count_buy_price_from_catalog_price_discount');
+        $discountPercentUp = $request->query->get('count_buy_price_from_catalog_price_discount_up');
         $is_netto = $request->query->get('is_netto');
         $repository = $this->getDoctrine()->getRepository(Product::class);
         
@@ -471,9 +472,18 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId() ) {
                                 $catalogPrice = $product->getCatalogPrice();
-                                $productBuyPrice = $catalogPrice-($catalogPrice/100*$discountPercent);
-                                $product->setBuyPrice($productBuyPrice);
+                                $buyPrice = $product->getBuyPrice();
+                                if($discountPercent > 0){
+                                    $productBuyPrice = $catalogPrice-($catalogPrice/100*$discountPercent);
+                                    $product->setBuyPrice($productBuyPrice);
                                 $entityManager->persist($product);
+                                }
+                                if($discountPercentUp > 0){
+                                    $productBuyPrice = $buyPrice * ((100+$discountPercentUp)/100);
+                                    $product->setBuyPrice($productBuyPrice);
+                                $entityManager->persist($product);
+                                }
+                                
                             }
                         }
                     }
@@ -628,7 +638,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId() && $product->getBuyPrice() !== $req) {
                                 if($is_netto){
-                                $product->setBuyPrice(round(floatval($req)*1.23, 2));
+                                    $product->setBuyPrice(round(floatval($req)*1.23, 2));
                             }else{
                                 $product->setBuyPrice($req);
                             }

@@ -24,190 +24,271 @@
     </head>
 
     <body class="">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Kołodomu.pl</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('product_index') }}">Produkty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('offer_index') }}">Oferty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('order_index') }}">Zamówienia</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('log_new') }}">Notatka</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('task_index') }}">Zadania</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Kartoteka
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ path('delivery_index') }}">Transporty</a></li>
-                                <li><a class="dropdown-item" href="{{ path('payments_index') }}">Rozliczenia</a></li>
-                                <li><a class="dropdown-item" href="{{ path('factory_order_index') }}">Zamówienia fabr.</a></li>
-                                <li><a class="dropdown-item" href="{{ path('complaint_index') }}">Reklamacje</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Biuro
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Wiki</a></li>
-                                <li><a class="dropdown-item" href="#">Kadry</a></li>
-                                <li><a class="dropdown-item" href="#">Cele</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Ustawienia
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <!--  <li><a class="dropdown-item" href="#">Zarządzanie</a></li>
-                                  <li><a class="dropdown-item" href="#">Eksporty</a></li>
-                                  <li><a class="dropdown-item" href="#">Statystyki</a></li> -->
-                                <li><a class="dropdown-item" href="{{ path('transport_index') }}">Transporty ceny</a></li>
-                                <li><a class="dropdown-item" href="{{ path('driver_index') }}">Transporty auta</a></li>
-                                {% if is_granted('ROLE_SUPERADMIN') %}
-                                <li><a class="dropdown-item" href="{{ path('option_index') }}">Opcje</a></li>
-                                <li><a class="dropdown-item" href="{{ path('user_index') }}">Użytkownicy</a></li>
-                                <li><a class="dropdown-item" href="{{ path('promotion_index') }}">Promocje</a></li>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Podstawowe</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="mag-tab" data-bs-toggle="tab" data-bs-target="#mag" type="button" role="tab" aria-controls="mag" aria-selected="false">Magazynowe</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="hand-tab" data-bs-toggle="tab" data-bs-target="#hand" type="button" role="tab" aria-controls="hand" aria-selected="false">Handlowe</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="firm-tab" data-bs-toggle="tab" data-bs-target="#firm" type="button" role="tab" aria-controls="firm" aria-selected="false">Firowe</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Ustawienia</button>
+            </li>
+            <li>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search">
+                    <button class="btn btn-outline-success" type="submit" action="{{ path('product_index') }}">Szukaj</button>
+                </form>
+            </li>
+            <li>
+                <div class="nav-item">
+                    {% if app.session.has('factoryOrder_id') == true %}
+                        <a href="{{ path('session_factory_order_index') }}" class="btn btn-warning">
+                            ZAMÓWIENIE FABRYKA
+                        </a>
+                    {% endif %}
+                    {% if app.session.has('cart_id') == true %}
+                        <a href="{{ path('cart') }}" class="btn btn-warning">
+                            OFERTA/ZAMÓWIENIE
+                        </a>
+                    {% endif %}
+                    {% if app.session.has('kontrahent') == true %}
+                        <a href="{{ path('kontrahent_index') }}" class="btn btn-secondary">
+                            {{ app.session.get('kontrahent') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </li>
+            <ul class="navbar-nav">
+                {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Witaj, {{ app.user.name }} <span class="badge badge-warning" style="background:red">{% if notificationcount.getNotifications(app.user)|length > 0 %}
+                                {{ notificationcount.getNotifications(app.user)|length }}{% endif %}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if notificationcount.getNotifications(app.user)|length > 0 %}
+                                {% for notification in notificationcount.getNotifications(app.user) %}
+                                    <li><a class="dropdown-item" style="font-size:14px" href="{{ path('notice_show',{'id':notification.id}) }}" class="text-light">{{ notification.text }}</a></li>
+                                    {% endfor %}
                                 {% endif %}
-                                <!-- <li><a class="dropdown-item" href="#">Api</a></li> -->
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ path('factory_index') }}">Fabryki</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Szukaj" name="search">
-                        <button class="btn btn-outline-success" type="submit" action="{{ path('product_index') }}">Szukaj</button>
-                    </form>
-                    <div class="nav-item p-3">
-                        {% if app.session.has('factoryOrder_id') == true %}
-                            <a href="{{ path('session_factory_order_index') }}" class="btn btn-warning">
-                                ZAMÓWIENIE FABRYKA
-                            </a>
-                        {% endif %}
-                        {% if app.session.has('cart_id') == true %}
-                            <a href="{{ path('cart') }}" class="btn btn-warning">
-                                OFERTA/ZAMÓWIENIE
-                            </a>
-                        {% endif %}
-                        {% if app.session.has('kontrahent') == true %}
-                            <a href="{{ path('kontrahent_index') }}" class="btn btn-secondary">
-                                {{ app.session.get('kontrahent') }}
-                            </a>
-                        {% endif %}
-                    </div>
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                        {% if app.user %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Witaj, {{ app.user.name }} <span class="badge badge-warning" style="background:red">{% if notificationcount.getNotifications(app.user)|length > 0 %}
-                                        {{ notificationcount.getNotifications(app.user)|length }}{% endif %}</span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {% if notificationcount.getNotifications(app.user)|length > 0 %}
-                                        {% for notification in notificationcount.getNotifications(app.user) %}
-                                            <li><a class="dropdown-item" style="font-size:14px" href="{{ path('notice_show',{'id':notification.id}) }}" class="text-light">{{ notification.text }}</a></li>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}" class="text-light">
-                                            WYLOGUJ
-                                        </a></li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li><a class="dropdown-item" href="{{ path('login') }}" class="btn btn-success">
-                                    ZALOGUJ
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}" class="text-light">
+                                    WYLOGUJ
                                 </a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{{ path('login') }}" class="btn btn-success">
+                                ZALOGUJ
+                            </a></li>
                             {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="row p-5">
-            {# read and display all flash messages #}
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }}">
-                        {{ message }}
+                        </ul>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('product_index') }}">Produkty</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('offer_index') }}">Oferty</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('order_index') }}">Zamówienia</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('log_new') }}">Notatka</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('task_index') }}">Zadania</a>
+                                        </li>
+
+
+
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </nav>
                     </div>
-                {% endfor %}
-            {% endfor %}
-            {% block filters %}
+                    <div class="tab-pane fade" id="mag" role="tabpanel" aria-labelledby="mag-tab">
 
-            {% endblock %}
-            {% block body %}
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
 
-            {% endblock %}
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="tab-pane fade" id="hand" role="tabpanel" aria-labelledby="hand-tab">
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
 
-            <div class="p-3"></div>
-        </div>
-        <div class="footer">
-
-
-
-            <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav mr-auto">
-                        {% block footer %}
-
-                        {% endblock %}
-                        {% set url = app.request.pathinfo|replace({'/': '_'}) %}
-                       <li class="nav-item float-right" style="position:absolute;right:10px;bottom:10px"> <a href="{{ path('task_new', {'type': 'zgloszenie', 'url': url}) }}" class="nav-link btn btn-danger">Zgłoś problem adminowi</a></li>
-                    </ul>
-                    
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="tab-pane fade" id="firm" role="tabpanel" aria-labelledby="firm-tab">
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Biuro
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a class="dropdown-item" href="#">Wiki</a></li>
+                                                <li><a class="dropdown-item" href="#">Kadry</a></li>
+                                                <li><a class="dropdown-item" href="#">Cele</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Kartoteka
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a class="dropdown-item" href="{{ path('delivery_index') }}">Transporty</a></li>
+                                                <li><a class="dropdown-item" href="{{ path('payments_index') }}">Rozliczenia</a></li>
+                                                <li><a class="dropdown-item" href="{{ path('factory_order_index') }}">Zamówienia fabr.</a></li>
+                                                <li><a class="dropdown-item" href="{{ path('complaint_index') }}">Reklamacje</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">Kołodomu.pl</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Ustawienia
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <!--  <li><a class="dropdown-item" href="#">Zarządzanie</a></li>
+                                                  <li><a class="dropdown-item" href="#">Eksporty</a></li>
+                                                  <li><a class="dropdown-item" href="#">Statystyki</a></li> -->
+                                                <li><a class="dropdown-item" href="{{ path('transport_index') }}">Transporty ceny</a></li>
+                                                <li><a class="dropdown-item" href="{{ path('driver_index') }}">Transporty auta</a></li>
+                                                    {% if is_granted('ROLE_SUPERADMIN') %}
+                                                    <li><a class="dropdown-item" href="{{ path('option_index') }}">Opcje</a></li>
+                                                    <li><a class="dropdown-item" href="{{ path('user_index') }}">Użytkownicy</a></li>
+                                                    <li><a class="dropdown-item" href="{{ path('promotion_index') }}">Promocje</a></li>
+                                                    {% endif %}
+                                                <!-- <li><a class="dropdown-item" href="#">Api</a></li> -->
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" href="{{ path('factory_index') }}">Fabryki</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>                            
                 </div>
-            </nav>
 
-        </div>
-    </body>
-    <style>
-        .hidden{
-            display:none;
-        }     
-        .footer{
-            position: fixed;
-            bottom: 36px;
-            width: 100%;
-        }
-        .nav-item{
-            margin-right: 5px !important;;
-        }
-    </style>
-    <script type="text/javascript">
+                <div class="row p-5">
+                    {# read and display all flash messages #}
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% block filters %}
 
-        $(function () {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-            });
-        });
-        $(".chosen-select").chosen();
-        $(document).ready(function ($) {
-            $(".clickable-row").click(function () {
-                window.location = $(this).data("href");
-            });
-        });
-    </script>
-</html>
+                    {% endblock %}
+                    {% block body %}
+
+                    {% endblock %}
+
+                    <div class="p-3"></div>
+                </div>
+                <div class="footer">
+
+
+
+                    <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarText">
+                            <ul class="navbar-nav mr-auto">
+                                {% block footer %}
+
+                                {% endblock %}
+                                {% set url = app.request.pathinfo|replace({'/': '_'}) %}
+                                <li class="nav-item float-right" style="position:absolute;right:10px;bottom:10px"> <a href="{{ path('task_new', {'type': 'zgloszenie', 'url': url}) }}" class="nav-link btn btn-danger">Zgłoś problem adminowi</a></li>
+                            </ul>
+
+                        </div>
+                    </nav>
+
+                </div>
+            </body>
+            <style>
+                .hidden{
+                    display:none;
+                }     
+                .footer{
+                    position: fixed;
+                    bottom: 36px;
+                    width: 100%;
+                }
+                .nav-item{
+                    margin-right: 5px !important;;
+                }
+            </style>
+            <script type="text/javascript">
+
+                $(function () {
+                    $('.datepicker').datepicker({
+                        format: 'yyyy-mm-dd'
+                    });
+                });
+                $(".chosen-select").chosen();
+                $(document).ready(function ($) {
+                    $(".clickable-row").click(function () {
+                        window.location = $(this).data("href");
+                    });
+                });
+            </script>
+        </html>

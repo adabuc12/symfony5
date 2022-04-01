@@ -82,6 +82,9 @@
                 {% if app.request.get('types') == 'buy_price'  and app.request.get('show_all') == false %}
                     <td><label for="count_buy_price_from_catalog_price_discount">Rabat od ceny katalogowej</label>
                         <br><input class="form-control" type="text" name="count_buy_price_from_catalog_price_discount" value="{{app.request.get('count_buy_price_from_catalog_price_discount')}}"></td>
+                    <td><label for="count_buy_price_from_catalog_price_discount">Podnieś ceny o wartość</label>
+                        <br><input class="form-control" type="text" name="count_buy_price_from_catalog_price_discount_up" value="{{app.request.get('count_buy_price_from_catalog_price_discount_up')}}">
+                    </td>
                     {% endif %}
                     {% if app.request.get('types') == 'min_earnings'  and app.request.get('show_all') == false %}
                     <td><label for="min_narzut_detal_zl">Min Narzut zł detal</label>
