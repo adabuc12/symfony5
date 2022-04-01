@@ -476,14 +476,13 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 if($discountPercent > 0){
                                     $productBuyPrice = $catalogPrice-($catalogPrice/100*$discountPercent);
                                     $product->setBuyPrice(round($productBuyPrice,2));
-                                $entityManager->persist($product);
+                                    $entityManager->persist($product);
                                 }
                                 if($discountPercentUp > 0){
                                     $productBuyPrice = $buyPrice * ((100+$discountPercentUp)/100);
                                     $product->setBuyPrice(round($productBuyPrice,2));
-                                $entityManager->persist($product);
+                                    $entityManager->persist($product);
                                 }
-                                
                             }
                         }
                     }
