@@ -21,7 +21,7 @@
         <div class="">
             <table class="table table-dark table-sm">
                 <thead>
-                <th><input type="checkbox" name="show_all" id="show_all"/></th>
+                <th><input type="checkbox" name="show_all_2" id="show_all_2"/></th>
                 <th>Wordpress ID</th>
                 <th style="min-width:250px">Nazwa</th>
                 </thead>
@@ -44,12 +44,12 @@
         <li><a href="{{ path('saveexportfile')}}" class="btn btn-primary" type="submit" name="export_data">Utwórz export</a></li>
         <li><button class="btn btn-primary" type="submit" name="save_data">Zapisz dane</button></li>
     </form>
-   <!-- <script>
+    <script>
         $(document).ready(function () {
-            $('#show_all').click(function () {
+            $('#show_all_2').click(function () {
                 $('.to_check').trigger('click');
             });
         });
-    </script> -->
+    </script>
 
 {% endblock %}
