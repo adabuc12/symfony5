@@ -62,7 +62,7 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link {% if pricetype == 'detal'%}active{% endif %}" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="{% if pricetype == 'detal'%}true{% else %}false{% endif %}">Detaliczna</button>
+                    <button class="nav-link {% if pricetype == 'detal'%}active{% endif %}" id="aa-tab" data-bs-toggle="tab" data-bs-target="#aa" type="button" role="tab" aria-controls="aa" aria-selected="{% if pricetype == 'detal'%}true{% else %}false{% endif %}">Detaliczna</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link {% if pricetype == 'hurt'%}active{% endif %}" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="{% if pricetype == 'hurt'%}true{% else %}false{% endif %}">Wykonawcy</button>
@@ -72,24 +72,23 @@
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade {% if pricetype == 'detal'%}show active{% endif %}" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade {% if pricetype == 'detal'%}show active{% endif %}" id="aa" role="tabpanel" aria-labelledby="aa">
                     <table class="table table-striped table-hover table-bordered">
                         <tbody>
-
                             <tr class="table-dark">
                                 <th>Cena Katalogowa</th>
                                 <td>{{ product.catalogPrice }} zł</td>
                             </tr>
-                            <tr class="table-success">
+                            <tr class="table-secondary">
                                 <th>Cena detal fabryka</th>
                                 <td>{{ product.sellPriceFactoryDetal }} zł</td>
                             </tr>
-                            <tr class="table-success">
+                            <tr class="table-secondary">
                                 <th>Cena detal plac</th>
                                 <td>{{ product.sellPricePitchDetal }} zł</td>
                             </tr>
                             {% if product.sprzedazJednostkowa != 0 %}
-                             <tr class="table-success">
+                             <tr class="table-secondary">
                                 <th>Cena detal plac m2/szt</th>
                                 <td>{{ (product.sellPricePitchDetal*nknm)|number_format(2) }} zł</td>
                             </tr>   
