@@ -262,8 +262,8 @@ class FactoryOrderController extends AbstractController {
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
             ->subject('Zapytanie o dostępność '.$factoryOrder->getNumber())
-            ->text($content)
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            ->text('Prosze o odpowiedź na temat dostępności')
+            ->html('<p>'.$content.'</p>');
 
         $mailer->send($email);
  
