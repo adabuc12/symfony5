@@ -225,7 +225,12 @@ class FactoryOrderController extends AbstractController {
                 $pos = strpos($item->getProduct()->getName(), 'Auto');
                 $pos2 = strpos($item->getProduct()->getName(), 'paleta');
                 if ($pos === false && $pos2 === false) {
-                    $newItems[$item->getProduct()->getName()] = $item;
+                    if(key_exists($item->getProduct()->getName(), $newItems)){
+                        $newItems[$item->getProduct()->getName().count($newItems)] = $item;
+                    }else{
+                       $newItems[$item->getProduct()->getName()] = $item; 
+                    }
+                    
                 }
             }
         if ($request->query->get('send_ask') !== null) {
