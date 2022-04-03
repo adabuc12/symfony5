@@ -195,11 +195,7 @@
                         <td><p  class="hidden" id="buy_price">{{ product.buyPrice|number_format(2, '.', ',') }} zł  / {{ (product.buyPrice / 1.23)|number_format(2, '.', ',') }} zł</p><p id="show_buy_price" class="btn btn-primary">Pokaż</p></td>
                         <th>Cena zakupu plac brutto/netto</th>
                         <td><p  class="hidden" id="buy_price_pitch">
-
-
                                 {{ (product.buyPrice+(product.sellPricePitchDetal-product.sellPriceFactoryDetal))|number_format(2, '.', ',') }} zł  / {{ ((product.buyPrice+(product.sellPricePitchDetal-product.sellPriceFactoryDetal))/1.23)|number_format(2, '.', ',') }} 
-
-
                                 zł</p><p id="show_buy_price_pitch" class="btn btn-primary">Pokaż</p></td>
                     </tr>
                 </tbody>

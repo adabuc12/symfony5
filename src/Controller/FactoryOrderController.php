@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 use App\Manager\FactoryOrderManager;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * @Route("/factoryorder")
@@ -216,14 +218,53 @@ class FactoryOrderController extends AbstractController {
     /**
      * @Route("/ask/{id}", name="factory_order_ask", methods={"GET", "POST"})
      */
-    public function sendAsk(Order $factoryOrder, Request $request): Response {
-        if ($request->query->get('send_ask') !== null) {
-            foreach ($request->query->all() as $key => $req) {
-                
+    public function sendAsk(Order $factoryOrder, Request $request, MailerInterface $mailer): Response {
+        $items = $factoryOrder->getItem();
+        $newItems = [];
+        foreach($items as $item){
+                $pos = strpos($item->getProduct()->getName(), 'Auto');
+                $pos2 = strpos($item->getProduct()->getName(), 'paleta');
+                if ($pos === false && $pos2 === false) {
+                    $newItems[$item->getProduct()->getName()] = $item;
+                }
             }
+        if ($request->query->get('send_ask') !== null) {
+            $content = '';
+            $productNumber = null;
+            
+            
+            foreach ($request->query->all() as $key => $req) {
+                $keyExploded = explode('-', $key);
+
+                if(count($keyExploded)>1) {
+                    if ($keyExploded[0] == 'check' && $req == 'on') {
+                        $productNumber = $keyExploded[1];
+                    }
+
+                    if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'product') {
+                        $content = $content . ' ' . $req;
+                    }
+                    if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'quantity') {
+                        $content = $content . ' - ' . $req. 'm2/szt <br/>';
+                    }
+                }
+            }
+            $email = (new Email())
+            ->from('biuro@kolodomu.pl')
+            ->to('abadambuczek@gmail.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Zapytanie o dostępność '.$factoryOrder->getNumber())
+            ->text($content)
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
+ 
         }
         return $this->render('factory_order/ask.html.twig', [
-                    'factory_order' => $factoryOrder,
+                    'items' => $newItems,
         ]);
     }
 

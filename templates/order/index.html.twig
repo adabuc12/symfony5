@@ -5,19 +5,55 @@
     {% if app.request.get('_route') == 'offer_index' %}Oferty{% endif %}
 {% endblock %}
 {% block filters %}
-    {% if app.request.get('_route') == 'order_index' %} <h3>Lista zamówień</h3>{% endif %}
-    {% if app.request.get('_route') == 'offer_index' %} <h3>Lista ofert</h3>{% endif %}
-
     <form class="form">
         <div class="row">
             <table class="table table-primary">
                 <div class="form-group">
-                    <td><label for="search_kontrahent">Numer</label><br><input  class="form-control" type="text" name="search_number"></td>
-                    <td><label for="search_kontrahent">Kontrahent</label><br><input  class="form-control" type="text" name="search_kontrahent"></td>
-                    <td><label for="search_kontrahent">Data zamówienia</label><br><input  class="form-control" type="text" name="search_order_date"></td>
-                    <td><label for="search_kontrahent">Status</label><br><input  class="form-control" type="text" name="search_status"></td>
-                    <td><label for="search_kontrahent">Data dostawy</label><br><input  class="form-control" type="text" name="search_delivery_date"></td>
-                    <td><label for="search_kontrahent">Utworzone przez</label><br><input  class="form-control" type="text" name="search_created_by"></td>
+                    <td>
+                        <label for="search_number">Numer</label><br>
+                        <input  class="form-control" type="text" name="search_number" value="{% if parameters.number %}{{ parameters.number }}{% endif %}">
+                    </td>
+                    <td>
+                        <label for="search_kontrahent">Kontrahent</label><br>
+                        <input  class="form-control" type="text" name="search_kontrahent" value="{% if parameters.kontrahent %}{{ parameters.kontrahent }}{% endif %}">
+                    </td>
+                    <td>
+                        <label for="search_kontrahent">Data zamówienia</label><br>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="fa fa-calendar"></i>
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+                    </td>
+                    <td>
+                        <label for="search_kontrahent">Status</label><br>
+                        <select class="form-select" aria-label="Użytkownik" name="search_status">
+                            <option value="all">Wszystkie</option>
+                            <option value="active" selected>Aktywne</option>
+                            <option value="order" >Zamówione</option>
+                            <option value="closed" >Zamknięte</option>
+                            <option value="closed" >Anulowane</option>
+                        </select>
+        
+                    </td>
+                    <td>
+                        <label for="search_kontrahent">Data dostawy</label><br>
+                        <div id="reportrange1" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="fa fa-calendar"></i>
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+                    </td>
+                    <td>
+                        <label for="search_kontrahent">Utworzone przez</label><br>
+                        <select class="form-select" aria-label="Użytkownik" name="search_created_by">
+                            <option value="{{ app.user.id }}" selected>Moje</option>
+                            <option value="all">Wszyscy</option>
+                            {% for user in users %}
+                                {% if app.user.id != user.id %}
+                                    <option value="{{ user.id }}">{{ user.name }} {{ user.surname }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><button type="submit" class="btn btn-primary m-4">Filtruj</button></td>
                 </div>
             </table>
@@ -53,59 +89,164 @@
                         {% if order.status == 'offer' %}
 
                         <td>
-                         {% if order.type == 'canceled' %}
-                            <a href="">
-                                <i class="fa-solid fa-rectangle-xmark" style="color:red"></i>
-                            </a> 
-                        {% endif %}
+                            {% if order.type == 'canceled' %}
+                                <a href="">
+                                    <i class="fa-solid fa-rectangle-xmark" style="color:red"></i>
+                                </a> 
+                            {% endif %}
                             {% if order.isOrdered == true and order.orderId > 0 %}
-                            <a href="{{ path('order_edit', {'id': order.orderId}) }}">
-                                <i class="fa-solid fa-basket-shopping"></i>
-                            </a>{% endif %}
-                        </td>{% endif %}
-                        {% if order.status == 'order' %}
-                            <td>
-                                {% if order.type == '' %}
-                                    <a href="">
-                                        <i class="fa-solid fa-industry"></i>
-                                    </a>
-                                    <a href="">
-                                        <i class="fa-solid fa-envelope"></i>
-                                    </a>
-                                    <a href="">
-                                        <i class="fa-solid fa-truck"></i>
-                                    </a>
-                                    <a href="">
-                                        <i class="fa-solid fa-print"></i>
-                                    </a>
-                                    <a href="">
-                                        <i class="fa-solid fa-circle-info"></i>
-                                    </a>
-                                    <a href="">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                    </a>
-                                {% endif %}
-                                {% if order.type == 'canceled' %}
-                                    <a href="">
-                                        <i class="fa-solid fa-rectangle-xmark"></i>
-                                    </a>
-                                {% endif %}
-
+                                <a href="{{ path('order_edit', {'id': order.orderId}) }}">
+                                    <i class="fa-solid fa-basket-shopping"></i>
+                                </a>{% endif %}
                             </td>{% endif %}
-                            <td>{{ order.notice }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6">Nie znalazłem zamówień</td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    {% if orders.haveToPaginate %}
-                        {{ pagerfanta(orders) }}
-                    {% endif %}
-                    {% endblock %}
+                            {% if order.status == 'order' %}
+                                <td>
+                                    {% if order.type == '' %}
+                                        <a href="">
+                                            <i class="fa-solid fa-industry"></i>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa-solid fa-truck"></i>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa-solid fa-print"></i>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if order.type == 'canceled' %}
+                                        <a href="">
+                                            <i class="fa-solid fa-rectangle-xmark"></i>
+                                        </a>
+                                    {% endif %}
 
-                        {% block footer %}
-                            <li><a class="nav-link btn btn-primary" href="{{ path('cart') }}">Utwórz nowy</a></li>
+                                </td>{% endif %}
+                                <td>{{ order.notice }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Nie znalazłem zamówień</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% if orders.haveToPaginate %}
+                            {{ pagerfanta(orders) }}
+                        {% endif %}
                         {% endblock %}
+
+                            {% block footer %}
+                                <li><a class="nav-link btn btn-primary" href="{{ path('cart') }}">Utwórz nowy</a></li>
+                                <script type="text/javascript">
+                                    $(function () {
+
+                                    var start = moment().subtract(365, 'days');
+                                    var end = moment();
+                                    function cb(start, end) {
+                                    $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
+                                    $('#reportrange1 span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
+                                    }
+
+                                    $('#reportrange').daterangepicker({
+                                    startDate: start,
+                                    endDate: end,
+                                    locale: {
+                                            "format": "MM/DD/YYYY",
+                                                    "separator": " - ",
+                                                    "applyLabel": "Akceptuj",
+                                                    "cancelLabel": "Anuluj",
+                                                    "fromLabel": "Od",
+                                                    "toLabel": "Do",
+                                                    "customRangeLabel": "Wybierz Przedział",
+                                                    "daysOfWeek": [
+                                                            "Niedz",
+                                                            "Pon",
+                                                            "Wt",
+                                                            "Śr",
+                                                            "Czw",
+                                                            "Pt",
+                                                            "Sob"
+                                                    ],
+                                                    "monthNames": [
+                                                            "Styczeń",
+                                                            "Luty",
+                                                            "Marzec",
+                                                            "Kwiecień",
+                                                            "Maj",
+                                                            "Czerwice",
+                                                            "Lipiec",
+                                                            "Sierpień",
+                                                            "Wrzesień",
+                                                            "Październik",
+                                                            "Listopad",
+                                                            "Grudzień"
+                                                    ],
+                                                    "firstDay": 1
+                                            },
+                                    ranges: {
+                                            'Dzisiaj': [moment(), moment()],
+                                            'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                            'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
+                                            'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
+                                            'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
+                                            'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                    }
+                                    }, cb);
+                                    
+                                    $('#reportrange1').daterangepicker({
+                                    startDate: start,
+                                    endDate: end,
+                                    locale: {
+                                            "format": "MM/DD/YYYY",
+                                                    "separator": " - ",
+                                                    "applyLabel": "Akceptuj",
+                                                    "cancelLabel": "Anuluj",
+                                                    "fromLabel": "Od",
+                                                    "toLabel": "Do",
+                                                    "customRangeLabel": "Wybierz Przedział",
+                                                    "daysOfWeek": [
+                                                            "Niedz",
+                                                            "Pon",
+                                                            "Wt",
+                                                            "Śr",
+                                                            "Czw",
+                                                            "Pt",
+                                                            "Sob"
+                                                    ],
+                                                    "monthNames": [
+                                                            "Styczeń",
+                                                            "Luty",
+                                                            "Marzec",
+                                                            "Kwiecień",
+                                                            "Maj",
+                                                            "Czerwice",
+                                                            "Lipiec",
+                                                            "Sierpień",
+                                                            "Wrzesień",
+                                                            "Październik",
+                                                            "Listopad",
+                                                            "Grudzień"
+                                                    ],
+                                                    "firstDay": 1
+                                            },
+                                    ranges: {
+                                    'Dzisiaj': [moment(), moment()],
+                                            'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                            'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
+                                            'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
+                                            'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
+                                            'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                    }
+                                    }, cb);
+                                    
+                                    cb(start, end);
+                                    });
+                                </script>
+                            {% endblock %}

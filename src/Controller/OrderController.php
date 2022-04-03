@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Entity\User;
 use App\Entity\Option;
 use App\Form\CartType;
 use App\Manager\CartManager;
@@ -25,15 +26,34 @@ class OrderController extends AbstractController {
     /**
      * @Route("/order/{page<\d+>}", name="order_index", methods={"GET"})
      */
-    public function index(OrderRepository $orderRepository, int $page = 1): Response {
-        $orders = $orderRepository->findByType('order');
-        
+    public function index(OrderRepository $orderRepository, int $page = 1,Request $request): Response {
+        $user = $this->getUser();
+        $number = $request->get('search_number');
+        $kontrahent = $request->get('search_kontrachent');
+        $orderDate = $request->get('search_order_date');
+        $status = $request->get('search_status');
+        $deliverydate = $request->get('search_delivery_date');
+        $createdBy = $request->get('search_created_by');
+        $filerParameters = [
+            'number' => $number,
+            'kontrahent' => $kontrahent,
+            'status' => $status,
+            'createdBy' => $createdBy,
+            'orderdate' => $orderDate,
+            'deliverydate' => $deliverydate
+        ];
+        $orders = $orderRepository->findByType('order', $user);
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $users = $userRepository->findAll();
+
         $pagerfanta = new Pagerfanta(new QueryAdapter($orders));
         $pagerfanta->setMaxPerPage(100);
         $pagerfanta->setCurrentPage($page);
         
         return $this->render('order/index.html.twig', [
                     'orders' => $pagerfanta,
+                    'users' => $users,
+                    'parameters' => $filerParameters,
         ]);
     }
 
@@ -42,13 +62,24 @@ class OrderController extends AbstractController {
      */
     public function offerindex(OrderRepository $orderRepository, int $page = 1,Request $request): Response {
         
+        $user = $this->getUser();
         $number = $request->get('search_number');
         $kontrahent = $request->get('search_kontrachent');
         $orderDate = $request->get('search_order_date');
         $status = $request->get('search_status');
         $deliverydate = $request->get('search_delivery_date');
         $createdBy = $request->get('search_created_by');
-        $orders = $orderRepository->findByType('offer');
+        $filerParameters = [
+            'number' => $number,
+            'kontrahent' => $kontrahent,
+            'status' => $status,
+            'createdBy' => $createdBy,
+            'orderdate' => $orderDate,
+            'deliverydate' => $deliverydate
+        ];
+        $orders = $orderRepository->findByType('offer', $user);
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $users = $userRepository->findAll();
         
         $pagerfanta = new Pagerfanta(new QueryAdapter($orders));
         $pagerfanta->setMaxPerPage(100);
@@ -56,6 +87,8 @@ class OrderController extends AbstractController {
         
         return $this->render('order/index.html.twig', [
                 'orders' => $pagerfanta,
+                'users' => $users,
+                'parameters' => $filerParameters,
             ]);
         }
 
@@ -219,5 +252,7 @@ class OrderController extends AbstractController {
 
         return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    
 
 }

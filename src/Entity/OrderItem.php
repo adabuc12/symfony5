@@ -47,6 +47,11 @@ class OrderItem
      * @ORM\Column(type="float", nullable=true)
      */
     private $pallets;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isLocked;
  
     /**
     * Tests if the given item given corresponds to the same order item.
@@ -141,6 +146,18 @@ class OrderItem
    public function setPallets(?float $pallets): self
    {
        $this->pallets = $pallets;
+
+       return $this;
+   }
+
+   public function getIsLocked(): ?bool
+   {
+       return $this->isLocked;
+   }
+
+   public function setIsLocked(?bool $isLocked): self
+   {
+       $this->isLocked = $isLocked;
 
        return $this;
    }

@@ -212,9 +212,11 @@ class CartController extends AbstractController {
                 if (strpos($form->get('pickup')->getData(), 'factory') !== false) {
                     $pickupbolean = true;
                 }
-
-                $pricefloat = $this->getProductPrice($form->get('kontrahent_group')->getData(), $pickupbolean, $item, $activeOnPromotions);
-       
+                if($item->getIsLocked() == false){
+                    $pricefloat = $this->getProductPrice($form->get('kontrahent_group')->getData(), $pickupbolean, $item, $activeOnPromotions);
+                }else{
+                    $pricefloat = $item->getPrice();
+                }
                 $quantity = $item->getQuantity();
                 $packaging = $item->getProduct()->getPackaging();
                 $unit_weight = $item->getProduct()->getUnitWeight();
@@ -498,14 +500,23 @@ class CartController extends AbstractController {
                     $orderItem = new OrderItem();
                     $orderItem->setProduct($newProduct);
                     $orderItem->setQuantity($value['count']);
-                    $orderItem->setPrice($value['cost'] * 1.23);
+                    if($cart->getCarPriceNetto()){
+                        $orderItem->setPrice($value['cost']);
+                    }else{
+                        $orderItem->setPrice($value['cost'] * 1.23);
+                    }
+                    
                     $cart->addItem($orderItem)->setUpdatedAt(new \DateTime());
                     $cartManager->save($cart);
                 } else {
                     $orderItem = new OrderItem();
                     $orderItem->setProduct($product[0]);
                     $orderItem->setQuantity($value['count']);
-                    $orderItem->setPrice($value['cost'] * 1.23);
+                    if($cart->getCarPriceNetto()){
+                        $orderItem->setPrice($value['cost']);
+                    }else{
+                        $orderItem->setPrice($value['cost'] * 1.23);
+                    }
                     $cart->addItem($orderItem)->setUpdatedAt(new \DateTime());
                     $cartManager->save($cart);
                 }
@@ -966,6 +977,28 @@ class CartController extends AbstractController {
         
 
         return $this->redirectToRoute('order_index');
+    }
+    
+    /**
+     * @Route("/orderitem/togglelocked/{orderitemid}", name="orderitem_toggle", methods={"GET"})
+     */
+    public function toggleLocked(string $orderitemid): Response {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(OrderItem::class);
+        $orderItem = $repository->find($orderitemid);
+        $isLocked = $orderItem->getIsLocked();
+
+        if($isLocked == false || $isLocked == null){
+            $orderItem->setIsLocked(true);
+        }else{
+            $orderItem->setIsLocked(false);
+        }
+
+        $entityManager->persist($orderItem);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('cart');
     }
 
 }

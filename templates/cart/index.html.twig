@@ -47,6 +47,8 @@
                         {{ form_row(form.own_pickup) }}
 
                         {{ form_row(form.count_pallets) }}
+                        
+                        {{ form_row(form.car_price_netto) }}
                     </div>
 
                     <div class="col">
@@ -95,7 +97,7 @@
                                     <div class="ml-auto">
                                         {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
                                         {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
-                                        <a href="{{ path('product_index') }}" class="btn btn-primary">Dodaj</a>
+                                        <a href="{{ path('product_index') }}" class="btn btn-primary">Dodaj Produkt</a>
                                     </div>
                                 </div>
                             </div>
@@ -110,6 +112,7 @@
                                             <td>
                                                 <img src="https://via.placeholder.com/200x150" width="64" alt="Product image">
                                             </td>
+                                            
                                             <td>
                                                 <a href="{{ path('product_show',{'id':item.vars.data.product.id,'price':'detal','pickup':'pitch','type':'cart'}) }}"><h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5></a>
                                             </td>
@@ -121,11 +124,19 @@
                                 'class': 'form-control form-control-sm ' ~ (item.quantity.vars.valid ? '' : 'is-invalid')
                             }
                         }) }}   </td>
+                                            
                                             <td>{{ form_widget(item.price, {
                             'attr': {
                                 'class': 'form-control form-control-sm ' ~ (item.price.vars.valid ? '' : 'is-invalid')
                             }
                         }) }}
+                                            </td>
+                                            <td>
+                                                {% if item.vars.data.isLocked %}
+                                                    <a href="{{ path('orderitem_toggle',{'orderitemid':item.vars.data.id}) }}" style="color:red;"><i class="fa-solid fa-lock"></i></a>
+                                                {% else %}
+                                                    <a href="{{ path('orderitem_toggle',{'orderitemid':item.vars.data.id}) }}"><i class="fa-solid fa-lock-open"></i></a>
+                                                {% endif %}
                                             </td>
                                     <div class="invalid-feedback">
                                         {{ form_errors(item.quantity) }}
@@ -329,7 +340,7 @@
            {{ path("save_cart",{'type':'offer','id':cart.id})}}
                 {% else %}
            {{ path("save_cart",{'id':cart.id})}}
-               {% endif %}" class="btn btn-warning w-100 m-1">Zapisz</a>
+               {% endif %}" class="btn btn-warning w-100 m-1">Zamknij</a>
            </li>
            {% if cart.id == null %}
                 <li class="nav-item"> <a href="{{ path("drop_cart")}}" class="btn btn-primary w-100 m-1">Porzuć</a></li>

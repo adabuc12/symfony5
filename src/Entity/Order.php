@@ -152,6 +152,11 @@ class Order
      */
     private $order_id;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $car_price_netto;
+
 
 
 
@@ -623,6 +628,18 @@ class Order
    public function setOrderId(?int $order_id): self
    {
        $this->order_id = $order_id;
+
+       return $this;
+   }
+
+   public function getCarPriceNetto(): ?bool
+   {
+       return $this->car_price_netto;
+   }
+
+   public function setCarPriceNetto(?bool $car_price_netto): self
+   {
+       $this->car_price_netto = $car_price_netto;
 
        return $this;
    }

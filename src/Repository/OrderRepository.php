@@ -44,11 +44,32 @@ class OrderRepository extends ServiceEntityRepository
       * @return Order[] Returns an array of Order objects
       */
     
-    public function findByType($value)
+    public function findByType($value, $user)
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.status = :val')
+            ->andWhere('o.user = :user')
             ->setParameter('val', $value)
+            ->setParameter('user', $user)
+            ->orderBy('o.id', 'DESC')
+        ;
+    }
+    
+     /**
+      * @return Order[] Returns an array of Order objects
+      */
+    
+    public function findByFilters($number, $kontrahent, $date, $status, $deliveryDate, $user)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.status = :val')
+            ->andWhere('o.user = :user')
+            ->andWhere('o.status = :status')
+            ->andWhere('o.number = :status')
+            ->andWhere('o.kontrahent = :status')
+            ->setParameter('val', $value)
+            ->setParameter('user', $user)
+            ->setParameter('status', $status)
             ->orderBy('o.id', 'DESC')
         ;
     }

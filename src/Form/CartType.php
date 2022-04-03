@@ -96,6 +96,10 @@ class CartType extends AbstractType {
                     'label' => 'Odbiór własny',
                     'required' => false,
                 ])
+                ->add('car_price_netto', CheckboxType::class, [
+                    'label' => 'Transport netto',
+                    'required' => false,
+                ])
                 ->add('kontrahent', EntityType::class, [
                     'class' => Kontrahent::class,
                     'multiple' => false,
@@ -109,7 +113,7 @@ class CartType extends AbstractType {
                     'allow_delete' => true,
                 ])
                 ->add('count', SubmitType::class, ['label' => 'Przelicz i Zapisz Dane'])
-                ->add('save', SubmitType::class, ['label' => 'Zapisz produkty'])
+                ->add('save', SubmitType::class, ['label' => 'Zapisz'])
                 ->add('clear', SubmitType::class, ['label' => 'Czyść']);
 
         $builder->addEventSubscriber(new RemoveItemListener());
