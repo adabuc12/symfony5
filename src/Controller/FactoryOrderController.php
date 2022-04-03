@@ -269,7 +269,9 @@ class FactoryOrderController extends AbstractController {
             ->html('<p>'.$content.'</p>');
 
         $mailer->send($email);
- 
+        $this->addFlash('success',
+                'Wiadomość została wysłana'
+            );
         }
         return $this->render('factory_order/ask.html.twig', [
                     'items' => $newItems,
