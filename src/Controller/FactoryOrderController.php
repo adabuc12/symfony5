@@ -250,7 +250,10 @@ class FactoryOrderController extends AbstractController {
                         $content = $content . ' ' . $req;
                     }
                     if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'quantity') {
-                        $content = $content . ' - ' . $req. 'm2/szt <br/>';
+                        $content = $content . ' - ' . $req;
+                    }
+                    if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'item') {
+                        $content = $content . ' ' . $req;
                     }
                 }
             }
