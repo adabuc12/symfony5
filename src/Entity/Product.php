@@ -158,6 +158,11 @@ class Product
      */
     private $notifyUserIfAvaible;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $update_date;
+
     public function __construct()
     {
         $this->orderFactoryItems = new ArrayCollection();
@@ -554,6 +559,18 @@ class Product
     public function removeNotifyUserIfAvaible(User $notifyUserIfAvaible): self
     {
         $this->notifyUserIfAvaible->removeElement($notifyUserIfAvaible);
+
+        return $this;
+    }
+
+    public function getUpdateDate(): ?\DateTimeInterface
+    {
+        return $this->update_date;
+    }
+
+    public function setUpdateDate(?\DateTimeInterface $update_date): self
+    {
+        $this->update_date = $update_date;
 
         return $this;
     }
