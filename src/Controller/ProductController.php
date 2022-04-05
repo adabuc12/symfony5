@@ -476,11 +476,13 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 if($discountPercent > 0){
                                     $productBuyPrice = $catalogPrice-($catalogPrice/100*$discountPercent);
                                     $product->setBuyPrice(round($productBuyPrice,2));
+                                    $product->setUpdateDate(new DateTime('NOW'));
                                     $entityManager->persist($product);
                                 }
                                 if($discountPercentUp > 0){
                                     $productBuyPrice = $buyPrice * ((100+$discountPercentUp)/100);
                                     $product->setBuyPrice(round($productBuyPrice,2));
+                                    $product->setUpdateDate(new DateTime('NOW'));
                                     $entityManager->persist($product);
                                 }
                             }
@@ -507,6 +509,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                     $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
                                 }
                                 $product->setSellPriceFactoryDetal($productPrice);
+                                $product->setUpdateDate(new DateTime('NOW'));
                                 $productFactory = strtolower($product->getManufacture());
                                 $factoryNettoTransportPrice = $factoryArray[$productFactory];
                                 $productPckaging = $product->getPackaging();
@@ -517,8 +520,10 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 if($productBuyPrice > 0){
                                     $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
                                     $product->setSellPricePitchDetal($pricePitch);
+                                    $product->setUpdateDate(new DateTime('NOW'));
                                 }else{
                                     $product->setSellPricePitchDetal(0);
+                                    $product->setUpdateDate(new DateTime('NOW'));
                                 }
                                 
                             }
@@ -546,7 +551,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 }else{
                                     $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
                                 }
-                                $product->setSellPriceFactoryContractors($productPrice);
+                                $product->setSellPriceFactoryContractors($productPrice);$product->setUpdateDate(new DateTime('NOW'));
                                 $productFactory = strtolower($product->getManufacture());
                                 $factoryNettoTransportPrice = $factoryArray[$productFactory];
                                 $productPckaging = $product->getPackaging();
@@ -556,9 +561,9 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
                                  if($productBuyPrice > 0){
                                 $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
-                                $product->setSellPricePitchContractors($pricePitch);
+                                $product->setSellPricePitchContractors($pricePitch);$product->setUpdateDate(new DateTime('NOW'));
                                  }else{
-                                   $product->setSellPricePitchContractors(0);  
+                                   $product->setSellPricePitchContractors(0);  $product->setUpdateDate(new DateTime('NOW'));
                                  }
                             }
                                 $entityManager->persist($product);
@@ -585,7 +590,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 }else{
                                     $productPrice = $this->ceiling(($productBuyPrice*floatval('1.'.$req)),$roundprice);
                                 }
-                                $product->setSellPriceFactoryWholesale($productPrice);
+                                $product->setSellPriceFactoryWholesale($productPrice);$product->setUpdateDate(new DateTime('NOW'));
                                 $productFactory = strtolower($product->getManufacture());
                                 $factoryNettoTransportPrice = $factoryArray[$productFactory];
                                 $productPckaging = $product->getPackaging();
@@ -595,9 +600,9 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 $factoryNettoTransportPricePerUnit = ($factoryNettoTransportPrice/14/$productPckaging)*1.23;
                                  if($productBuyPrice > 0){
                                 $pricePitch = $this->ceiling(($productPrice+$factoryNettoTransportPricePerUnit),$roundprice);
-                                $product->setSellPricePitchWholesale($pricePitch);
+                                $product->setSellPricePitchWholesale($pricePitch);$product->setUpdateDate(new DateTime('NOW'));
                                  }else{
-                                     $product->setSellPricePitchWholesale(0);
+                                     $product->setSellPricePitchWholesale(0);$product->setUpdateDate(new DateTime('NOW'));
                                  }
                             }
                                 $entityManager->persist($product);
@@ -627,7 +632,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
 
                             if($productId == $product->getId() && $product->getCatalogPrice() !== $req) {
                                 
-                                $product->setCatalogPrice($req);
+                                $product->setCatalogPrice($req);$product->setUpdateDate(new DateTime('NOW'));
                                 $entityManager->persist($product);
     
                             }
@@ -637,9 +642,9 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                         foreach($pagerfanta->getCurrentPageResults() as $product){
                             if($productId == $product->getId() && $product->getBuyPrice() !== $req) {
                                 if($is_netto){
-                                    $product->setBuyPrice(round(floatval($req)*1.23, 2));
+                                    $product->setBuyPrice(round(floatval($req)*1.23, 2));$product->setUpdateDate(new DateTime('NOW'));
                             }else{
-                                $product->setBuyPrice($req);
+                                $product->setBuyPrice($req);$product->setUpdateDate(new DateTime('NOW'));
                             }
                                 $entityManager->persist($product);
                             }
@@ -662,7 +667,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                 }
                          
                                 $product->setSellPriceFactoryDetal($req);
-                                $product->setSellPricePitchDetal($pricePitch);
+                                $product->setSellPricePitchDetal($pricePitch);$product->setUpdateDate(new DateTime('NOW'));
                                 $entityManager->persist($product);
     
                             }
@@ -684,7 +689,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                     $req = $this->ceiling($req,0.5);
                                 }
                                 $product->setSellPriceFactoryContractors($req);
-                                $product->setSellPricePitchContractors($pricePitch);
+                                $product->setSellPricePitchContractors($pricePitch);$product->setUpdateDate(new DateTime('NOW'));
                                 $entityManager->persist($product);
     
                             }
@@ -706,7 +711,7 @@ return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
                                     $req = $this->ceiling($req,0.5);
                                 }
                                 $product->setSellPriceFactoryWholesale($req);
-                                $product->setSellPricePitchWholesale($pricePitch);
+                                $product->setSellPricePitchWholesale($pricePitch);$product->setUpdateDate(new DateTime('NOW'));
                                 $entityManager->persist($product);
     
                             }
