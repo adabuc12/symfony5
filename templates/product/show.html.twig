@@ -160,6 +160,10 @@
                         <th>Waga jednostkowa</th>
                         <td>{{ (product.unitWeight*1000)|number_format(2, '.', ',') }} kg</td>
                     </tr>
+                    <tr>
+                        <th>Ostatnia aktualizacja ceny</th>
+                        <td>{{ product.updateDate | date('d-m-yy') }}</td>
+                    </tr>
                     {% if product.isCourier %}
                         <tr>
                             <th>Wysyłka kurierem</th>
