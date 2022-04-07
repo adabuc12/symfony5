@@ -269,7 +269,7 @@ class FactoryOrderController extends AbstractController {
                     }
                 }
             }
-            $contentText = 'Witam, </br> Proszę o spraawdzenie dostępności lub podanie daty dostępności materiałów : </br></br>';
+            $contentText = 'Witam, <br/> Proszę o sprawdzenie dostępności lub podanie daty dostępności materiałów : <br/><br/>';
             foreach ($itemsByManufacture as $manufacture => $items) {
                 foreach ($items as $item) {
                     if (key_exists($item->getId(), $content)) {
@@ -279,10 +279,12 @@ class FactoryOrderController extends AbstractController {
                         } else {
                             $contentText = $contentText . ' ' . $content[$item->getId()]['quantity'];
                         }
-                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '</br>';
+                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
                     }
                 }
-                $email = (new Email())
+                 $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
+                
+                 $email = (new Email())
                         ->from('biuro@kolodomu.pl')
                         ->to('abadambuczek@gmail.com')
                         //->cc('cc@example.com')
