@@ -8,7 +8,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th><input type="checkbox" name="select_all" /></th>
+                    <th><input type="checkbox" name="select_all" id="show_all_2"/></th>
                     <th>Nazwa</th>
                     <th>Ilość</th>
                     <th>Ilość/palety</th>
@@ -17,25 +17,25 @@
                 </tr>
             </thead>
             <tbody>
-            {% for item in items %}
-                <tr>
-                    <td><input type="checkbox" name="check-{{ item.id }}" /></td>
-                    <td><input class="form-control"  type="text" name="product-{{ item.id }}" value="{{ item.product.name }}"/></td>
-                    <td><input class="form-control"  type="text" name="quantity-{{ item.id }}" value="{{ item.quantity }}" /></td>
-                    <td><input class="form-control"  type="text" name="quantitypal-{{ item.id }}" value="{{ item.quantity/item.product.packaging }}" /></td>
-                    <td>
-                        <select class="form-select" aria-label="Jednostki" name="item-{{ item.id }}">
-                            <option value="pal">pal.</option>
-                            <option value="m2">m2</option>
-                            <option value="szt">szt.</option>
-                            <option value="t">t.</option>
-                            <option value="kg">kg</option>
-                            <option value="op">op.</option>
-                        </select>
-                    </td>
-                    <td>{{ item.product.manufacture }}</td>
-                </tr>
-            {% endfor %}
+                {% for item in items %}
+                    <tr>
+                        <td><input type="checkbox" name="check-{{ item.id }}" class="to_check"/></td>
+                        <td><input class="form-control"  type="text" name="product-{{ item.id }}" value="{{ item.product.name }}"/></td>
+                        <td><input class="form-control"  type="text" name="quantity-{{ item.id }}" value="{{ item.quantity }}" /></td>
+                        <td><input class="form-control"  type="text" name="quantitypal-{{ item.id }}" value="{{ item.quantity/item.product.packaging }}" /></td>
+                        <td>
+                            <select class="form-select" aria-label="Jednostki" name="item-{{ item.id }}">
+                                <option value="pal">pal.</option>
+                                <option value="m2">m2</option>
+                                <option value="szt">szt.</option>
+                                <option value="t">t.</option>
+                                <option value="kg">kg</option>
+                                <option value="op">op.</option>
+                            </select>
+                        </td>
+                        <td>{{ item.product.manufacture }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 
@@ -44,7 +44,17 @@
     {% block footer %}
         <li class="nav-item"> 
             <button class="nav-link btn btn-primary" type="submit" name="send_ask">Wyślij zapytanie</button>
-        </li>
 
+        </li>
+        <li class="nav-item"> 
+            <a class="nav-link btn btn-primary" href="{{ path('cart') }}">Powrót</a>
+        </li>
     </form>
+    <script>
+        $(document).ready(function () {
+            $('#show_all_2').click(function () {
+                $('.to_check').trigger('click');
+            });
+        });
+    </script>
 {% endblock %}
