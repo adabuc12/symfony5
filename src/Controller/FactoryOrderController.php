@@ -272,7 +272,6 @@ class FactoryOrderController extends AbstractController {
             }
             
             foreach ($itemsByManufacture as $manufacture => $items) {
-                $manufacture=null;
                 $contentText = 'Witam, <br/> Proszę o potwierdzenie dostępności lub podanie spodziewanej daty dostępności materiałów : <br/><br/>';
                 foreach ($items as $item) {
                     if (key_exists($item->getId(), $content)) {
@@ -288,10 +287,11 @@ class FactoryOrderController extends AbstractController {
                  $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
                  $repository = $this->getDoctrine()->getRepository(Factory::class);
                  $factory = $repository->findOneByName($manufacture);
-                 var_dump($factory->getEmail());
+
+                 $emailFactory = $factory->getEmail();
                  $email = (new Email())
                         ->from('biuro@kolodomu.pl')
-                        ->to('abadambuczek@gmail.com')
+                        ->to($emailFactory)
                         ->cc('biuro@kolodomu.pl')
                         //->bcc('bcc@example.com')
                         //->replyTo('fabien@example.com')
