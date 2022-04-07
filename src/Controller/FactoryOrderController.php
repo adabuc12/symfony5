@@ -287,7 +287,7 @@ class FactoryOrderController extends AbstractController {
                 }
                  $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
                  $repository = $this->getDoctrine()->getRepository(Factory::class);
-                 $factory = $repository->findOneByName();
+                 $factory = $repository->findOneByName($manufacture);
                  var_dump($factory->getEmail());
                  $email = (new Email())
                         ->from('biuro@kolodomu.pl')
