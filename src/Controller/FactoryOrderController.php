@@ -269,8 +269,9 @@ class FactoryOrderController extends AbstractController {
                     }
                 }
             }
-            $contentText = 'Witam, <br/> Proszę o sprawdzenie dostępności lub podanie daty dostępności materiałów : <br/><br/>';
+            
             foreach ($itemsByManufacture as $manufacture => $items) {
+                $contentText = 'Witam, <br/> Proszę o potwierdzenie dostępności lub podanie spodziewanej daty dostępności materiałów : <br/><br/>';
                 foreach ($items as $item) {
                     if (key_exists($item->getId(), $content)) {
                         $contentText = $contentText . $content[$item->getId()]['product'];
@@ -279,7 +280,7 @@ class FactoryOrderController extends AbstractController {
                         } else {
                             $contentText = $contentText . ' ' . $content[$item->getId()]['quantity'];
                         }
-                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
+                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<input type="checkbox"/><br/>';
                     }
                 }
                  $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
