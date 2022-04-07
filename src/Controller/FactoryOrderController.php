@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FactoryOrder;
 use App\Entity\PitchOrder;
+use App\Entity\Factory;
 use App\Entity\OrderFactoryItem;
 use App\Entity\Order;
 use App\Form\FactoryOrderType;
@@ -271,8 +272,12 @@ class FactoryOrderController extends AbstractController {
             }
             
             foreach ($itemsByManufacture as $manufacture => $items) {
+                $manufacture=null;
                 $contentText = 'Witam, <br/> Proszę o potwierdzenie dostępności lub podanie spodziewanej daty dostępności materiałów : <br/><br/>';
                 foreach ($items as $item) {
+                    if($manufacture == null){
+                        $manufacture = $item->getProduct()->getManufacture();
+                    }
                     if (key_exists($item->getId(), $content)) {
                         $contentText = $contentText . $content[$item->getId()]['product'];
                         if ($content[$item->getId()]['item'] == 'pal') {
@@ -280,15 +285,15 @@ class FactoryOrderController extends AbstractController {
                         } else {
                             $contentText = $contentText . ' ' . $content[$item->getId()]['quantity'];
                         }
-                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<input type="checkbox"/><br/>';
+                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
                     }
                 }
                  $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
-                
+                 var_dump($manufacture->getEmail());
                  $email = (new Email())
                         ->from('biuro@kolodomu.pl')
                         ->to('abadambuczek@gmail.com')
-                        //->cc('cc@example.com')
+                        ->cc('biuro@kolodomu.pl')
                         //->bcc('bcc@example.com')
                         //->replyTo('fabien@example.com')
                         //->priority(Email::PRIORITY_HIGH)
