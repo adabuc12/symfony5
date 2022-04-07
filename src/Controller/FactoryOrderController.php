@@ -221,59 +221,82 @@ class FactoryOrderController extends AbstractController {
     public function sendAsk(Order $factoryOrder, Request $request, MailerInterface $mailer): Response {
         $items = $factoryOrder->getItem();
         $newItems = [];
-        foreach($items as $item){
-                $pos = strpos($item->getProduct()->getName(), 'Auto');
-                $pos2 = strpos($item->getProduct()->getName(), 'paleta');
-                if ($pos === false && $pos2 === false) {
-                    if(key_exists($item->getProduct()->getName(), $newItems)){
-                        $newItems[$item->getProduct()->getName().count($newItems)] = $item;
-                    }else{
-                       $newItems[$item->getProduct()->getName()] = $item; 
-                    }
-                    
+
+
+        foreach ($items as $item) {
+            $pos = strpos($item->getProduct()->getName(), 'Auto');
+            $pos2 = strpos($item->getProduct()->getName(), 'paleta');
+            if ($pos === false && $pos2 === false) {
+                if (key_exists($item->getProduct()->getName(), $newItems)) {
+                    $newItems[$item->getProduct()->getName() . count($newItems)] = $item;
+                } else {
+                    $newItems[$item->getProduct()->getName()] = $item;
                 }
             }
+        }
+        $itemsByManufacture = [];
+        foreach ($newItems as $key => $item) {
+            if (key_exists($item->getProduct()->getManufacture(), $itemsByManufacture)) {
+                array_push($itemsByManufacture[$item->getProduct()->getManufacture()], $item);
+            } else {
+                $itemsByManufacture[$item->getProduct()->getManufacture()] = [$item];
+            }
+        }
+
         if ($request->query->get('send_ask') !== null) {
-            $content = '';
+            $content = [];
             $productNumber = null;
-            
-            
+
+
             foreach ($request->query->all() as $key => $req) {
                 $keyExploded = explode('-', $key);
 
-                if(count($keyExploded)>1) {
+                if (count($keyExploded) > 1) {
                     if ($keyExploded[0] == 'check' && $req == 'on') {
                         $productNumber = $keyExploded[1];
                     }
                     if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'product') {
-                        $content = $content . ' ' . $req;
+                        $content[$productNumber]['product'] = $req;
                     }
                     if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'quantity') {
-                        $content = $content . ' - ' . $req;
+                        $content[$productNumber]['quantity'] = $req;
                     }
                     if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'quantitypal') {
-                        $content = $content . ' - ' . $req;
+                        $content[$productNumber]['quantitypal'] = $req;
                     }
                     if ($keyExploded[1] == $productNumber && $keyExploded[0] == 'item') {
-                        $content = $content . ' ' . $req .'</br>';
+                        $content[$productNumber]['item'] = $req;
                     }
                 }
             }
-            $email = (new Email())
-            ->from('biuro@kolodomu.pl')
-            ->to('abadambuczek@gmail.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Zapytanie o dostępność '.$factoryOrder->getNumber())
-            ->text('Prosze o odpowiedź na temat dostępności')
-            ->html('<p>'.$content.'</p>');
+            $contentText = 'Witam, </br> Proszę o spraawdzenie dostępności lub podanie daty dostępności materiałów : </br></br>';
+            foreach ($itemsByManufacture as $manufacture => $items) {
+                foreach ($items as $item) {
+                    if (key_exists($item->getId(), $content)) {
+                        $contentText = $contentText . $content[$item->getId()]['product'];
+                        if ($content[$item->getId()]['item'] == 'pal') {
+                            $contentText = $contentText . ' -- ' . $content[$item->getId()]['quantitypal'];
+                        } else {
+                            $contentText = $contentText . ' ' . $content[$item->getId()]['quantity'];
+                        }
+                        $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '</br>';
+                    }
+                }
+                $email = (new Email())
+                        ->from('biuro@kolodomu.pl')
+                        ->to('abadambuczek@gmail.com')
+                        //->cc('cc@example.com')
+                        //->bcc('bcc@example.com')
+                        //->replyTo('fabien@example.com')
+                        //->priority(Email::PRIORITY_HIGH)
+                        ->subject('Zapytanie o dostępność ' . $factoryOrder->getNumber())
+                        ->text('Prosze o odpowiedź na temat dostępności')
+                        ->html('<p>' . $contentText . '</p>');
 
-        $mailer->send($email);
-        $this->addFlash('success',
-                'Wiadomość została wysłana'
-            );
+                $mailer->send($email);
+                $this->addFlash('success', 'Wiadomość została wysłana na '.$manufacture
+                );
+            }
         }
         return $this->render('factory_order/ask.html.twig', [
                     'items' => $newItems,
