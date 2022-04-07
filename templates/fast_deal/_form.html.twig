@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col">
+        {{ form_row(form.text) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.phone) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.email) }}
+    </div>
+    <div class="col">
+        <button class="btn">{{ button_label|default('Zapisz') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FastDeal{% endblock %}
+
+{% block body %}
+-    {{ include('fast_deal/_form.html.twig') }}
+
+    <a href="{{ path('fast_deal_index') }}">back to list</a>
+{% endblock %}

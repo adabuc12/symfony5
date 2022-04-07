@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FastDeal{% endblock %}
+
+{% block body %}
+    <h1>Edit FastDeal</h1>
+
+    {{ include('fast_deal/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('fast_deal_index') }}">back to list</a>
+
+    {{ include('fast_deal/_delete_form.html.twig') }}
+{% endblock %}

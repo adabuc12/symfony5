@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FastDeal index{% endblock %}
+
+{% block body %}
+    <h1>FastDeal index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Is_done</th>
+                <th>Date_created</th>
+                <th>Date_ended</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fast_deal in fast_deals %}
+            <tr>
+                <td>{{ fast_deal.id }}</td>
+                <td>{{ fast_deal.text }}</td>
+                <td>{{ fast_deal.phone }}</td>
+                <td>{{ fast_deal.email }}</td>
+                <td>{{ fast_deal.isDone ? 'Yes' : 'No' }}</td>
+                <td>{{ fast_deal.dateCreated ? fast_deal.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ fast_deal.dateEnded ? fast_deal.dateEnded|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('fast_deal_show', {'id': fast_deal.id}) }}">show</a>
+                    <a href="{{ path('fast_deal_edit', {'id': fast_deal.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('fast_deal_new') }}">Create new</a>
+{% endblock %}

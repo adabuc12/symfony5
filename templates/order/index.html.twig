@@ -18,43 +18,38 @@
                         <input  class="form-control" type="text" name="search_kontrahent" value="{% if parameters.kontrahent %}{{ parameters.kontrahent }}{% endif %}">
                     </td>
                     <td>
-                        <label for="search_kontrahent">Data zamówienia</label><br>
-                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                            <i class="fa fa-calendar"></i>
-                            <span></span> <i class="fa fa-caret-down"></i>
-                        </div>
+                        <label for="reportrange">Data utworzenia</label><br>
+                        <input id="reportrange" name="reportrange" type="text" value="<span></span>"  class="form-select" aria-label="Data utworzenia" >
                     </td>
                     <td>
                         <label for="search_kontrahent">Status</label><br>
-                        <select class="form-select" aria-label="Użytkownik" name="search_status">
-                            <option value="all">Wszystkie</option>
-                            <option value="active" selected>Aktywne</option>
-                            <option value="order" >Zamówione</option>
-                            <option value="closed" >Zamknięte</option>
-                            <option value="closed" >Anulowane</option>
+                        <select class="form-select" aria-label="Status" name="search_status">
+                            <option value="">Wszystkie</option>
+                            <option value="active" {% if parameters.status == 'active' %}selected{% endif %}>Aktywne</option>
+                            <option value="ordered" {% if parameters.status == 'ordered' %}selected{% endif %}>Zamówione</option>
+                            <option value="closed" {% if parameters.status == 'closed' %}selected{% endif %}>Zamknięte</option>
+                            <option value="anulled" {% if parameters.status == 'anulled' %}selected{% endif %}>Anulowane</option>
                         </select>
-        
+
                     </td>
                     <td>
-                        <label for="search_kontrahent">Data dostawy</label><br>
-                        <div id="reportrange1" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                            <i class="fa fa-calendar"></i>
-                            <span></span> <i class="fa fa-caret-down"></i>
-                        </div>
+                        <label for="reportrange1">Data dostawy</label><br>
+                        <input id="reportrange1" name="reportrange1" type="text" value="<span></span>"  class="form-select" aria-label="Data dostawy" >
                     </td>
                     <td>
                         <label for="search_kontrahent">Utworzone przez</label><br>
                         <select class="form-select" aria-label="Użytkownik" name="search_created_by">
-                            <option value="{{ app.user.id }}" selected>Moje</option>
-                            <option value="all">Wszyscy</option>
+                            <option value="{{ app.user.id }}" {% if parameters.user == app.user.id %}selected{% endif %}>Moje</option>
+                            <option value="" {% if parameters.user == "" %}selected{% endif %}>Wszyscy</option>
                             {% for user in users %}
                                 {% if app.user.id != user.id %}
-                                    <option value="{{ user.id }}">{{ user.name }} {{ user.surname }}</option>
+                                    <option value="{{ user.id }}" {% if parameters.user == user.id %}selected{% endif %}>{{ user.name }} {{ user.surname }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
                     </td>
-                    <td><button type="submit" class="btn btn-primary m-4">Filtruj</button></td>
+                    <td><button type="submit" class="btn btn-primary m-4" name="submit">Filtruj</button></td>
+                    <td><button type="submit" class="btn btn-warning m-4" name="reset">Resetuj</button></td>
                 </div>
             </table>
         </div>
@@ -147,106 +142,106 @@
                                 <script type="text/javascript">
                                     $(function () {
 
-                                    var start = moment().subtract(365, 'days');
-                                    var end = moment();
-                                    function cb(start, end) {
-                                    $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
-                                    $('#reportrange1 span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
-                                    }
+                                        var start = moment().subtract(365, 'days');
+                                        var end = moment();
+                                        function cb(start, end) {
+                                            $('#reportrange span').html(start.format('DD_MM_YYYY') + ' - ' + end.format('DD_MM_YYYY'));
+                                            $('#reportrange1 span').html(start.format('DD_MM_YYYY') + ' - ' + end.format('DD_MM_YYYY'));
+                                        }
 
-                                    $('#reportrange').daterangepicker({
-                                    startDate: start,
-                                    endDate: end,
-                                    locale: {
-                                            "format": "MM/DD/YYYY",
-                                                    "separator": " - ",
-                                                    "applyLabel": "Akceptuj",
-                                                    "cancelLabel": "Anuluj",
-                                                    "fromLabel": "Od",
-                                                    "toLabel": "Do",
-                                                    "customRangeLabel": "Wybierz Przedział",
-                                                    "daysOfWeek": [
-                                                            "Niedz",
-                                                            "Pon",
-                                                            "Wt",
-                                                            "Śr",
-                                                            "Czw",
-                                                            "Pt",
-                                                            "Sob"
-                                                    ],
-                                                    "monthNames": [
-                                                            "Styczeń",
-                                                            "Luty",
-                                                            "Marzec",
-                                                            "Kwiecień",
-                                                            "Maj",
-                                                            "Czerwice",
-                                                            "Lipiec",
-                                                            "Sierpień",
-                                                            "Wrzesień",
-                                                            "Październik",
-                                                            "Listopad",
-                                                            "Grudzień"
-                                                    ],
-                                                    "firstDay": 1
+                                        $('#reportrange').daterangepicker({
+                                            startDate: start,
+                                            endDate: end,
+                                            locale: {
+                                                "format": "MM/DD/YYYY",
+                                                "separator": " - ",
+                                                "applyLabel": "Akceptuj",
+                                                "cancelLabel": "Anuluj",
+                                                "fromLabel": "Od",
+                                                "toLabel": "Do",
+                                                "customRangeLabel": "Wybierz Przedział",
+                                                "daysOfWeek": [
+                                                    "Niedz",
+                                                    "Pon",
+                                                    "Wt",
+                                                    "Śr",
+                                                    "Czw",
+                                                    "Pt",
+                                                    "Sob"
+                                                ],
+                                                "monthNames": [
+                                                    "Styczeń",
+                                                    "Luty",
+                                                    "Marzec",
+                                                    "Kwiecień",
+                                                    "Maj",
+                                                    "Czerwice",
+                                                    "Lipiec",
+                                                    "Sierpień",
+                                                    "Wrzesień",
+                                                    "Październik",
+                                                    "Listopad",
+                                                    "Grudzień"
+                                                ],
+                                                "firstDay": 1
                                             },
-                                    ranges: {
-                                            'Dzisiaj': [moment(), moment()],
-                                            'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                            'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
-                                            'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
-                                            'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
-                                            'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                    }
-                                    }, cb);
-                                    
-                                    $('#reportrange1').daterangepicker({
-                                    startDate: start,
-                                    endDate: end,
-                                    locale: {
-                                            "format": "MM/DD/YYYY",
-                                                    "separator": " - ",
-                                                    "applyLabel": "Akceptuj",
-                                                    "cancelLabel": "Anuluj",
-                                                    "fromLabel": "Od",
-                                                    "toLabel": "Do",
-                                                    "customRangeLabel": "Wybierz Przedział",
-                                                    "daysOfWeek": [
-                                                            "Niedz",
-                                                            "Pon",
-                                                            "Wt",
-                                                            "Śr",
-                                                            "Czw",
-                                                            "Pt",
-                                                            "Sob"
-                                                    ],
-                                                    "monthNames": [
-                                                            "Styczeń",
-                                                            "Luty",
-                                                            "Marzec",
-                                                            "Kwiecień",
-                                                            "Maj",
-                                                            "Czerwice",
-                                                            "Lipiec",
-                                                            "Sierpień",
-                                                            "Wrzesień",
-                                                            "Październik",
-                                                            "Listopad",
-                                                            "Grudzień"
-                                                    ],
-                                                    "firstDay": 1
+                                            ranges: {
+                                                'Dzisiaj': [moment(), moment()],
+                                                'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
+                                                'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
+                                                'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
+                                                'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                            }
+                                        }, cb);
+
+                                        $('#reportrange1').daterangepicker({
+                                            startDate: start,
+                                            endDate: end,
+                                            locale: {
+                                                "format": "MM/DD/YYYY",
+                                                "separator": " - ",
+                                                "applyLabel": "Akceptuj",
+                                                "cancelLabel": "Anuluj",
+                                                "fromLabel": "Od",
+                                                "toLabel": "Do",
+                                                "customRangeLabel": "Wybierz Przedział",
+                                                "daysOfWeek": [
+                                                    "Niedz",
+                                                    "Pon",
+                                                    "Wt",
+                                                    "Śr",
+                                                    "Czw",
+                                                    "Pt",
+                                                    "Sob"
+                                                ],
+                                                "monthNames": [
+                                                    "Styczeń",
+                                                    "Luty",
+                                                    "Marzec",
+                                                    "Kwiecień",
+                                                    "Maj",
+                                                    "Czerwice",
+                                                    "Lipiec",
+                                                    "Sierpień",
+                                                    "Wrzesień",
+                                                    "Październik",
+                                                    "Listopad",
+                                                    "Grudzień"
+                                                ],
+                                                "firstDay": 1
                                             },
-                                    ranges: {
-                                    'Dzisiaj': [moment(), moment()],
-                                            'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                            'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
-                                            'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
-                                            'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
-                                            'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                    }
-                                    }, cb);
-                                    
-                                    cb(start, end);
+                                            ranges: {
+                                                'Dzisiaj': [moment(), moment()],
+                                                'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                'Ostatnie 7 Dni': [moment().subtract(6, 'days'), moment()],
+                                                'Ostatnie 30 Dni': [moment().subtract(29, 'days'), moment()],
+                                                'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
+                                                'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                            }
+                                        }, cb);
+
+                                        cb(start, end);
                                     });
                                 </script>
                             {% endblock %}

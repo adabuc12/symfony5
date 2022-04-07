@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FastDeal{% endblock %}
+
+{% block body %}
+    <h1>FastDeal</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fast_deal.id }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ fast_deal.text }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ fast_deal.phone }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ fast_deal.email }}</td>
+            </tr>
+            <tr>
+                <th>Is_done</th>
+                <td>{{ fast_deal.isDone ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Date_created</th>
+                <td>{{ fast_deal.dateCreated ? fast_deal.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_ended</th>
+                <td>{{ fast_deal.dateEnded ? fast_deal.dateEnded|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fast_deal_index') }}">back to list</a>
+
+    <a href="{{ path('fast_deal_edit', {'id': fast_deal.id}) }}">edit</a>
+
+    {{ include('fast_deal/_delete_form.html.twig') }}
+{% endblock %}

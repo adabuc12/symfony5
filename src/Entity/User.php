@@ -119,6 +119,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FastDeal::class, mappedBy="owner")
+     */
+    private $fastDeals;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -132,6 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
         $this->logs = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->fastDeals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -590,6 +596,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($message->getCreatedBy() === $this) {
                 $message->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FastDeal[]
+     */
+    public function getFastDeals(): Collection
+    {
+        return $this->fastDeals;
+    }
+
+    public function addFastDeal(FastDeal $fastDeal): self
+    {
+        if (!$this->fastDeals->contains($fastDeal)) {
+            $this->fastDeals[] = $fastDeal;
+            $fastDeal->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFastDeal(FastDeal $fastDeal): self
+    {
+        if ($this->fastDeals->removeElement($fastDeal)) {
+            // set the owning side to null (unless already changed)
+            if ($fastDeal->getOwner() === $this) {
+                $fastDeal->setOwner(null);
             }
         }
 
