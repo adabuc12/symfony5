@@ -177,14 +177,22 @@
                                     Suma brutto: <h4>{{ cart.total|number_format(2, '.', ' ')}} PLN </h4>
                                     Suma netto: <h6>{{ (cart.total/1.23)|number_format(2, '.', ' ') }} PLN</h6>
                                     {% set cost = 0 %}
+                                    {% set earns = 0 %}
                                     {% if cart.item.count > 0 %}
                                         {% for item in form.item %}
-                                            {% if 'Auto' in item.vars.data.product.name == false %}
-                                                {% set cost = cost+ ( item.vars.data.quantity|number_format(2, '.', ' ') * item.vars.data.product.buyPrice|number_format(2, '.', ' ') ) %}
+                                            {% if 'Auto' in item.vars.data.product.name or 'Paleta' in item.vars.data.product.name %}
+                                                
+                                                {% else %}
+                                                    {% set earns = earns + ( item.vars.data.quantity * item.vars.data.price ) %}
+                                                    {% set cost = cost + ( item.vars.data.quantity * item.vars.data.product.buyPrice ) %}
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
-                                   {% if is_granted('ROLE_SUPERADMIN') %} Zysk : {{ ((cart.total - cost)/1.23)|number_format(2, '.', ' ') }} PLN netto {% endif %}
+                                   {% if is_granted('ROLE_SUPERADMIN') %} 
+                                       Koszt : {{ (cost/1.23)|number_format(2, '.', ' ') }} PLN netto </br>
+                                       Zysk : {{ ((earns-cost)/1.23)|number_format(2, '.', ' ') }} PLN netto 
+                                   
+                                   {% endif %}
                                 </div>
                             </div>
 
