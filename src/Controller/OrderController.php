@@ -57,7 +57,7 @@ class OrderController extends AbstractController {
             ];
         }
         if ($request->get('submit') !== NULL) {
-            $orders = $orderRepository->findByFilters('order', $number, $kontrahent, $orderDate, $status, $deliverydate, $user);
+            $orders = $orderRepository->findByFilters('order', $number, $kontrahent, $orderDate, $status, $deliverydate, $createdBy);
         } else {
             $orders = $orderRepository->findByType('order', $user);
         }
@@ -110,7 +110,7 @@ class OrderController extends AbstractController {
             ];
         }
         if ($request->get('submit') !== NULL) {
-            $orders = $orderRepository->findByFilters('offer', $number, $kontrahent, $orderDate, $status, $deliverydate, $user);
+            $orders = $orderRepository->findByFilters('offer', $number, $kontrahent, $orderDate, $status, $deliverydate, $createdBy);
         } else {
             $orders = $orderRepository->findByType('offer', $user);
         }

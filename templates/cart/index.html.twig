@@ -184,7 +184,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
-                                    Zysk : {{ ((cart.total - cost)/1.23)|number_format(2, '.', ' ') }} PLN netto
+                                   {% if is_granted('ROLE_SUPERADMIN') %} Zysk : {{ ((cart.total - cost)/1.23)|number_format(2, '.', ' ') }} PLN netto {% endif %}
                                 </div>
                             </div>
 

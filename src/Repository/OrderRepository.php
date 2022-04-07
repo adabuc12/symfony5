@@ -64,7 +64,6 @@ class OrderRepository extends ServiceEntityRepository {
         $deliveryDate1 = new DateTime($deliveryDate[0]);
         $deliveryDate2 = new DateTime($deliveryDate[1]);
         
-        
         $query = $this->createQueryBuilder('o')->andWhere('o.status = :val')->setParameter('val', $type);
         $query->andWhere('o.createdAt BETWEEN :date1 AND :date2 ')->setParameter('date1', $date1)->setParameter('date2', $date2);
         $query->andWhere('o.delivery_date BETWEEN :deliveryDate1 AND :deliveryDate2 ')->setParameter('deliveryDate1', $deliveryDate1)->setParameter('deliveryDate2', $deliveryDate2);
@@ -72,8 +71,7 @@ class OrderRepository extends ServiceEntityRepository {
             $query->andWhere('o.number LIKE :number')->setParameter('number', '%'.$number.'%');
         }
         if(!empty($user)){
-            $query->join('o.user','u');
-            $query->andWhere('u.id = :user')->setParameter('user', $user);
+            $query->andWhere('o.user = :user')->setParameter('user', $user);
         }
         if(!empty($status)){
             $query->andWhere('o.type = :status')->setParameter('status', $status);
