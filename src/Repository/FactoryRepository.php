@@ -19,9 +19,9 @@ class FactoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Factory::class);
     }
 
-    // /**
-    //  * @return Factory[] Returns an array of Factory objects
-    //  */
+     /**
+      * @return Factory[] Returns an array of Factory objects
+      */
     /*
     public function findByExampleField($value)
     {
@@ -36,15 +36,15 @@ class FactoryRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Factory
+
+    public function findOneByName($value): ?Factory
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
+            ->andWhere('LOWER(f.name) = LOWER(:val)')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }
