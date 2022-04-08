@@ -382,7 +382,7 @@
                    {% if cart.status == 'order' %}
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Rozliczenia</a> </li>
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Transporty</a> </li>
-                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Ekspor WAPRO</a></li>
+                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path("eksport_wapro")}}">Ekspor WAPRO</a></li>
                    {% endif %}
 
                {% if cart.id != '' %}
