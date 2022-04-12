@@ -30,7 +30,7 @@
     </head>
     <body>
         {% if cart.status == 'offer' %}
-            {% set type = 'OFERTA' %}
+            {% set type = 'WYCENA' %}
         {% elseif cart.status == 'order' %}
             {% set type = 'ZAMÓWIENIE' %}
         {% else %}
@@ -102,6 +102,7 @@
                 </table>
                 {% if cart.notice %}
                     <p > Uwagi : {{ cart.notice }}</p>
+                    <p> Wycena ważna 5 dni </p>
                 {% endif %}
                 <div style="margin:10em 0">
                     <table style="width:100%; border:none">

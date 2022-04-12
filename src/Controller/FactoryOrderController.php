@@ -300,7 +300,7 @@ class FactoryOrderController extends AbstractController {
                         ->text('Prosze o odpowiedź na temat dostępności')
                         ->html('<p>' . $contentText . '</p>');
 
-                $mailer->send($email);
+//                $mailer->send($email);
                 $this->addFlash('success', 'Wiadomość została wysłana na '.$manufacture
                 );
             }

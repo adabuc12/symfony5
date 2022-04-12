@@ -184,7 +184,11 @@
                                                 
                                                 {% else %}
                                                     {% set earns = earns + ( item.vars.data.quantity * item.vars.data.price ) %}
-                                                    {% set cost = cost + ( item.vars.data.quantity * item.vars.data.product.buyPrice ) %}
+                                                    {% if cart.pickup == 'pitch' %}
+                                                        {% set cost = cost + ( item.vars.data.quantity * (item.vars.data.product.buyPrice+(item.vars.data.product.sellPricePitchDetal - item.vars.data.product.sellPriceFactoryDetal)) ) %}
+                                                    {% else %}
+                                                        {% set cost = cost + ( item.vars.data.quantity * item.vars.data.product.buyPrice ) %}
+                                                    {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
@@ -382,7 +386,9 @@
                    {% if cart.status == 'order' %}
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Rozliczenia</a> </li>
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Transporty</a> </li>
-                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path("eksport_wapro")}}">Ekspor WAPRO</a></li>
+                   {% endif %}
+                   {% if cart.status == 'order' and cart.id != '' %}
+                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path("eksport_wapro", {'id': cart.id})}}">Ekspor WAPRO</a></li>
                    {% endif %}
 
                {% if cart.id != '' %}
