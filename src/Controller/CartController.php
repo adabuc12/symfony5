@@ -65,7 +65,7 @@ class CartController extends AbstractController {
             $distance_here_url = $here_api_route_url;
             $route_image = 'https://image.maps.ls.hereapi.com/mia/1.6/routing?language=pl&transportMode=' . $car_type . '&apiKey=' . $api_key
                     . '&waypoint0=' . $coordinates .
-                    '&waypoint1=' . $delivery_coordinates . '&lc=1652B4&lw=6&t=0&ppi=320&w=600&h=450';
+                    '&waypoint1=' . $delivery_coordinates . '&lc=1652B4&lw=6&t=0&ppi=320&w=500&h=450';
         } elseif ($is_from_wieliczka) {
             if ($city_wieliczka_long >= explode(',', $delivery_coordinates)[1]) {
                 $distance_here_url = 'https://router.hereapi.com/v8/routes?language=pl&transportMode=' . $car_type .
@@ -75,7 +75,7 @@ class CartController extends AbstractController {
                         . '&waypoint0=' . $coordinates .
                         '&waypoint1=' . $city_wieliczka_lat . ',' . $city_wieliczka_long .
                         '&waypoint2=' . $delivery_coordinates .
-                        '&lc=1652B4&lw=6&t=0&ppi=320&w=600&h=450';
+                        '&lc=1652B4&lw=6&t=0&ppi=320&w=500&h=450';
             } else {
                 $distance_here_url = 'https://router.hereapi.com/v8/routes?language=pl&transportMode=' . $car_type .
                         '&apiKey=' . $rest_api_keys . '&origin=' . $city_wieliczka_lat . ',' . $city_wieliczka_long . '&destination=' .
@@ -84,10 +84,11 @@ class CartController extends AbstractController {
                         . '&waypoint0=' . $city_wieliczka_lat . ',' . $city_wieliczka_long .
                         '&waypoint1=' . $coordinates .
                         '&waypoint2=' . $delivery_coordinates .
-                        '&lc=1652B4&lw=6&t=0&ppi=320&w=600&h=450';
+                        '&lc=1652B4&lw=6&t=0&ppi=320&w=500&h=450';
             }
         }
         $truck_route = $this->curl_get_response($distance_here_url);
+        $truck_route['image'] = $route_image;
 
         return $truck_route;
     }
@@ -653,12 +654,16 @@ class CartController extends AbstractController {
         $logs = $repositoryLog->findByType($cart->getType(), $cart->getId());
 
         $activeOnPromotions = $this->getPromotions($entityManager, $cart);
-        $route_image = null;
 
         if (!$this->get('session')->has('transport_time')) {
             $transport_time = null;
         } else {
             $transport_time = $this->get('session')->get('transport_time');
+        }
+        if (!$this->get('session')->has('route_image')) {
+            $route_image = null;
+        } else {
+            $route_image = $this->get('session')->get('route_image');
         }
         if (!$this->get('session')->has('truck_route_distance')) {
             $truck_route_distance = null;
@@ -695,6 +700,8 @@ class CartController extends AbstractController {
                 $truck_route = $this->routeCalculate($car_type, $coordinates, $delivery_coordinates, $form->get('is_pickup_wieliczka')->getData());
                 
                 if (isset($truck_route['routes'])) {
+                    $route_image = $truck_route['image'];
+                    $this->get('session')->set('route_image', $route_image);
                     $truck_route_distance = ($truck_route['routes'][0]['sections'][0]['summary']['length']) / 1000;
                     $this->get('session')->set('truck_route_distance', $truck_route_distance);
                     $transport_time = ceil(($truck_route['routes'][0]['sections'][0]['summary']['typicalDuration']) / 60);
@@ -873,6 +880,15 @@ class CartController extends AbstractController {
 
         if ($this->get('session')->has('cart_id')) {
             $this->get('session')->remove('cart_id');
+        }
+        if ($this->get('session')->has('route_image')) {
+            $this->get('session')->remove('route_image');
+        }
+        if ($this->get('session')->has('transport_time')) {
+            $this->get('session')->remove('transport_time');
+        }
+        if ($this->get('session')->has('truck_route_distance')) {
+            $this->get('session')->remove('truck_route_distance');
         }
 
         if ($cartType == 'offer') {

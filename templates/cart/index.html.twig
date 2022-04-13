@@ -4,9 +4,75 @@
 
 {% block body %}
     <h4>Numer {{ cart.getNumber }}</h4>
+    <div class="row">
+        {% if cart.status == 'offer' %}
+            <div class="col bg-success p-3 text-white">
+                nowe
+            </div>
+            <div class="col bg-warning p-3">
+                sprawdzanie dostępności
+            </div>
+            <div class="col bg-light p-3">
+                potwierdzenie kosztów transportu
+            </div>
+            <div class="col bg-light p-3">
+                poinformowanie klienta
+            </div>
+            <div class="col bg-light p-3">
+                potwierdzenie i zamówienie
+            </div>
+            <div class="col bg-danger p-3 text-white">
+                oferta anulowana
+            </div>
+        {% endif %}
+        {% if cart.status == 'order' %}
+            <div class="col bg-success p-3 text-white">
+                nowe
+            </div>
+            <div class="col bg-success p-3 text-white">
+                sprawdzanie dostępności
+            </div>
+            <div class="col bg-success p-3 text-white">
+                zaliczka
+            </div>
+            <div class="col bg-success p-3 text-white">
+                dokumenty zaliczka
+            </div>
+            <div class="col bg-warning p-3">
+                sprawdzanie dostępności
+            </div>
+            <div class="col bg-light p-3">
+                zamówienie materiałów
+            </div>
+            <div class="col bg-light p-3">
+                zamówienie materiałów
+            </div>
+            <div class="col bg-light p-3">
+                przygotowanie materiałów
+            </div>
+            <div class="col bg-light p-3">
+                umówienie transportu kierowca
+            </div>
+            <div class="col bg-light p-3">
+                umówienie transportu klient
+            </div>
+            <div class="col bg-light p-3">
+                dokumenty PZ/WZ
+            </div>
+            <div class="col bg-light p-3">
+                dostawa
+            </div>
+            <div class="col bg-light p-3">
+                dokumenty Sprzedaży
+            </div>
+            <div class="col bg-light p-3">
+                rozliczenie płatności
+            </div>
+        {% endif %}
+    </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Dane</button>
+            <button class="nav-link active" id="home1-tab" data-bs-toggle="tab" data-bs-target="#home1" type="button" role="tab" aria-controls="home1" aria-selected="true">Dane</button>
         </li>
         {% if cart.status == 'order' %}
             <li class="nav-item" role="presentation">
@@ -18,7 +84,7 @@
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade show active" id="home1" role="tabpanel" aria-labelledby="home1-tab">
 
             {{ form_start(form) }}
 
@@ -163,9 +229,7 @@
                                 {% if dystans > 0 %}
                                     <p> DYSTANS : {% if dystans %} {{ dystans }} {% endif %} </p>
                                     <p>Szacowany czas przejazdu: {% if time %} {{ (time)}} {% endif %} minut</p>
-                                    <div id="imagemap" class="hidden">
-                                        <image src="{% if route_image %} {{ route_image }} {% endif %}"/>
-                                    </div>
+                                    
                                 {% endif %}
                             </li>
                         </ul>
@@ -181,25 +245,29 @@
                                     {% if cart.item.count > 0 %}
                                         {% for item in form.item %}
                                             {% if 'Auto' in item.vars.data.product.name or 'Paleta' in item.vars.data.product.name %}
-                                                
+
+                                            {% else %}
+                                                {% set earns = earns + ( item.vars.data.quantity * item.vars.data.price ) %}
+                                                {% if cart.pickup == 'pitch' %}
+                                                    {% set cost = cost + ( item.vars.data.quantity * (item.vars.data.product.buyPrice+(item.vars.data.product.sellPricePitchDetal - item.vars.data.product.sellPriceFactoryDetal)) ) %}
                                                 {% else %}
-                                                    {% set earns = earns + ( item.vars.data.quantity * item.vars.data.price ) %}
-                                                    {% if cart.pickup == 'pitch' %}
-                                                        {% set cost = cost + ( item.vars.data.quantity * (item.vars.data.product.buyPrice+(item.vars.data.product.sellPricePitchDetal - item.vars.data.product.sellPriceFactoryDetal)) ) %}
-                                                    {% else %}
-                                                        {% set cost = cost + ( item.vars.data.quantity * item.vars.data.product.buyPrice ) %}
-                                                    {% endif %}
+                                                    {% set cost = cost + ( item.vars.data.quantity * item.vars.data.product.buyPrice ) %}
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
-                                   {% if is_granted('ROLE_SUPERADMIN') %} 
-                                       Koszt : {{ (cost/1.23)|number_format(2, '.', ' ') }} PLN netto </br>
-                                       Zysk : {{ ((earns-cost)/1.23)|number_format(2, '.', ' ') }} PLN netto 
-                                   
-                                   {% endif %}
+                                    {% if is_granted('ROLE_SUPERADMIN') %} 
+                                        Koszt : {{ (cost/1.23)|number_format(2, '.', ' ') }} PLN netto </br>
+                                        Zysk : {{ ((earns-cost)/1.23)|number_format(2, '.', ' ') }} PLN netto 
+
+                                    {% endif %}
                                 </div>
                             </div>
-
+                                {% if dystans > 0 %}
+                                    <div id="imagemap">
+                                        <image src="{% if route_image %} {{ route_image }} {% endif %}" style="width:100%"/>
+                                    </div>
+                                {% endif %}
                         </div>
                     </div>
                     {{ form_end(form, {'render_rest': false}) }}
