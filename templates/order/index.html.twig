@@ -80,14 +80,44 @@
                     <td>{{ order.kontrahent }}</td>
                     <td>{{ order.deliveryDate ? order.deliveryDate|date('Y-m-d') : '' }}</td>
                     <td>{{ order.user.name }} {{ order.user.surname }}</td>
-                    <td style="text-align: right;">{{ order.total|number_format(2, '.', ' ') }}</p></td>
+                    <td style="text-align: right; margin-right: 10px;">{{ order.total|number_format(2, '.', ' ') }}</p></td>
                         {% if order.status == 'offer' %}
 
-                        <td>
+                        <td class="text-center">
                             {% if order.type == 'canceled' %}
                                 <a href="">
                                     <i class="fa-solid fa-rectangle-xmark" style="color:red"></i>
                                 </a> 
+                            {% endif %}
+                            {% if order.type == 'new' %}
+                                <span class="badge bg-warning text-center">Nowa oferta<a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                </span>
+                            {% endif %}
+                            {% if order.type == 'checking' %}
+                                <span class="badge bg-secondary text-center">Sprawdzam dostępność<a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                </span>
+                            {% endif %}
+                            {% if order.type == 'car_price' %}
+                                <span class="badge bg-primary text-center">Potwierdzam transport<a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                </span>
+                            {% endif %}
+                            {% if order.type == 'client_info' %}
+                                <span class="badge bg-info text-center">Informuje klienta<a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                </span>
+                            {% endif %}
+                            {% if order.type == 'accepted' %}
+                                <span class="badge bg-succes text-center">Oferta zamówiona<a href="">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </a>
+                                </span>
                             {% endif %}
                             {% if order.isOrdered == true and order.orderId > 0 %}
                                 <a href="{{ path('order_edit', {'id': order.orderId}) }}">
@@ -96,6 +126,12 @@
                             </td>{% endif %}
                             {% if order.status == 'order' %}
                                 <td>
+                                    {% if order.type == 'new' %}
+                                        <span class="badge bg-warning">Nowy <a href="">
+                                                <i class="fa-solid fa-industry"></i>
+                                            </a>
+                                        </span>
+                                    {% endif %}
                                     {% if order.type == '' %}
                                         <a href="">
                                             <i class="fa-solid fa-industry"></i>

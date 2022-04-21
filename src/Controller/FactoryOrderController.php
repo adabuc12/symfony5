@@ -284,7 +284,7 @@ class FactoryOrderController extends AbstractController {
                         $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
                     }
                 }
-                 $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone();
+                 $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone(). '<br/> kołodomu.pl s.c. </br> ul.Niepołomska 28a </br> 32-020 Wieliczka';
                  $repository = $this->getDoctrine()->getRepository(Factory::class);
                  $factory = $repository->findOneByName($manufacture);
 

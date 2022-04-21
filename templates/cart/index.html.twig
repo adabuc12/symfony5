@@ -5,27 +5,44 @@
 {% block body %}
     <h4>Numer {{ cart.getNumber }}</h4>
     <div class="row">
-        {% if cart.status == 'offer' %}
-            <div class="col bg-success p-3 text-white">
-                nowe
+        {% if cart.status == 'offer' and  cart.id != '' %}
+            <div class="col {% if cart.type == 'new' %} bg-warning progress-bar progress-bar-striped progress-bar-animated {% endif %}
+                 {% if cart.type == 'checking' or cart.type == 'car_price' or cart.type == 'client_info' or cart.type == 'accepted'  %} bg-success {% endif %} p-3 text-white change-button">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'new'})}}" class="stretched-link text-white btn text-center"> nowe</a>
+                </div>
             </div>
-            <div class="col bg-warning p-3">
-                sprawdzanie dostępności
+            <div class="col {% if cart.type == 'checking' %} bg-warning progress-bar progress-bar-striped progress-bar-animated {% endif %}
+            {% if cart.type == 'checking' or cart.type == 'car_price' or cart.type == 'client_info' or cart.type == 'accepted'  %} bg-success {% else %} bg-light {% endif %} text-white change-button  p-3">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'checking'})}}" class="stretched-link {% if cart.type == 'checking' or cart.type == 'car_price' or cart.type == 'client_info' or cart.type == 'accepted'  %} text-white {% endif %} btn text-center"> sprawdzanie dostępności</a>
+                </div>
             </div>
-            <div class="col bg-light p-3">
-                potwierdzenie kosztów transportu
+            <div class="col {% if cart.type == 'car_price' %} bg-warning progress-bar progress-bar-striped progress-bar-animated  {% endif %}
+            {% if cart.type == 'car_price' or cart.type == 'client_info' or cart.type == 'accepted'  %} bg-success {% else %} bg-light {% endif %}  p-3 change-button">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'car_price'})}}" class="stretched-link {% if cart.type == 'car_price' or cart.type == 'client_info' or cart.type == 'accepted'  %} text-white {% endif %} btn text-center"> potwierdzenie kosztów transportu</a>
+                </div>
             </div>
-            <div class="col bg-light p-3">
-                poinformowanie klienta
+            <div class="col {% if cart.type == 'client_info' %} bg-warning progress-bar progress-bar-striped progress-bar-animated  {% endif %}
+                 {% if cart.type == 'client_info' or cart.type == 'accepted'  %} bg-success  {% else %} bg-light {% endif %}  p-3 change-button">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'client_info'})}}" class="stretched-link {% if cart.type == 'client_info' or cart.type == 'accepted'  %} text-white {% endif %} btn text-center"> poinformowanie klienta</a>
+                </div>
             </div>
-            <div class="col bg-light p-3">
-                potwierdzenie i zamówienie
+            <div class="col {% if cart.type == 'accepted' %} bg-warning progress-bar progress-bar-striped progress-bar-animated  {% endif %}
+                 {% if cart.type == 'accepted' %} bg-succes {% else  %} bg-light {% endif %}  p-3 change-button">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'accepted'})}}" class="stretched-link {% if cart.type == 'accepted' %} text-white {% endif %} btn text-center"> potwierdzenie i zamówienie</a>
+                </div>
             </div>
-            <div class="col bg-danger p-3 text-white">
-                oferta anulowana
+            <div class="col bg-danger p-3 text-white change-button">
+                <div class="d-flex position-relative">
+                    <a href="{{ path("change_type", {'id': cart.id,'type':'canceled'})}}" class="stretched-link text-white btn text-center"> oferta anulowana</a>
+                </div>
             </div>
         {% endif %}
-        {% if cart.status == 'order' %}
+        {% if cart.status == 'order'  and  cart.id != ''%}
             <div class="col bg-success p-3 text-white">
                 nowe
             </div>
@@ -229,7 +246,7 @@
                                 {% if dystans > 0 %}
                                     <p> DYSTANS : {% if dystans %} {{ dystans }} {% endif %} </p>
                                     <p>Szacowany czas przejazdu: {% if time %} {{ (time)}} {% endif %} minut</p>
-                                    
+
                                 {% endif %}
                             </li>
                         </ul>
@@ -263,11 +280,11 @@
                                     {% endif %}
                                 </div>
                             </div>
-                                {% if dystans > 0 %}
-                                    <div id="imagemap">
-                                        <image src="{% if route_image %} {{ route_image }} {% endif %}" style="width:100%"/>
-                                    </div>
-                                {% endif %}
+                            {% if dystans > 0 %}
+                                <div id="imagemap">
+                                    <image src="{% if route_image %} {{ route_image }} {% endif %}" style="width:100%"/>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     {{ form_end(form, {'render_rest': false}) }}
@@ -424,6 +441,12 @@
 {% endblock %}
 
 {% block footer %}
+    <style>
+        .change-button:hover {
+            background-color: white;
+            opacity: 0.3;
+        }
+    </style>
     <li class="nav-item"> 
         <a href="{% if cart.status == 'offer' %}
            {{ path("save_cart",{'type':'offer','id':cart.id})}}

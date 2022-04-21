@@ -269,11 +269,12 @@ $entityManager = $this->getDoctrine()->getManager();
 $entityManager->persist($order);
 $entityManager->flush();
 
-if ($order->getStatus() == 'offer') {
-    return $this->redirectToRoute('offer_index', [], Response::HTTP_SEE_OTHER);
-} elseif ($order->getStatus() == 'order') {
-    return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
-}
+return $this->redirectToRoute('cart', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);
+//if ($order->getStatus() == 'offer') {
+//    return $this->redirectToRoute('offer_index', [], Response::HTTP_SEE_OTHER);
+//} elseif ($order->getStatus() == 'order') {
+//    return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+//}
 }
 
 /**
