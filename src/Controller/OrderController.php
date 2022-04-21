@@ -134,6 +134,7 @@ class OrderController extends AbstractController {
     public function new(Request $request): Response
     {
     $order = new Order();
+    $order->setType('new');
     $form = $this->createForm(OrderType::class, $order);
     $form->handleRequest($request);
 

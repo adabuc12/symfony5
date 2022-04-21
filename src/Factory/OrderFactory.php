@@ -23,7 +23,8 @@ class OrderFactory
         $order
             ->setStatus(Order::STATUS_CART)
             ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setUpdatedAt(new \DateTime())
+            ->setType('new');
 
         return $order;
     }
