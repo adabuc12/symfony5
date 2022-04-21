@@ -1,0 +1,744 @@
+{
+  "keywords": [
+    {
+      "word": "ADD",
+      "flag": "0"
+    },
+    {
+      "word": "ALL",
+      "flag": "1"
+    },
+    {
+      "word": "ALTER",
+      "flag": "0"
+    },
+    {
+      "word": "AND",
+      "flag": "1"
+    },
+    {
+      "word": "ANY",
+      "flag": "1"
+    },
+    {
+      "word": "AS",
+      "flag": "1"
+    },
+    {
+      "word": "ASC",
+      "flag": "1"
+    },
+    {
+      "word": "AUTHORIZATION",
+      "flag": "0"
+    },
+    {
+      "word": "BACKUP",
+      "flag": "0"
+    },
+    {
+      "word": "BEGIN",
+      "flag": "0"
+    },
+    {
+      "word": "BETWEEN",
+      "flag": "1"
+    },
+    {
+      "word": "BREAK",
+      "flag": "0"
+    },
+    {
+      "word": "BROWSE",
+      "flag": "0"
+    },
+    {
+      "word": "BULK",
+      "flag": "0"
+    },
+    {
+      "word": "BY",
+      "flag": "1"
+    },
+    {
+      "word": "CASCADE",
+      "flag": "0"
+    },
+    {
+      "word": "CASE",
+      "flag": "1"
+    },
+    {
+      "word": "CHECK",
+      "flag": "0"
+    },
+    {
+      "word": "CHECKPOINT",
+      "flag": "0"
+    },
+    {
+      "word": "CLOSE",
+      "flag": "0"
+    },
+    {
+      "word": "CLUSTERED",
+      "flag": "0"
+    },
+    {
+      "word": "COALESCE",
+      "flag": "1"
+    },
+    {
+      "word": "COLLATE",
+      "flag": "1"
+    },
+    {
+      "word": "COLUMN",
+      "flag": "1"
+    },
+    {
+      "word": "COMMIT",
+      "flag": "0"
+    },
+    {
+      "word": "COMPUTE",
+      "flag": "1"
+    },
+    {
+      "word": "CONSTRAINT",
+      "flag": "1"
+    },
+    {
+      "word": "CONTAINS",
+      "flag": "1"
+    },
+    {
+      "word": "CONTAINSTABLE",
+      "flag": "1"
+    },
+    {
+      "word": "CONTINUE",
+      "flag": "1"
+    },
+    {
+      "word": "CONVERT",
+      "flag": "1"
+    },
+    {
+      "word": "CREATE",
+      "flag": "0"
+    },
+    {
+      "word": "CROSS",
+      "flag": "1"
+    },
+    {
+      "word": "CURRENT",
+      "flag": "1"
+    },
+    {
+      "word": "CURRENT_DATE",
+      "flag": "1"
+    },
+    {
+      "word": "CURRENT_TIME",
+      "flag": "1"
+    },
+    {
+      "word": "CURRENT_TIMESTAMP",
+      "flag": "1"
+    },
+    {
+      "word": "CURRENT_USER",
+      "flag": "0"
+    },
+    {
+      "word": "CURSOR",
+      "flag": "0"
+    },
+    {
+      "word": "DATABASE",
+      "flag": "1"
+    },
+    {
+      "word": "DBCC",
+      "flag": "0"
+    },
+    {
+      "word": "DEALLOCATE",
+      "flag": "0"
+    },
+    {
+      "word": "DECLARE",
+      "flag": "0"
+    },
+    {
+      "word": "DEFAULT",
+      "flag": "1"
+    },
+    {
+      "word": "DELETE",
+      "flag": "0"
+    },
+    {
+      "word": "DENY",
+      "flag": "0"
+    },
+    {
+      "word": "DESC",
+      "flag": "1"
+    },
+    {
+      "word": "DISK",
+      "flag": "0"
+    },
+    {
+      "word": "DISTINCT",
+      "flag": "1"
+    },
+    {
+      "word": "DISTRIBUTED",
+      "flag": "0"
+    },
+    {
+      "word": "DOUBLE",
+      "flag": "1"
+    },
+    {
+      "word": "DROP",
+      "flag": "0"
+    },
+    {
+      "word": "DUMP",
+      "flag": "0"
+    },
+    {
+      "word": "ELSE",
+      "flag": "1"
+    },
+    {
+      "word": "END",
+      "flag": "1"
+    },
+    {
+      "word": "ERRLVL",
+      "flag": "0"
+    },
+    {
+      "word": "ESCAPE",
+      "flag": "0"
+    },
+    {
+      "word": "EXCEPT",
+      "flag": "1"
+    },
+    {
+      "word": "EXEC",
+      "flag": "0"
+    },
+    {
+      "word": "EXECUTE",
+      "flag": "0"
+    },
+    {
+      "word": "EXISTS",
+      "flag": "1"
+    },
+    {
+      "word": "EXIT",
+      "flag": "0"
+    },
+    {
+      "word": "EXTERNAL",
+      "flag": "0"
+    },
+    {
+      "word": "FETCH",
+      "flag": "1"
+    },
+    {
+      "word": "FILE",
+      "flag": "0"
+    },
+    {
+      "word": "FILLFACTOR",
+      "flag": "0"
+    },
+    {
+      "word": "FOR",
+      "flag": "1"
+    },
+    {
+      "word": "FOREIGN",
+      "flag": "1"
+    },
+    {
+      "word": "FREETEXT",
+      "flag": "1"
+    },
+    {
+      "word": "FREETEXTTABLE",
+      "flag": "1"
+    },
+    {
+      "word": "FROM",
+      "flag": "1"
+    },
+    {
+      "word": "FULL",
+      "flag": "1"
+    },
+    {
+      "word": "FUNCTION",
+      "flag": "1"
+    },
+    {
+      "word": "GOTO",
+      "flag": "1"
+    },
+    {
+      "word": "GRANT",
+      "flag": "0"
+    },
+    {
+      "word": "GROUP",
+      "flag": "1"
+    },
+    {
+      "word": "HAVING",
+      "flag": "1"
+    },
+    {
+      "word": "HOLDLOCK",
+      "flag": "0"
+    },
+    {
+      "word": "IDENTITY",
+      "flag": "0"
+    },
+    {
+      "word": "IDENTITY_INSERT",
+      "flag": "0"
+    },
+    {
+      "word": "IDENTITYCOL",
+      "flag": "0"
+    },
+    {
+      "word": "IF",
+      "flag": "1"
+    },
+    {
+      "word": "IN",
+      "flag": "1"
+    },
+    {
+      "word": "INDEX",
+      "flag": "0"
+    },
+    {
+      "word": "INNER",
+      "flag": "1"
+    },
+    {
+      "word": "INSERT",
+      "flag": "0"
+    },
+    {
+      "word": "INTERSECT",
+      "flag": "1"
+    },
+    {
+      "word": "INTO",
+      "flag": "0"
+    },
+    {
+      "word": "IS",
+      "flag": "1"
+    },
+    {
+      "word": "JOIN",
+      "flag": "1"
+    },
+    {
+      "word": "KEY",
+      "flag": "0"
+    },
+    {
+      "word": "KILL",
+      "flag": "0"
+    },
+    {
+      "word": "LEFT",
+      "flag": "1"
+    },
+    {
+      "word": "LIKE",
+      "flag": "1"
+    },
+    {
+      "word": "LINENO",
+      "flag": "0"
+    },
+    {
+      "word": "LOAD",
+      "flag": "0"
+    },
+    {
+      "word": "MERGE",
+      "flag": "0"
+    },
+    {
+      "word": "NATIONAL",
+      "flag": "0"
+    },
+    {
+      "word": "NOCHECK",
+      "flag": "0"
+    },
+    {
+      "word": "NONCLUSTERED",
+      "flag": "0"
+    },
+    {
+      "word": "NOT",
+      "flag": "1"
+    },
+    {
+      "word": "NULL",
+      "flag": "1"
+    },
+    {
+      "word": "NULLIF",
+      "flag": "1"
+    },
+    {
+      "word": "OF",
+      "flag": "0"
+    },
+    {
+      "word": "OFF",
+      "flag": "0"
+    },
+    {
+      "word": "OFFSETS",
+      "flag": "0"
+    },
+    {
+      "word": "ON",
+      "flag": "1"
+    },
+    {
+      "word": "OPEN",
+      "flag": "0"
+    },
+    {
+      "word": "OPENDATASOURCE",
+      "flag": "0"
+    },
+    {
+      "word": "OPENQUERY",
+      "flag": "0"
+    },
+    {
+      "word": "OPENROWSET",
+      "flag": "0"
+    },
+    {
+      "word": "OPENXML",
+      "flag": "0"
+    },
+    {
+      "word": "OPTION",
+      "flag": "0"
+    },
+    {
+      "word": "OR",
+      "flag": "1"
+    },
+    {
+      "word": "ORDER",
+      "flag": "1"
+    },
+    {
+      "word": "OUTER",
+      "flag": "1"
+    },
+    {
+      "word": "OVER",
+      "flag": "0"
+    },
+    {
+      "word": "PERCENT",
+      "flag": "1"
+    },
+    {
+      "word": "PIVOT",
+      "flag": "1"
+    },
+    {
+      "word": "PLAN",
+      "flag": "0"
+    },
+    {
+      "word": "PRECISION",
+      "flag": "1"
+    },
+    {
+      "word": "PRIMARY",
+      "flag": "1"
+    },
+    {
+      "word": "PRINT",
+      "flag": "1"
+    },
+    {
+      "word": "PROC",
+      "flag": "0"
+    },
+    {
+      "word": "PROCEDURE",
+      "flag": "0"
+    },
+    {
+      "word": "PUBLIC",
+      "flag": "1"
+    },
+    {
+      "word": "RAISERROR",
+      "flag": "0"
+    },
+    {
+      "word": "READ",
+      "flag": "1"
+    },
+    {
+      "word": "READTEXT",
+      "flag": "1"
+    },
+    {
+      "word": "RECONFIGURE",
+      "flag": "0"
+    },
+    {
+      "word": "REFERENCES",
+      "flag": "0"
+    },
+    {
+      "word": "REPLICATION",
+      "flag": "0"
+    },
+    {
+      "word": "RESTORE",
+      "flag": "0"
+    },
+    {
+      "word": "RESTRICT",
+      "flag": "0"
+    },
+    {
+      "word": "RETURN",
+      "flag": "1"
+    },
+    {
+      "word": "REVERT",
+      "flag": "1"
+    },
+    {
+      "word": "REVOKE",
+      "flag": "0"
+    },
+    {
+      "word": "RIGHT",
+      "flag": "1"
+    },
+    {
+      "word": "ROLLBACK",
+      "flag": "1"
+    },
+    {
+      "word": "ROWCOUNT",
+      "flag": "1"
+    },
+    {
+      "word": "ROWGUIDCOL",
+      "flag": "1"
+    },
+    {
+      "word": "RULE",
+      "flag": "0"
+    },
+    {
+      "word": "SAVE",
+      "flag": "0"
+    },
+    {
+      "word": "SCHEMA",
+      "flag": "0"
+    },
+    {
+      "word": "SECURITYAUDIT",
+      "flag": "0"
+    },
+    {
+      "word": "SELECT",
+      "flag": "1"
+    },
+    {
+      "word": "SEMANTICKEYPHRASETABLE",
+      "flag": "0"
+    },
+    {
+      "word": "SEMANTICSIMILARITYDETAILSTABLE",
+      "flag": "0"
+    },
+    {
+      "word": "SEMANTICSIMILARITYTABLE",
+      "flag": "0"
+    },
+    {
+      "word": "SESSION_USER",
+      "flag": "0"
+    },
+    {
+      "word": "SET",
+      "flag": "0"
+    },
+    {
+      "word": "SETUSER",
+      "flag": "0"
+    },
+    {
+      "word": "SHUTDOWN",
+      "flag": "0"
+    },
+    {
+      "word": "SOME",
+      "flag": "0"
+    },
+    {
+      "word": "STATISTICS",
+      "flag": "0"
+    },
+    {
+      "word": "SYSTEM_USER",
+      "flag": "0"
+    },
+    {
+      "word": "TABLE",
+      "flag": "1"
+    },
+    {
+      "word": "TABLESAMPLE",
+      "flag": "1"
+    },
+    {
+      "word": "TEXTSIZE",
+      "flag": "1"
+    },
+    {
+      "word": "THEN",
+      "flag": "1"
+    },
+    {
+      "word": "TO",
+      "flag": "1"
+    },
+    {
+      "word": "TOP",
+      "flag": "1"
+    },
+    {
+      "word": "TRAN",
+      "flag": "1"
+    },
+    {
+      "word": "TRANSACTION",
+      "flag": "1"
+    },
+    {
+      "word": "TRIGGER",
+      "flag": "0"
+    },
+    {
+      "word": "TRUNCATE",
+      "flag": "1"
+    },
+    {
+      "word": "TRY_CONVERT",
+      "flag": "1"
+    },
+    {
+      "word": "TSEQUAL",
+      "flag": "1"
+    },
+    {
+      "word": "UNION",
+      "flag": "1"
+    },
+    {
+      "word": "UNIQUE",
+      "flag": "1"
+    },
+    {
+      "word": "UNPIVOT",
+      "flag": "1"
+    },
+    {
+      "word": "UPDATE",
+      "flag": "0"
+    },
+    {
+      "word": "UPDATETEXT",
+      "flag": "0"
+    },
+    {
+      "word": "USE",
+      "flag": "1"
+    },
+    {
+      "word": "USER",
+      "flag": "1"
+    },
+    {
+      "word": "VALUES",
+      "flag": "1"
+    },
+    {
+      "word": "VARYING",
+      "flag": "0"
+    },
+    {
+      "word": "VIEW",
+      "flag": "1"
+    },
+    {
+      "word": "WAITFOR",
+      "flag": "0"
+    },
+    {
+      "word": "WHEN",
+      "flag": "1"
+    },
+    {
+      "word": "WHERE",
+      "flag": "1"
+    },
+    {
+      "word": "WHILE",
+      "flag": "1"
+    },
+    {
+      "word": "WITH",
+      "flag": "1"
+    },
+    {
+      "word": "WITHIN GROUP",
+      "flag": "1"
+    },
+    {
+      "word": "WRITETEXT",
+      "flag": "1"
+    }
+  ]
+}

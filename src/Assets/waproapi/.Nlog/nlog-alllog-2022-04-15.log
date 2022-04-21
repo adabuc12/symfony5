@@ -1,0 +1,457 @@
+2022-04-15 22:49:50.8595||DEBUG|WaproApiCore.Program|init main 
+2022-04-15 22:49:51.0217||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService is starting. 
+2022-04-15 22:49:51.4694||INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5000 
+2022-04-15 22:49:51.4721||INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. 
+2022-04-15 22:49:51.4721||INFO|Microsoft.Hosting.Lifetime|Hosting environment: Production 
+2022-04-15 22:49:51.4721||INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Pulpit\webapi wapro 
+2022-04-15 22:49:51.8668||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:49:52.3853||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:49:52.4180||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:49:57.5120||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:49:58.2855||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:49:58.2855||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:03.4427||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:03.9489||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:03.9489||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:09.4009||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:14.9588||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:14.9588||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:20.3602||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:21.9738||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:21.9738||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:27.1923||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:28.5351||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:28.5351||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:33.6333||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:34.1878||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:34.1888||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:39.2934||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:40.0631||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 238
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:40.0631||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:45.1963||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:45.7774||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:45.7813||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:50.8798||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:51.5323||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:51.5323||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:50:56.6463||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:50:57.2111||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 202
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:50:57.2111||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:02.4060||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:03.1220||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:03.1220||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:08.5169||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:10.5936||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:10.5936||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:16.4295||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:18.0478||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:18.0516||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:23.3554||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:25.0718||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:25.0718||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:36.4189||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:41.8887||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 83
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:41.8887||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:47.0390||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:48.3551||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:48.3585||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:53.5232||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:51:54.8500||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:51:54.8521||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:51:59.9593||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:00.6741||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:00.6755||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:05.7895||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:06.4620||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:06.4620||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:11.6153||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:12.2138||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:12.2138||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:17.3289||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:17.7473||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:17.7473||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:22.8467||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:23.3006||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:23.3006||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:28.6453||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:30.2406||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:30.2437||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:35.3621||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
+2022-04-15 22:52:36.9091||ERROR|WaproApiCore.Scheduler.SchedulerRunner|Tracking changes exception Microsoft.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near '.'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalEndExecuteNonQuery(IAsyncResult asyncResult, Boolean isInternal, String endMethod)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryInternal(IAsyncResult asyncResult)
+   at Microsoft.Data.SqlClient.SqlCommand.EndExecuteNonQueryAsync(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location ---
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesDatabase() in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 239
+   at WaproApiCore.Scheduler.SchedulerRepo.EnableTrackingChangesTableAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRepo.cs:line 220
+   at WaproApiCore.Scheduler.SchedulerService.EnableTableTrackingChangesAsync(String tableName) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerService.cs:line 84
+   at WaproApiCore.Scheduler.SchedulerRunner.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Marcin\source\repos\WaproApiCore\src\WaproApiCore.Scheduler\SchedulerRunner.cs:line 83
+ClientConnectionId:1ec6a3aa-3d83-409a-b71d-3e7b5a8aaf8c
+Error Number:102,State:1,Class:15
+2022-04-15 22:52:36.9091||INFO|WaproApiCore.Scheduler.SchedulerRunner|StatusCheckerService task doing background work. 
+2022-04-15 22:52:42.0386||INFO|WaproApiCore.Scheduler.SchedulerRunner|Database Tracking Changes disabled. 
