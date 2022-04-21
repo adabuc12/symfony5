@@ -289,6 +289,7 @@ class FactoryOrderController extends AbstractController {
                  $factory = $repository->findOneByName($manufacture);
 
                  $emailFactory = $factory->getEmail();
+                 var_dump($emailFactory);exit;
                  $email = (new Email())
                         ->from('biuro@kolodomu.pl')
                         ->to($emailFactory)
