@@ -289,7 +289,7 @@ class FactoryOrderController extends AbstractController {
                  $factory = $repository->findOneByName($manufacture);
 
                  $emailFactory = $factory->getEmail();
-                 var_dump($emailFactory);exit;
+                 
                  $email = (new Email())
                         ->from('biuro@kolodomu.pl')
                         ->to($emailFactory)
@@ -301,7 +301,7 @@ class FactoryOrderController extends AbstractController {
                         ->text('Prosze o odpowiedź na temat dostępności')
                         ->html('<p>' . $contentText . '</p>');
 
-//                $mailer->send($email);
+                $mailer->send($email);
                 $this->addFlash('success', 'Wiadomość została wysłana na '.$manufacture
                 );
             }
