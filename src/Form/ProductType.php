@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Factory;
+use App\Entity\ProductCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProductType extends AbstractType
 {
@@ -114,6 +116,14 @@ class ProductType extends AbstractType
                 ->add('is_sell_cost', CheckboxType::class, [
                     'label' => 'Czy cena jest wyższa przy sprzedaży niepełnopaletowej ?',
                     'required' => false,
+                ])
+                ->add('productCategories', EntityType::class, [
+                    'class' => ProductCategory::class,
+                    'multiple' => true,
+                    'expanded' => true,
+                    'attr' =>['class' => 'chosen-select'],
+                    'label' => 'Kategoria',
+                    'placeholder' => 'Wybierz kategorie'
                 ])
                 ->add('wpid', TextType::class, [
                     'label' => 'Wordpress id',
