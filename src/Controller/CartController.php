@@ -862,18 +862,18 @@ class CartController extends AbstractController {
      */
     public function save_cart(Order $cart, CartManager $cartManager, Request $request, DbLog $logger): Response {
 
-        if ($cart->getType() == 'offer' || $cart->getType() == null) {
+        if ($cart->getStatus() == 'offer' || $cart->getStatus() == null) {
             $type = 'ofertę';
-            $cart->setType('offer');
-        } else if ($cart->getType() == 'order') {
+            $cart->setStatus('offer');
+        } else if ($cart->getStatus() == 'order') {
             $type = 'zamówienie';
         }else{
             $type = 'dokumnet';
         }
 
-        $logger->write($cart->getType(), $cart->getId(), 'Zapisano ' . $type, $this->getUser());
+        $logger->write($cart->getStatus(), $cart->getId(), 'Zapisano ' . $type, $this->getUser());
 
-        $cartType = $cart->getType();
+        $cartType = $cart->getStatus();
 
         $cartManager->save($cart);
         // musi zebrać extra dane z request i zapisać je do $cart;
