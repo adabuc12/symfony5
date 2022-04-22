@@ -27,7 +27,7 @@ class CartType extends AbstractType {
                     'label' => 'Zamówienie wysłane',
                     'required' => false,
                 ])
-                ->add('type', ChoiceType::class, [
+                ->add('status', ChoiceType::class, [
                     'choices' => [
                         'Oferta' => 'offer',
                         'Zamówienie' => 'order',

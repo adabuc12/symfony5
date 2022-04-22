@@ -68,7 +68,7 @@ class CartManager {
      * @param Order $cart
      */
     public function save(Order $cart): void {
-
+        
         $dateImmutable = new \DateTime();
         if (empty($cart->getNumber())) {
             if($cart->getStatus()=='offer'){
@@ -108,7 +108,7 @@ class CartManager {
             $cart->setCreatedAt($dateImmutable);
         }
 
-
+        
         // Persist in database
         $this->em->persist($cart);
         $this->em->flush();

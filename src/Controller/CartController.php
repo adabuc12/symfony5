@@ -755,7 +755,7 @@ class CartController extends AbstractController {
                 $cartManager->save($cart);
                 return $this->redirectToRoute('cart');
             } else {
-                $cart->setStatus($form->get('type')->getData());
+                $cart->setStatus($form->get('status')->getData());
 //                if (empty($cart->getNumber())) {
 //                    $repository = $entityManager->getRepository(Order::class);
 //                    $results = $repository->findBy(array(), array('id' => 'DESC'), 1, 0);
@@ -775,7 +775,7 @@ class CartController extends AbstractController {
 
                 $logger->write($cart->getType(), $cart->getId(), 'Utworzono nowy dokument', $this->getUser());
 
-                if ($form->get('type')->getData() == 'order') {
+                if ($form->get('status')->getData() == 'order') {
 
                     $delivery = new Delivery();
                     $delivery->addDeliveryOrder($cart);
@@ -826,12 +826,12 @@ class CartController extends AbstractController {
 
         
 
-        if ($cart->getType() == 'offer') {
+        if ($cart->getStatus() == 'offer') {
             $type = 'ofertę';
-        } else if ($cart->getType() == 'order') {
+        } else if ($cart->getStatus() == 'order') {
             $type = 'zamówienie';
         }
-        $logger->write($cart->getType(), $cart->getId(), 'Wyczyszczono ' . $type, $this->getUser());
+        $logger->write($cart->getStatus(), $cart->getId(), 'Wyczyszczono ' . $type, $this->getUser());
         return $this->redirectToRoute('cart');
     }
 
@@ -904,12 +904,12 @@ class CartController extends AbstractController {
      */
     public function drop(CartManager $cartManager, Request $request, DbLog $logger): Response {
         $cart = $cartManager->getCart();
-        if ($cart->getType() == 'offer') {
+        if ($cart->getStatus() == 'offer') {
             $type = 'Oferta';
-        } else if ($cart->getType() == 'order') {
+        } else if ($cart->getStatus() == 'order') {
             $type = 'Zamówienie';
         }
-        $logger->write($cart->getType(), $cart->getId(), $type . ' zostało porzucone', $this->getUser());
+        $logger->write($cart->getStatus(), $cart->getId(), $type . ' zostało porzucone', $this->getUser());
         if ($this->get('session')->has('cart_id')) {
             $this->get('session')->remove('cart_id');
         }
@@ -973,7 +973,7 @@ class CartController extends AbstractController {
                 $order->setIsPickupWieliczka($offer->getIsPickupWieliczka());
                 $order->setIsExtraDelivery($offer->getIsExtraDelivery());
                 $order->setOwnPickup($offer->getOwnPickup());
-                $order->setType($offer->getType());
+                $order->setType('new');
                 $order->setNotice($offer->getNotice());
                 $order->setCountPallets($offer->getCountPallets());
                 $order->setUser($this->getUser());
