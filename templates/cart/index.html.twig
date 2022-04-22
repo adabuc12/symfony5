@@ -465,7 +465,7 @@
                <li class="nav-item"><a href="{{ path("offer_to_order", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zamów</a></li>
                {% endif %}
                {% if cart.id != '' %}
-               <li class="nav-item"><a href="{{ path("order_prints", {'id': cart.id})}}" class="btn btn-success w-100 m-1">Wydrukuj</a></li>
+               <li class="nav-item"><a href="{{ path("order_prints", {'id': cart.id})}}" class="btn btn-success w-100 m-1" target="_blank">Wydrukuj</a></li>
 
                <li class="nav-item"><a href="{{ path("factory_order_ask", {'id': cart.id})}}" class="btn btn-info w-100 m-1">Zapytania</a> </li>
                {% endif %}
