@@ -92,6 +92,11 @@
     <div class="col">
         {{ form_row(form.notices) }}
     </div>
+    <div class="col">
+        {{ form_row(form.productCategories) }}
+        <a class="btn btn-secondary" href="{{ path('product_category_new') }}">Utwórz kategorię</a>
+    </div>
+    
 </div>
 <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
 {{ form_end(form) }}

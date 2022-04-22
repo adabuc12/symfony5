@@ -90,4 +90,34 @@ class ProductCategoryController extends AbstractController
 
         return $this->redirectToRoute('product_category_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    /**
+     * @Route("/search", name="category_search")
+     */
+     public function searchAction(Request $request){
+            
+         
+             $searchTerm = $request->get('q');  
+             $em = $this->getDoctrine()->getManager();
+             $results = $em->getRepository(ProductCategory::class)->findByNameField($searchTerm);
+             //$results = $query->getResult();
+ 
+             if(!$results) {
+            $result['entities']['error'] = "brak kontrahenta";
+        } else {
+            $result['entities'] = $this->getRealEntities($results);
+        }
+
+        return new Response(json_encode($result));
+
+             }
+             
+             public function getRealEntities($entities){
+
+            foreach ($entities as $entity){
+                $realEntities[$entity->getId()] = $entity->getName();
+            }
+
+      return $realEntities;
+  }
 }

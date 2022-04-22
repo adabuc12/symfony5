@@ -120,8 +120,7 @@ class ProductType extends AbstractType
                 ->add('productCategories', EntityType::class, [
                     'class' => ProductCategory::class,
                     'multiple' => true,
-                    'expanded' => true,
-                    'attr' =>['class' => 'chosen-select'],
+                    'expanded' => false,
                     'label' => 'Kategoria',
                     'placeholder' => 'Wybierz kategorie'
                 ])
