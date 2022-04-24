@@ -12,8 +12,11 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @Route("/sms")
  */
-class SmsSyncGatewayController {
+class SmsSyncGatewayController  extends AbstractController{
 
+    /**
+     * @Route("/get", name="get_message", methods={"POST"})
+     */
     function get_message() {
         $error = NULL;
         // Set success to false as the default success status
