@@ -255,8 +255,8 @@ class SmsSyncGatewayController  extends AbstractController{
                 get_message();
             }
         } else {
-            send_task();
-            send_messages_uuids_for_sms_delivery_report();
+            $this->send_task();
+            $this->send_messages_uuids_for_sms_delivery_report();
         }
     }
 }
