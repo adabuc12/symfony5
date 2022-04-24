@@ -135,7 +135,7 @@ class SmsSyncGatewayController  extends AbstractController{
      * Implements the task feature. Sends messages to SMSsync to be sent as
      * SMS to users.
      */
-    function send_task() {
+    public function send_task() {
         /**
          * Comment the code below out if you want to send an instant
          * reply as SMS to the user.
@@ -168,7 +168,7 @@ class SmsSyncGatewayController  extends AbstractController{
      * SMSsync. This requires the settings "Get Reply from Server" enabled on
      * SMSsync.
      */
-    function send_instant_message($to) {
+    public function send_instant_message($to) {
         $m = "Your message has been received";
         $f = "+000-000-0000";
         $s = true;
@@ -188,7 +188,7 @@ class SmsSyncGatewayController  extends AbstractController{
         send_response($response);
     }
 
-    function send_response($response) {
+    public function send_response($response) {
         // Avoid caching
         header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
         header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -196,7 +196,7 @@ class SmsSyncGatewayController  extends AbstractController{
         echo $response;
     }
 
-    function get_sent_message_uuids() {
+    public function get_sent_message_uuids() {
         $data = file_get_contents('php://input');
         $queued_messages = file_get_contents('php://input');
         // Writing this to a file for demo purposes.
@@ -213,7 +213,7 @@ class SmsSyncGatewayController  extends AbstractController{
      * When SMSsync send messages from the server as SMS to phone numbers, SMSsync
      * can send back status delivery report for these messages.
      */
-    function send_message_uuids_waiting_for_a_delivery_report($queued_messages) {
+    public function send_message_uuids_waiting_for_a_delivery_report($queued_messages) {
         // Send back the received messages UUIDs back to SMSsync
         $json_obj = json_decode($queued_messages);
         $response = json_encode(
@@ -223,7 +223,7 @@ class SmsSyncGatewayController  extends AbstractController{
         send_response($response);
     }
 
-    function send_messages_uuids_for_sms_delivery_report() {
+    public function send_messages_uuids_for_sms_delivery_report() {
         if (isset($_GET['task']) AND $_GET['task'] == 'result') {
             $response = json_encode(
                     [
@@ -237,7 +237,7 @@ class SmsSyncGatewayController  extends AbstractController{
      * Get status delivery report on sent messages
      *
      */
-    function get_sms_delivery_report() {
+    public function get_sms_delivery_report() {
         if ($_GET['task'] === 'result' AND $_GET['secret'] === '123456') {
             $message_results = file_get_contents('php://input');
             write_message_to_file("message " . $message_results . "\n\n");
