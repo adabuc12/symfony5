@@ -23,6 +23,18 @@ class MessageController extends AbstractController
     {
         return $this->render('message/index.html.twig', [
             'messages' => $messageRepository->findAll(),
+            'type' => '',
+        ]);
+    }
+    
+    /**
+     * @Route("/type/{type}", name="message_index_type", methods={"GET"})
+     */
+    public function indexType(string $type, MessageRepository $messageRepository): Response
+    {
+        return $this->render('message/index.html.twig', [
+            'messages' => $messageRepository->findAll(),
+            'type' => $type,
         ]);
     }
 
