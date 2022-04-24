@@ -15,9 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class SmsSyncGatewayController  extends AbstractController{
 
     /**
-     * @Route("/get", name="get_message", methods={"POST"})
+     * @Route("/get", name="get_message")
      */
-    function get_message() {
+    public function get_message() {
         $error = NULL;
         // Set success to false as the default success status
         $success = false;
@@ -124,7 +124,7 @@ class SmsSyncGatewayController  extends AbstractController{
     /**
      * Writes the received responses to a file. This acts as a database.
      */
-    function write_message_to_file($message) {
+    public function write_message_to_file($message) {
         $myFile = "test.txt";
         $fh = fopen($myFile, 'a') or die("can't open file");
         @fwrite($fh, $message);
