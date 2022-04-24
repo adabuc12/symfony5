@@ -256,4 +256,4 @@ class SmsSyncGatewayController {
             send_messages_uuids_for_sms_delivery_report();
         }
     }
-    
+}
