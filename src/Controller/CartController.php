@@ -59,7 +59,6 @@ class CartController extends AbstractController {
         $here_api_route_url = 'https://router.hereapi.com/v8/routes?language=pl&transportMode=' . $car_type .
                 '&apiKey=' . $rest_api_keys . '&origin=' . $coordinates . '&destination=' .
                 $delivery_coordinates . '&return=summary,typicalDuration';
-
         if (!$is_from_wieliczka) {
 
             $distance_here_url = $here_api_route_url;
@@ -300,7 +299,7 @@ class CartController extends AbstractController {
                 $coordinates = '50.0430599,20.1899';
                 break;
             case 'factory_li':
-                $coordinates = '49.99042,20.08208';
+                $coordinates = '50.0888823,20.0444471';
                 break;
             case 'factory_jo':
                 $coordinates = '49.734947,20.3158562';
