@@ -157,6 +157,21 @@ class Order
      */
     private $car_price_netto;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $transport_in_price;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $route_image_url;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="cart")
+     */
+    private $messages;
+
 
 
 
@@ -167,6 +182,7 @@ class Order
         $this->deliveries = new ArrayCollection();
         $this->pitchOrders = new ArrayCollection();
         $this->factoryOrders = new ArrayCollection();
+        $this->messages = new ArrayCollection();
  
     }
 
@@ -640,6 +656,60 @@ class Order
    public function setCarPriceNetto(?bool $car_price_netto): self
    {
        $this->car_price_netto = $car_price_netto;
+
+       return $this;
+   }
+
+   public function getTransportInPrice(): ?bool
+   {
+       return $this->transport_in_price;
+   }
+
+   public function setTransportInPrice(?bool $transport_in_price): self
+   {
+       $this->transport_in_price = $transport_in_price;
+
+       return $this;
+   }
+
+   public function getRouteImageUrl(): ?string
+   {
+       return $this->route_image_url;
+   }
+
+   public function setRouteImageUrl(?string $route_image_url): self
+   {
+       $this->route_image_url = $route_image_url;
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|Message[]
+    */
+   public function getMessages(): Collection
+   {
+       return $this->messages;
+   }
+
+   public function addMessage(Message $message): self
+   {
+       if (!$this->messages->contains($message)) {
+           $this->messages[] = $message;
+           $message->setCart($this);
+       }
+
+       return $this;
+   }
+
+   public function removeMessage(Message $message): self
+   {
+       if ($this->messages->removeElement($message)) {
+           // set the owning side to null (unless already changed)
+           if ($message->getCart() === $this) {
+               $message->setCart(null);
+           }
+       }
 
        return $this;
    }

@@ -42,6 +42,11 @@ class Message
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="messages")
+     */
+    private $cart;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Message
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCart(): ?Order
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Order $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

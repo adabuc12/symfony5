@@ -252,11 +252,16 @@ $dompdf->setPaper('A4', 'portrait');
 
 // Render the HTML as PDF
 $dompdf->render();
-
+$replecedNumber = str_replace('/', '-', $order->getNumber());
+$name = $replecedNumber . '-' . $order->getId();
 // Output the generated PDF to Browser (inline view)
-$dompdf->stream(str_replace('/', '-', $order->getNumber()) . '-' . $order->getId() . ".pdf", [
+$dompdf->stream(  $name . ".pdf", [
     "Attachment" => false
 ]);
+
+$output = $dompdf->output();
+file_put_contents('uploads/offers/'.$name.'.pdf', $output);
+    
 exit;
 }
 

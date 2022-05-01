@@ -88,6 +88,11 @@ class CartType extends AbstractType {
                     'label' => 'Dolicz Palety',
                     'required' => false,
                 ])
+                ->add('transport_in_price', CheckboxType::class, [
+                    'label' => 'Transport w cenie',
+                    'required' => false,
+                    'disabled' => true
+                ])
                 ->add('is_extra_delivery', CheckboxType::class, [
                     'label' => 'Przeładunek u klienta',
                     'required' => false,

@@ -21,10 +21,10 @@
                     <tr>
                         <td><input type="checkbox" name="check-{{ item.id }}" class="to_check"/></td>
                         <td><input class="form-control"  type="text" name="product-{{ item.id }}" value="{{ item.product.name }}"/></td>
-                        <td><input class="form-control"  type="text" name="quantity-{{ item.id }}" value="{{ item.quantity }}" /></td>
-                        <td><input class="form-control"  type="text" name="quantitypal-{{ item.id }}" value="{{ item.quantity/item.product.packaging }}" /></td>
+                        <td><input class="form-control select-quantity"  type="text" name="quantity-{{ item.id }}" value="{{ item.quantity }}" /></td>
+                        <td><input class="form-control select-pal"  type="text" name="quantitypal-{{ item.id }}" value="{{ (item.quantity/item.product.packaging)|round(0,'ceil') }}" /></td>
                         <td>
-                            <select class="form-select" aria-label="Jednostki" name="item-{{ item.id }}">
+                            <select class="form-select select-value" aria-label="Jednostki" name="item-{{ item.id }}">
                                 <option value="pal">pal.</option>
                                 <option value="m2">m2</option>
                                 <option value="szt">szt.</option>
@@ -52,8 +52,18 @@
     </form>
     <script>
         $(document).ready(function () {
+            $('.select-quantity').prop('disabled', true);
             $('#show_all_2').click(function () {
                 $('.to_check').trigger('click');
+            });
+            $('.select-value').change(function(){
+                if ($(this).val() == 'pal') {
+                    $(this).parent('td').parent('tr').children('td').children('.select-quantity').prop('disabled', true);
+                    $(this).parent('td').parent('tr').children('td').children('.select-pal').prop('disabled', false);
+                }else{
+                   $(this).parent('td').parent('tr').children('td').children('.select-quantity').prop('disabled', false);
+                    $(this).parent('td').parent('tr').children('td').children('.select-pal').prop('disabled', true);
+                }
             });
         });
     </script>

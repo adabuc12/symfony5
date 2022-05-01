@@ -308,7 +308,7 @@ class CartController extends AbstractController {
                 $coordinates = '50.0691498,20.1005593';
                 break;
             case 'factory_chs':
-                $coordinates = '19.86598791587132,19.86598791587132';
+                $coordinates = '50.0027936,19.8681766';
                 break;
             case 'factory_br':
                 $coordinates = '50.03723322493308,20.020320915872276';
@@ -691,22 +691,23 @@ class CartController extends AbstractController {
                     $cart->setKontrahent($formKontrahent);
                 }
                 if($form->get('own_pickup')->getData() == false){
-                $delivery_coordinates = $this->getAdressCoordinates($form->get('adress')->getData());
-                $coordinates = $this->getPickupCoordinates($form->get('pickup')->getData());
+                    $delivery_coordinates = $this->getAdressCoordinates($form->get('adress')->getData());
+                    $coordinates = $this->getPickupCoordinates($form->get('pickup')->getData());
 
-                $car_type = 'truck';
-                
-                $truck_route = $this->routeCalculate($car_type, $coordinates, $delivery_coordinates, $form->get('is_pickup_wieliczka')->getData());
-                
-                if (isset($truck_route['routes'])) {
-                    $route_image = $truck_route['image'];
-                    $this->get('session')->set('route_image', $route_image);
-                    $truck_route_distance = ($truck_route['routes'][0]['sections'][0]['summary']['length']) / 1000;
-                    $this->get('session')->set('truck_route_distance', $truck_route_distance);
-                    $transport_time = ceil(($truck_route['routes'][0]['sections'][0]['summary']['typicalDuration']) / 60);
-                    $this->get('session')->set('transport_time', $transport_time);
+                    $car_type = 'truck';
+
+                    $truck_route = $this->routeCalculate($car_type, $coordinates, $delivery_coordinates, $form->get('is_pickup_wieliczka')->getData());
+
+                        if (isset($truck_route['routes'])) {
+                            $route_image = $truck_route['image'];
+                            $this->get('session')->set('route_image', $route_image);
+                            $truck_route_distance = ($truck_route['routes'][0]['sections'][0]['summary']['length']) / 1000;
+                            $this->get('session')->set('truck_route_distance', $truck_route_distance);
+                            $transport_time = ceil(($truck_route['routes'][0]['sections'][0]['summary']['typicalDuration']) / 60);
+                            $this->get('session')->set('transport_time', $transport_time);
+                        }
                 }
-                }
+                $cart->setRouteImageUrl($route_image);
                 $cart = $this->removeAutoHds($cart);
                 $cart = $this->removepallets($cart);
    
@@ -793,7 +794,9 @@ class CartController extends AbstractController {
             }
         }
 
-
+        if(empty($route_image) && !empty($route_image = $cart->getRouteImageUrl())){
+            $route_image = $cart->getRouteImageUrl();
+        }
         return $this->render('cart/index.html.twig', [
                     'cart' => $cart,
                     'form' => $form->createView(),
