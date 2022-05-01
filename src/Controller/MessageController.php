@@ -45,11 +45,6 @@ class MessageController extends AbstractController {
             // Instantiate Dompdf with our options
             $dompdf = new Dompdf($pdfOptions);
 
-            $optionRepository = $this->getDoctrine()->getRepository(Option::class);
-            $order_agreements_option = $optionRepository->findOneBy(['shortcode' => 'order_agreements']);
-
-            $order_agreements_value = $order_agreements_option->getValue();
-
             $html = $this->renderView('./pdf/client_order_standard.html.twig', [
             'cart' => $order,
             'agreements' => '',
