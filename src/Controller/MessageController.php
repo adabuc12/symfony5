@@ -52,7 +52,7 @@ class MessageController extends AbstractController {
             $form->handleRequest($request);
              if($form->isSubmitted()){
                  
-                $contentText = $message->getText;
+                $contentText = $message->getText();
                 $email = (new Email())
                 ->from('biuro@kolodomu.pl')
                 ->to($message->getAdress())
@@ -114,7 +114,7 @@ class MessageController extends AbstractController {
                 $output = $dompdf->output();
                 file_put_contents('uploads/offers/'.$name.'.pdf', $output);
 
-                $contentText = $message->getText;
+                $contentText = $message->getText();
                 $email = (new Email())
                 ->from('biuro@kolodomu.pl')
                 ->to($message->getAdress())
