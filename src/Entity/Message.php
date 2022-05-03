@@ -47,6 +47,11 @@ class Message
      */
     private $cart;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adress;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class Message
     public function setCart(?Order $cart): self
     {
         $this->cart = $cart;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): self
+    {
+        $this->adress = $adress;
 
         return $this;
     }

@@ -3,6 +3,27 @@
 {% block title %}Centrum Wiadomości{% endblock %}
 
 {% block body %}
+    <style type="text/css">
+            * {
+                font-family: Arial, Helvetica, sans-serif !important;
+            }
+            .p-3{
+                padding:20px;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            td,tr,th {
+                border: 1px solid grey;
+                vertical-align: text-top;
+            }
+            .text-center{
+                text-align: center;
+            }
+            body{
+                font-size:14px !important;
+            }
+        </style>
     <div class="row">
         <div class="col">
             <ul class="list-group">
@@ -46,42 +67,48 @@
                         <a class="{% if type == 'info' %}text-white{% endif %} stretched-link" href="{{ path('message_index_type',{'type':'info','id':order.id})}}">Info prowadzący</a>
                     </div>
                 </li>
+
             </ul>
+            <div class="row" style="margin-top:20px; border: 1px solid grey; font-size:10px;">
+                {% set cart = order %}
+                {% set agreements = '' %}
+                <br/>
+                <br/>
+                {{ include('pdf/client_order_standard.html.twig') }}
+            </div>
+
         </div>
         <div class="col-10">
-            <form>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Typ</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option value="{{ order.kontrahent.email }}">Email</option>
-                                <option value="{{ order.phone }}">SMS</option>
-                                <option value="{{ order.user.name }} {{ order.user.surname }}">Info</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="adressInput" aria-describedby="emailHelp" placeholder="Podaj adresata" value="{{ order.kontrahent.email }}">
-                            <small id="emailHelp" class="form-text text-muted"></small>
-                        </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        {{ form_start(form) }}
+                        {{ form_row(form.type) }}
                     </div>
-                    <div class="col-9">
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Treść</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">Witam serdecznie, w załączeniu przesyłam wycenę w przypadku pytań proszę odpisac na tą wiadomość lub o kontakt bezpośredni na telefon w stopce</textarea>
-                        </div>
+                    <div class="form-group">
+                        {{ form_row(form.adress) }}
                     </div>
-
-                    <button type="submit" class="btn btn-warning mb-2">Wyślij</button>
                 </div>
-            </form>
+                <div class="col-9">
+                    <div class="form-group">
+                        {{ form_row(form.text) }}
+                    </div>
+                </div>
+
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+
+
             <table class="table">
                 <thead>
                     <tr>
                         <th>Data utworzenia</th>
-                        <th>Treść</th>
                         <th>Typ</th>
-                        <th>Status</th>
+                        <th>Rodzaj</th>
+                        <th>Adres</th>
+                        <th>Treść</th>
+                        <th>Użytkownik</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,8 +116,10 @@
                         <tr>
                             <td>{{ message.dataCreated ? message.dataCreated|date('Y-m-d H:i:s') : '' }}</td>
                             <td>{{ message.type }}</td>
-                            <td>{{ message.text }}</td>
                             <td>{{ message.status }}</td>
+                            <td>{{ message.adress }}</td>
+                            <td>{{ message.text }}</td>
+                            <td>{{ message.createdBy.name }} {{ message.createdBy.surname }}</td>
                         </tr>
                     {% else %}
                         <tr>

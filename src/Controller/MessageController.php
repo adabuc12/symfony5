@@ -16,6 +16,7 @@ use Symfony\Component\Mime\Email;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Filesystem\Filesystem;
+use DateTime;
 
 /**
  * @Route("/message")
@@ -25,67 +26,92 @@ class MessageController extends AbstractController {
     /**
      * @Route("/cart/{id}", name="message_index", methods={"GET"})
      */
-    public function index(Order $order, MessageRepository $messageRepository): Response {
+    public function index(Order $order, MessageRepository $messageRepository, Request $request): Response {
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
         return $this->render('message/index.html.twig', [
                     'messages' => $messageRepository->findAll(),
                     'type' => '',
                     'order' => $order,
+        'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/type/{type}/{id}", name="message_index_type", methods={"GET"})
+     * @Route("/type/{type}/{id}", name="message_index_type", methods={"GET", "POST"})
      */
-    public function indexType(string $type, Order $order, MessageRepository $messageRepository, MailerInterface $mailer): Response {
+    public function type(string $type, Order $order, MessageRepository $messageRepository, MailerInterface $mailer, Request $request, EntityManagerInterface $entityManager): Response {
+        
+        
         if ($type == 'send_calculations') {
-            // Configure Dompdf according to your needs
-            $pdfOptions = new Options();
-            $pdfOptions->set('defaultFont', 'Arial');
+            $message = new Message();
+            $message->setType('Email');
+            $message->setText('Witam, w załączniku przesyłam wycenę, w przypadku zamówienia zostanie sprawdzona dostępnośc produktów, po otrzymaniu wpłaty');
+            $message->setAdress($order->getKontrahent()->getEmail());
+            
+            $form = $this->createForm(MessageType::class, $message);
+            $form->handleRequest($request);
+            
+            if($form->isSubmitted()){
+                // Configure Dompdf according to your needs
+                $pdfOptions = new Options();
+                $pdfOptions->set('defaultFont', 'Arial');
 
-            // Instantiate Dompdf with our options
-            $dompdf = new Dompdf($pdfOptions);
+                // Instantiate Dompdf with our options
+                $dompdf = new Dompdf($pdfOptions);
 
-            $html = $this->renderView('./pdf/client_order_standard.html.twig', [
-            'cart' => $order,
-            'agreements' => '',
-            ]);
-            // Load HTML to Dompdf
-            $dompdf->loadHtml($html, 'UTF-8');
+                $html = $this->renderView('./pdf/client_order_standard.html.twig', [
+                'cart' => $order,
+                'agreements' => '',
+                ]);
+                // Load HTML to Dompdf
+                $dompdf->loadHtml($html, 'UTF-8');
 
-            // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-            $dompdf->setPaper('A4', 'portrait');
+                // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+                $dompdf->setPaper('A4', 'portrait');
 
-            // Render the HTML as PDF
-            $dompdf->render();
-            $replecedNumber = str_replace('/', '-', $order->getNumber());
-            $name = $replecedNumber . '-' . $order->getId();
+                // Render the HTML as PDF
+                $dompdf->render();
+                $replecedNumber = str_replace('/', '-', $order->getNumber());
+                $name = $replecedNumber . '-' . $order->getId();
 
 
-            $output = $dompdf->output();
-            file_put_contents('uploads/offers/'.$name.'.pdf', $output);
+                $output = $dompdf->output();
+                file_put_contents('uploads/offers/'.$name.'.pdf', $output);
 
-            $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
-            $email = (new Email())
-            ->from('biuro@kolodomu.pl')
-            ->to('abadambuczek@gmail.com')
-            ->cc()
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->attachFromPath('uploads/offers/'.$name.'.pdf')
-            ->subject('Wycena '.$order->getNumber())
-            ->text('Wycena')
-            ->html('<p>' . $contentText . '</p>');
+                $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
+                $email = (new Email())
+                ->from('biuro@kolodomu.pl')
+                ->to('abadambuczek@gmail.com')
+                ->cc()
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->attachFromPath('uploads/offers/'.$name.'.pdf')
+                ->subject('Wycena '.$order->getNumber())
+                ->text('Wycena')
+                ->html('<p>' . $contentText . '</p>');
 
-            $mailer->send($email);
-            $this->addFlash('success', 'Wycena została wysłana');
+//                $mailer->send($email);
+                
+                $this->addFlash('success', 'Wycena została wysłana');
+                $filesystem = new Filesystem();
+                $filesystem->remove('../uploads/offers/'.$name.'.pdf');
+                $message->setDataCreated(new DateTime('NOW'));
+                $message->setCreatedBy($this->getUser());
+                $message->setStatus('wycena');
+                $message->setCart($order);
+                
+                $entityManager->persist($message);
+                $entityManager->flush();
+            }
         }
-        $filesystem = new Filesystem();
-        $filesystem->remove('uploads/offers/'.$name.'.pdf');
-        return $this->render('message/index.html.twig', [
+        return $this->renderForm('message/index.html.twig', [
         'messages' => $messageRepository->findAll(),
         'type' => $type,
         'order' => $order,
+        'form' => $form,
         ]);
     }
 
