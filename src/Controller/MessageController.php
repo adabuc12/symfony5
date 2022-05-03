@@ -52,7 +52,7 @@ class MessageController extends AbstractController {
             $form->handleRequest($request);
              if($form->isSubmitted()){
                  
-                $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
+                $contentText = $message->getText;
                 $email = (new Email())
                 ->from('biuro@kolodomu.pl')
                 ->to($message->getAdress())
@@ -60,13 +60,13 @@ class MessageController extends AbstractController {
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
                 //->priority(Email::PRIORITY_HIGH)
-                ->subject('Wycena '.$order->getNumber())
+                ->subject('Wiadomość od kołodomu.pl')
                 ->text('Wycena')
                 ->html('<p>' . $contentText . '</p>');
 
                 $mailer->send($email);
                 
-                $this->addFlash('success', 'Wycena została wysłana');
+                $this->addFlash('success', 'Wiadomość została wysłana');
 
                 $message->setDataCreated(new DateTime('NOW'));
                 $message->setCreatedBy($this->getUser());
@@ -114,7 +114,7 @@ class MessageController extends AbstractController {
                 $output = $dompdf->output();
                 file_put_contents('uploads/offers/'.$name.'.pdf', $output);
 
-                $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
+                $contentText = $message->getText;
                 $email = (new Email())
                 ->from('biuro@kolodomu.pl')
                 ->to($message->getAdress())
