@@ -93,7 +93,7 @@ class MessageController extends AbstractController {
                 ->text('Wycena')
                 ->html('<p>' . $contentText . '</p>');
 
-//                $mailer->send($email);
+                $mailer->send($email);
                 
                 $this->addFlash('success', 'Wycena została wysłana');
                 $filesystem = new Filesystem();
