@@ -42,7 +42,41 @@ class MessageController extends AbstractController {
      * @Route("/type/{type}/{id}", name="message_index_type", methods={"GET", "POST"})
      */
     public function type(string $type, Order $order, MessageRepository $messageRepository, MailerInterface $mailer, Request $request, EntityManagerInterface $entityManager): Response {
-        
+         if ($type == 'email_client') {
+            $message = new Message();
+            $message->setType('Email');
+            $message->setText('Witam, ');
+            $message->setAdress($order->getKontrahent()->getEmail());
+            
+            $form = $this->createForm(MessageType::class, $message);
+            $form->handleRequest($request);
+             if($form->isSubmitted()){
+                 
+                $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
+                $email = (new Email())
+                ->from('biuro@kolodomu.pl')
+                ->to($message->getAdress())
+                ->bcc('abadambuczek@gmail.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Wycena '.$order->getNumber())
+                ->text('Wycena')
+                ->html('<p>' . $contentText . '</p>');
+
+                $mailer->send($email);
+                
+                $this->addFlash('success', 'Wycena została wysłana');
+
+                $message->setDataCreated(new DateTime('NOW'));
+                $message->setCreatedBy($this->getUser());
+                $message->setStatus('email');
+                $message->setCart($order);
+                
+                $entityManager->persist($message);
+                $entityManager->flush();
+            }
+         }
         
         if ($type == 'send_calculations') {
             $message = new Message();
@@ -83,7 +117,7 @@ class MessageController extends AbstractController {
                 $contentText = 'Witam, <br/> W zalączeniu przesyłam wycenę na materiały : <br/><br/>';
                 $email = (new Email())
                 ->from('biuro@kolodomu.pl')
-                ->to('abadambuczek@gmail.com')
+                ->to($message->getAdress())
                 ->cc()
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')

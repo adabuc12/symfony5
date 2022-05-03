@@ -29,7 +29,7 @@
             <ul class="list-group">
                 <li class="list-group-item {% if type == 'email_client' %}active{% endif %}">
                     <div class="d-flex position-relative ">
-                        <a class="{% if type == 'email_clien' %}text-white{% endif %} stretched-link" href="{{ path('message_index_type',{'type':'email_client','id':order.id})}}">Email klient</a>
+                        <a class="{% if type == 'email_client' %}text-white{% endif %} stretched-link" href="{{ path('message_index_type',{'type':'email_client','id':order.id})}}">Email klient</a>
                     </div>
                 </li>
                 <li class="list-group-item {% if type == 'send_calculations' %}active{% endif %}">
@@ -69,14 +69,15 @@
                 </li>
 
             </ul>
-            <div class="row" style="margin-top:20px; border: 1px solid grey; font-size:10px;">
-                {% set cart = order %}
-                {% set agreements = '' %}
-                <br/>
-                <br/>
-                {{ include('pdf/client_order_standard.html.twig') }}
-            </div>
-
+            {% if app.request.get('type') == 'send_calculations' %}     
+                <div class="row" style="margin-top:20px; border: 1px solid grey; font-size:10px;">
+                    {% set cart = order %}
+                    {% set agreements = '' %}
+                    <br/>
+                    <br/>
+                    {{ include('pdf/client_order_standard.html.twig') }}
+                </div>
+            {% endif %}
         </div>
         <div class="col-10">
             <div class="row">
