@@ -300,8 +300,9 @@ class FactoryOrderController extends AbstractController {
                         ->subject('Zapytanie o dostępność ' . $factoryOrder->getNumber())
                         ->text('Prosze o odpowiedź na temat dostępności')
                         ->html('<p>' . $contentText . '</p>');
-
-                $mailer->send($email);
+                 if( count($items) > 0 ){
+                    $mailer->send($email);
+                 }
                 $this->addFlash('success', 'Wiadomość została wysłana na '.$manufacture
                 );
             }

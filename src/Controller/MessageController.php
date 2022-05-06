@@ -60,7 +60,7 @@ class MessageController extends AbstractController {
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
                 //->priority(Email::PRIORITY_HIGH)
-                ->subject('Wiadomość od kołodomu.pl')
+                ->subject('Wiadomość od kołodomu.pl dot. '.$offer->getNumber())
                 ->text('Wycena')
                 ->html('<p>' . $contentText . '</p>');
 
