@@ -31,7 +31,7 @@ class MessageController extends AbstractController {
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
         return $this->render('message/index.html.twig', [
-                    'messages' => $messageRepository->findAll(),
+                    'messages' => $messageRepository->findByCart($order),
                     'type' => '',
                     'order' => $order,
         'form' => $form->createView(),
@@ -142,7 +142,7 @@ class MessageController extends AbstractController {
             }
         }
         return $this->renderForm('message/index.html.twig', [
-        'messages' => $messageRepository->findAll(),
+        'messages' => $messageRepository->findByCart($order),
         'type' => $type,
         'order' => $order,
         'form' => $form,

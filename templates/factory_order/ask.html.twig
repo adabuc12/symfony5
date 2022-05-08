@@ -38,7 +38,34 @@
                 {% endfor %}
             </tbody>
         </table>
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data utworzenia</th>
+                        <th>Typ</th>
+                        <th>Rodzaj</th>
+                        <th>Adres</th>
+                        <th>Treść</th>
+                        <th>Użytkownik</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in messages %}
+                        <tr>
+                            <td>{{ message.dataCreated ? message.dataCreated|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ message.type }}</td>
+                            <td>{{ message.status }}</td>
+                            <td>{{ message.adress }}</td>
+                            <td>{{ message.text }}</td>
+                            <td>{{ message.createdBy.name }} {{ message.createdBy.surname }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Brak wiadomości</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
     {% endblock %}
     {% block footer %}

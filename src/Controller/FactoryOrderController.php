@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\FactoryOrder;
 use App\Entity\PitchOrder;
 use App\Entity\Factory;
+use App\Entity\Message;
 use App\Entity\OrderFactoryItem;
 use App\Entity\Order;
 use App\Form\FactoryOrderType;
+use App\Repository\MessageRepository;
 use App\Form\PitchOrderType;
 use App\Repository\FactoryOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -219,7 +221,7 @@ class FactoryOrderController extends AbstractController {
     /**
      * @Route("/ask/{id}", name="factory_order_ask", methods={"GET", "POST"})
      */
-    public function sendAsk(Order $factoryOrder, Request $request, MailerInterface $mailer): Response {
+    public function sendAsk(Order $factoryOrder, Request $request, MailerInterface $mailer, EntityManagerInterface $entityManager, MessageRepository $messageRepository): Response {
         $items = $factoryOrder->getItem();
         $newItems = [];
 
@@ -291,8 +293,9 @@ class FactoryOrderController extends AbstractController {
                         $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
                     }
                 }
+                $contentTextNoSignature = $contentText;
                 if (key_exists($manufacture, $productCountByManufacture)) {
-                    $contentText = $contentText . '<br/><br/> Z poważaniem <br/>' . $this->getUser()->getName() . ' ' . $this->getUser()->getSurname() . '<br/>' . $this->getUser()->getPhone() . '<br/> kołodomu.pl s.c. </br> ul.Niepołomska 28a </br> 32-020 Wieliczka';
+                    $contentText = $contentText . '<br/><br/> Z poważaniem <br/>' . $this->getUser()->getName() . ' ' . $this->getUser()->getSurname() . '<br/>' . $this->getUser()->getPhone() . '<br/> kołodomu.pl s.c. <br/> ul.Niepołomska 28a <br/> 32-020 Wieliczka';
                     $repository = $this->getDoctrine()->getRepository(Factory::class);
                     $factory = $repository->findOneByName($manufacture);
 
@@ -301,8 +304,8 @@ class FactoryOrderController extends AbstractController {
                     $email = (new Email())
                             ->from('biuro@kolodomu.pl')
                             ->to($emailFactory)
-                            ->cc('biuro@kolodomu.pl')
-                            //->bcc('bcc@example.com')
+                            ->bcc('biuro@kolodomu.pl')
+                            //->cc('bcc@example.com')
                             //->replyTo('fabien@example.com')
                             //->priority(Email::PRIORITY_HIGH)
                             ->subject('Zapytanie o dostępność ' . $factoryOrder->getNumber())
@@ -310,12 +313,26 @@ class FactoryOrderController extends AbstractController {
                             ->html('<p>' . $contentText . '</p>');
 
                     $mailer->send($email);
-                    
+
                     $this->addFlash('success', 'Wiadomość została wysłana na ' . $manufacture);
+                    $message = new Message();
+                    $message->setType('Email');
+                    $contentText = str_replace( '<br/>', ' ',$contentTextNoSignature);
+                    $message->setText($contentText);
+                    $message->setAdress($emailFactory);
+                    $message->setDataCreated(new DateTime('NOW'));
+                    $message->setCreatedBy($this->getUser());
+                    $message->setStatus('zapytanie');
+                    $message->setCart($factoryOrder);
+
+                    $entityManager->persist($message);
+                    $entityManager->flush();
                 }
             }
         }
+
         return $this->render('factory_order/ask.html.twig', [
+                    'messages' => $messageRepository->findByCartAndType($factoryOrder, 'zapytanie', 'Email'),
                     'items' => $newItems,
         ]);
     }
