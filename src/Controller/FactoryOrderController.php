@@ -270,11 +270,18 @@ class FactoryOrderController extends AbstractController {
                     }
                 }
             }
-            
+            $productCountByManufacture = [];
             foreach ($itemsByManufacture as $manufacture => $items) {
                 $contentText = 'Witam, <br/> Proszę o potwierdzenie dostępności lub podanie spodziewanej daty dostępności materiałów : <br/><br/>';
+
                 foreach ($items as $item) {
                     if (key_exists($item->getId(), $content)) {
+                        if (key_exists($manufacture, $productCountByManufacture)) {
+                            $productCountByManufacture[$manufacture] = $productCountByManufacture[$manufacture] + 1;
+                        } else {
+                            $productCountByManufacture[$manufacture] = 1;
+                        }
+
                         $contentText = $contentText . $content[$item->getId()]['product'];
                         if ($content[$item->getId()]['item'] == 'pal') {
                             $contentText = $contentText . ' -- ' . $content[$item->getId()]['quantitypal'];
@@ -284,27 +291,28 @@ class FactoryOrderController extends AbstractController {
                         $contentText = $contentText . ' ' . $content[$item->getId()]['item'] . '<br/>';
                     }
                 }
-                 $contentText = $contentText . '<br/><br/> Z poważaniem <br/>'. $this->getUser()->getName().' '.$this->getUser()->getSurname(). '<br/>'. $this->getUser()->getPhone(). '<br/> kołodomu.pl s.c. </br> ul.Niepołomska 28a </br> 32-020 Wieliczka';
-                 $repository = $this->getDoctrine()->getRepository(Factory::class);
-                 $factory = $repository->findOneByName($manufacture);
+                if (key_exists($manufacture, $productCountByManufacture)) {
+                    $contentText = $contentText . '<br/><br/> Z poważaniem <br/>' . $this->getUser()->getName() . ' ' . $this->getUser()->getSurname() . '<br/>' . $this->getUser()->getPhone() . '<br/> kołodomu.pl s.c. </br> ul.Niepołomska 28a </br> 32-020 Wieliczka';
+                    $repository = $this->getDoctrine()->getRepository(Factory::class);
+                    $factory = $repository->findOneByName($manufacture);
 
-                 $emailFactory = $factory->getEmail();
-                 
-                 $email = (new Email())
-                        ->from('biuro@kolodomu.pl')
-                        ->to($emailFactory)
-                        ->cc('biuro@kolodomu.pl')
-                        //->bcc('bcc@example.com')
-                        //->replyTo('fabien@example.com')
-                        //->priority(Email::PRIORITY_HIGH)
-                        ->subject('Zapytanie o dostępność ' . $factoryOrder->getNumber())
-                        ->text('Prosze o odpowiedź na temat dostępności')
-                        ->html('<p>' . $contentText . '</p>');
-                 if( count($items) > 0 ){
+                    $emailFactory = $factory->getEmail();
+
+                    $email = (new Email())
+                            ->from('biuro@kolodomu.pl')
+                            ->to($emailFactory)
+                            ->cc('biuro@kolodomu.pl')
+                            //->bcc('bcc@example.com')
+                            //->replyTo('fabien@example.com')
+                            //->priority(Email::PRIORITY_HIGH)
+                            ->subject('Zapytanie o dostępność ' . $factoryOrder->getNumber())
+                            ->text('Prosze o odpowiedź na temat dostępności')
+                            ->html('<p>' . $contentText . '</p>');
+
                     $mailer->send($email);
-                 }
-                $this->addFlash('success', 'Wiadomość została wysłana na '.$manufacture
-                );
+                    
+                    $this->addFlash('success', 'Wiadomość została wysłana na ' . $manufacture);
+                }
             }
         }
         return $this->render('factory_order/ask.html.twig', [
