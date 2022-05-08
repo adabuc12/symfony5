@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Delivery;
+use App\Entity\Order;
 use App\Form\DeliveryType;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,23 +26,35 @@ class DeliveryController extends AbstractController
             'deliveries' => $deliveryRepository->findAll(),
         ]);
     }
+    
+     /**
+     * @Route("/order/{id}", name="delivery_index_order", methods={"GET"})
+     */
+    public function indexOrder(Order $order, DeliveryRepository $deliveryRepository): Response
+    {
+        return $this->render('delivery/index_order.html.twig', [
+            'deliveries' => $deliveryRepository->findAllByOrder($order),
+            'order' => $order,
+        ]);
+    }
 
     /**
-     * @Route("/new", name="delivery_new", methods={"GET", "POST"})
+     * @Route("/new/order/{id}", name="delivery_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Order $order, Request $request, EntityManagerInterface $entityManager): Response
     {
         $delivery = new Delivery();
-        $form = $this->createForm(DeliveryType::class, $delivery);
+        $form = $this->createForm(DeliveryType::class, $delivery,['orderId'=>$order->getId()]);
         $form->handleRequest($request);
         $repository = $this->getDoctrine()->getRepository(Delivery::class);
         $lastDelivery = $repository->findBy(array(),array('id'=>'DESC'),1,0);
         if($lastDelivery){
-            $lastNumber = $lastDelivery->getNumber();
+            $lastNumber = $lastDelivery[0]->getNumber();
         }else{
             $lastNumber = 1;
         }
         $delivery->setNumber($lastNumber);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($delivery);
             $entityManager->flush();

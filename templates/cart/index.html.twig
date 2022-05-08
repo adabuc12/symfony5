@@ -472,9 +472,10 @@
                
                    {% if cart.status == 'order' %}
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Rozliczenia</a> </li>
-                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="">Transporty</a> </li>
+                  
                    {% endif %}
                    {% if cart.status == 'order' and cart.id != '' %}
+                   <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path('delivery_index_order', {'id': cart.id}) }}">Transporty</a> </li>
                    <li class="nav-item"> <a class="btn btn-info w-100 m-1" href="{{ path("eksport_wapro", {'id': cart.id})}}">Ekspor WAPRO</a></li>
                    {% endif %}
 

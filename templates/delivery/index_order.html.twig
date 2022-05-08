@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Transporty{% endblock %}
+{% block title %}Transporty dla zamówienia {{ order.number }}{% endblock %}
 
 {% block body %}
-    <h1>Transporty</h1>
+    <h1>Transporty dla zamówienia {{ order.number }} {{ order.kontrahent.name }}</h1>
 
     <table class="table">
         <thead>
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('delivery_new') }}">Dodaj nowy</a>
+    <a href="{{ path('delivery_new',{'id':order.id}) }}">Dodaj nowy</a>
 {% endblock %}
