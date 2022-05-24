@@ -34,7 +34,7 @@ class OrderItem
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="item")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $orderRef;
 
@@ -52,6 +52,16 @@ class OrderItem
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isLocked;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Delivery::class, mappedBy="items")
+     */
+    private $deliveries;
+
+    public function __construct()
+    {
+        $this->deliveries = new ArrayCollection();
+    }
  
     /**
     * Tests if the given item given corresponds to the same order item.
@@ -158,6 +168,33 @@ class OrderItem
    public function setIsLocked(?bool $isLocked): self
    {
        $this->isLocked = $isLocked;
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|Delivery[]
+    */
+   public function getDeliveries(): Collection
+   {
+       return $this->deliveries;
+   }
+
+   public function addDelivery(Delivery $delivery): self
+   {
+       if (!$this->deliveries->contains($delivery)) {
+           $this->deliveries[] = $delivery;
+           $delivery->addItem($this);
+       }
+
+       return $this;
+   }
+
+   public function removeDelivery(Delivery $delivery): self
+   {
+       if ($this->deliveries->removeElement($delivery)) {
+           $delivery->removeItem($this);
+       }
 
        return $this;
    }

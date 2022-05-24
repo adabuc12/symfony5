@@ -3,32 +3,146 @@
 {% block title %}Delivery{% endblock %}
 
 {% block body %}
-    <h1>Delivery</h1>
+    <h1>Dostawa</h1>
+    {% set realiseditems = [] %}
+    {% for order in delivery.deliveryOrder %}
+        {% set realisedquantity = 0 %}
+        {% for deliverfromorder in order.deliveries %}
+            {% for deliveryitem in deliverfromorder.items %}
+                {% if realiseditems[deliveryitem.product.name] is defined %}
+                    {% set quantity = deliveryitem.quantity + realiseditems[deliveryitem.product.name] %}
+                {% else %}
+                    {% set quantity = deliveryitem.quantity %}
+                {% endif %}
+                {% set realiseditems = realiseditems|merge({(deliveryitem.product.name):(quantity)}) %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    <form>
+        <table class="table table-success">
+            <thead>
+                <tr>
+                    <th>Numer transportu</th>
+                    <th>Data transportu</th>
+                    <th>Kierowca</th>
+                    <th>Zamówienie</th>
+                    <th>Uwagi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ delivery.number }}</td>
+                    <td>{{ delivery.deliveryDate ? delivery.deliveryDate|date('Y-m-d') : '' }}</td>
+                    <td>{% for onedriver in delivery.driver %}{{ onedriver.name }} {{ onedriver.surname }}{% endfor %}</td>
+                    <td>{% for order in delivery.deliveryOrder %}{{ order.number }}{% endfor %}</td>
+                    <td>{{ delivery.notices }}</td>
+                </tr>
+            </tbody>
+        </table>
+        DODANO
+        <table class="table table-success">
+            <thead>
+                <tr>
+                    <th>Produkt</th>
+                    <th>Ilość</th>
+                    <th>Pakowanie</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in delivery.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.quantity/item.product.packaging }}</td>
+                        <td><a href="{{ path('delivery_delete_item',{'order':order.id,'id':item.id,'delivery':delivery.id}) }}">X</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            DO REALIZACJI
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="select_all" id="show_all_2"/></th>
+                        <th>Nazwa</th>
+                        <th>Ilość</th>
+                        <th>Ilość/palety</th>
+                        <th>Jednostki</th>
+                        <th>Producent</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ delivery.id }}</td>
-            </tr>
-            <tr>
-                <th>Number</th>
-                <td>{{ delivery.number }}</td>
-            </tr>
-            <tr>
-                <th>Delivery_date</th>
-                <td>{{ delivery.deliveryDate ? delivery.deliveryDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Notices</th>
-                <td>{{ delivery.notices }}</td>
-            </tr>
-        </tbody>
-    </table>
+                    {% for item in order.item %}
+                        {% if 'paleta' in item.product.name or 'auto' in item.product.name or 'Auto' in item.product.name %}
 
-    <a href="{{ path('delivery_index') }}">back to list</a>
+                        {%else %}
+                            {% set realisedquantity = 0 %}
+                            {% for key, value in realiseditems %}
+                                {% if item.product.name ==  key %}
+                                    {% set realisedquantity = value %}
+                                {% endif %}
+                            {% endfor %}
+                            {% set torealisequantity = item.quantity - realisedquantity %}
+                     
+                            {% if torealisequantity > 0 %}
+                                <tr>
+                                    <td><input type="checkbox" name="check-{{ item.id }}" class="to_check"/></td>
+                                    <td><input class="form-control"  type="text" name="product-{{ item.id }}" value="{{ item.product.name }}"/></td>
+                                    <td><input class="form-control select-quantity"  type="text" name="quantity-{{ item.id }}" value="{{ torealisequantity }}" /></td>
+                                    <td><input class="form-control select-pal"  type="text" name="quantitypal-{{ item.id }}" value="{{ (torealisequantity/item.product.packaging)|round(0,'ceil') }}" /></td>
+                                    <td>
+                                        <select class="form-select select-value" aria-label="Jednostki" name="item-{{ item.id }}">
+                                            <option value="pal">pal.</option>
+                                            <option value="m2">m2</option>
+                                            <option value="szt">szt.</option>
+                                            <option value="t">t.</option>
+                                            <option value="kg">kg</option>
+                                            <option value="op">op.</option>
+                                        </select>
+                                    </td>
+                                    <td>{{ item.product.manufacture }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
 
-    <a href="{{ path('delivery_edit', {'id': delivery.id}) }}">edit</a>
+                </tbody>
+            </table>
 
-    {{ include('delivery/_delete_form.html.twig') }}
+    {% endblock %}
+    {% block footer %}
+
+        <li class="nav-item"> 
+            <a class="nav-link btn btn-primary" href="{{ path('delivery_index_order', {'id':order.id}) }}">Powrót</a>
+        </li>
+
+        <li class="nav-item"> 
+            <a class="nav-link btn btn-primary" href="{{ path('delivery_edit', {'id': delivery.id,'order':order.id}) }}">Edytuj</a>
+        </li>
+        <li class="nav-item"> 
+            <button class="nav-link btn btn-success" type="submit" name="add_to">Dodaj do transportu</button>
+        </li>
+        <li class="nav-item"> 
+            {{ include('delivery/_delete_form.html.twig') }}
+        </li>
+    </form>
+    <script>
+        $(document).ready(function () {
+            $('.select-quantity').prop('disabled', true);
+            $('#show_all_2').click(function () {
+                $('.to_check').trigger('click');
+            });
+            $('.select-value').change(function () {
+                if ($(this).val() == 'pal') {
+                    $(this).parent('td').parent('tr').children('td').children('.select-quantity').prop('disabled', true);
+                    $(this).parent('td').parent('tr').children('td').children('.select-pal').prop('disabled', false);
+                } else {
+                    $(this).parent('td').parent('tr').children('td').children('.select-quantity').prop('disabled', false);
+                    $(this).parent('td').parent('tr').children('td').children('.select-pal').prop('disabled', true);
+                }
+            });
+        });
+    </script>
 {% endblock %}

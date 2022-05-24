@@ -39,6 +39,7 @@ class TransportType extends AbstractType
             ->add('registration_number')
             ->add('phone')
             ->add('notices')
+                ->add('image')
         ;
     }
 

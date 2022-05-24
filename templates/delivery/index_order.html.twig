@@ -4,7 +4,37 @@
 
 {% block body %}
     <h1>Transporty dla zamówienia {{ order.number }} {{ order.kontrahent.name }}</h1>
-
+    {% for delivery in deliveries %}
+        <div class="card" style="width: 18rem;">
+            {% set imagename = '' %}
+            {% for driver in delivery.driver %}
+                {% set cartype = driver.prices %}
+                {% for carimage in cartype %}
+                    {% set imagename = carimage.image %}
+                {% endfor %}
+            {% endfor %}
+            <img class="card-img-top" src="{{ asset('images/'~imagename) }}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">TRANSPORT NR : {{ delivery.number }}</h5>
+                <p class="card-text">DATA : {{ delivery.deliveryDate ? delivery.deliveryDate|date('Y-m-d') : '' }}</p>
+                <p class="card-text">KIEROWCA : {% for onedriver in delivery.driver %}{{ onedriver.name }} {{ onedriver.surname }}{% endfor %}</p>
+                <p class="card-text">ZAMÓWIENIE NR : {% for order in delivery.deliveryOrder %}{{ order.number }}{% endfor %}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for deliveritem in delivery.items %}
+                    <li class="list-group-item"><p>{{ deliveritem.product.name }}</p> <p> {{ deliveritem.quantity }} m2/szt - {{ deliveritem.quantity/deliveritem.product.packaging }} pal.</p></li>
+                        {% endfor %}
+            </ul>
+            <div class="card-body">
+                <a class="btn btn-primary" href="{{ path('delivery_show', {'id': delivery.id,'order':order.id}) }}">Ładunek</a>
+                <a class="btn btn-warning" href="{{ path('delivery_edit', {'id': delivery.id,'order':order.id}) }}">Edytuj</a>
+                <form method="post" action="{{ path('delivery_delete', {'id': delivery.id,'order':order.id}) }}" onsubmit="return confirm('Czy usunąć na 100% ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ delivery.id) }}">
+                    <button class="nav-link btn btn-danger text-white">Usuń</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
     <table class="table">
         <thead>
             <tr>
@@ -17,23 +47,23 @@
             </tr>
         </thead>
         <tbody>
-        {% for delivery in deliveries %}
-            <tr>
-                <td>{{ delivery.number }}</td>
-                <td>{{ delivery.deliveryDate ? delivery.deliveryDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{% for onedriver in delivery.driver %}{{ onedriver.name }} {{ onedriver.surname }}{% endfor %}</td>
-                <td>{% for order in delivery.deliveryOrder %}{{ order.number }}{% endfor %}</td>
-                <td>{{ delivery.notices }}</td>
-                <td>
-                    <a href="{{ path('delivery_show', {'id': delivery.id}) }}">pokaż</a>
-                    <a href="{{ path('delivery_edit', {'id': delivery.id}) }}">edytuj</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">Brak wyników</td>
-            </tr>
-        {% endfor %}
+            {% for delivery in deliveries %}
+                <tr>
+                    <td>{{ delivery.number }}</td>
+                    <td>{{ delivery.deliveryDate ? delivery.deliveryDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{% for onedriver in delivery.driver %}{{ onedriver.name }} {{ onedriver.surname }}{% endfor %}</td>
+                    <td>{% for order in delivery.deliveryOrder %}{{ order.number }}{% endfor %}</td>
+                    <td>{{ delivery.notices }}</td>
+                    <td>
+                        <a href="{{ path('delivery_show', {'id': delivery.id,'order':order.id}) }}">ładunek</a>
+                        <a href="{{ path('delivery_edit', {'id': delivery.id,'order':order.id}) }}">edytuj</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Brak wyników</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

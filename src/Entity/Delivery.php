@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Delivery
 {
+    
+    public function __toString()
+    {
+        return $this->number;
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,11 +49,57 @@ class Delivery
      */
     private $notices;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=OrderItem::class, inversedBy="deliveries")
+     */
+    private $items;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pickup;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $delivery_adress;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $second_pickup;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $second_delivery_adress;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transshipment;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_transshipment;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_courier;
+
+    /**
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $status;
+
 
     public function __construct()
     {
         $this->delivery_order = new ArrayCollection();
         $this->driver = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,6 +187,126 @@ class Delivery
     public function setNotices(?string $notices): self
     {
         $this->notices = $notices;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(OrderItem $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(OrderItem $item): self
+    {
+        $this->items->removeElement($item);
+
+        return $this;
+    }
+
+    public function getPickup(): ?string
+    {
+        return $this->pickup;
+    }
+
+    public function setPickup(?string $pickup): self
+    {
+        $this->pickup = $pickup;
+
+        return $this;
+    }
+
+    public function getDeliveryAdress(): ?string
+    {
+        return $this->delivery_adress;
+    }
+
+    public function setDeliveryAdress(?string $delivery_adress): self
+    {
+        $this->delivery_adress = $delivery_adress;
+
+        return $this;
+    }
+
+    public function getSecondPickup(): ?string
+    {
+        return $this->second_pickup;
+    }
+
+    public function setSecondPickup(?string $second_pickup): self
+    {
+        $this->second_pickup = $second_pickup;
+
+        return $this;
+    }
+
+    public function getSecondDeliveryAdress(): ?string
+    {
+        return $this->second_delivery_adress;
+    }
+
+    public function setSecondDeliveryAdress(?string $second_delivery_adress): self
+    {
+        $this->second_delivery_adress = $second_delivery_adress;
+
+        return $this;
+    }
+
+    public function getTransshipment(): ?string
+    {
+        return $this->transshipment;
+    }
+
+    public function setTransshipment(?string $transshipment): self
+    {
+        $this->transshipment = $transshipment;
+
+        return $this;
+    }
+
+    public function getIsTransshipment(): ?bool
+    {
+        return $this->is_transshipment;
+    }
+
+    public function setIsTransshipment(?bool $is_transshipment): self
+    {
+        $this->is_transshipment = $is_transshipment;
+
+        return $this;
+    }
+
+    public function getIsCourier(): ?bool
+    {
+        return $this->is_courier;
+    }
+
+    public function setIsCourier(?bool $is_courier): self
+    {
+        $this->is_courier = $is_courier;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

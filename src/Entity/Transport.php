@@ -173,6 +173,11 @@ class Transport
      */
     private $factoryOrders;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -586,6 +591,18 @@ class Transport
         if ($this->factoryOrders->removeElement($factoryOrder)) {
             $factoryOrder->removeDriver($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

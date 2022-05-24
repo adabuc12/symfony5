@@ -13,35 +13,31 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\OrderRepository;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class DeliveryType extends AbstractType {
 
     private $entityManager;
-    
     private $orderId;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->entityManager = $entityManager;
     }
 
-    private function getOrderRepository(): OrderRepository
-    {
+    private function getOrderRepository(): OrderRepository {
         return $this->entityManager->getRepository(Order::class);
     }
-    
-    private function setOrderId($orderId)
-    {
+
+    private function setOrderId($orderId) {
         $this->orderId = $orderId;
     }
-    
-    private function getOrderId()
-    {
-        return $this->orderId ;
+
+    private function getOrderId() {
+        return $this->orderId;
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void {
-         $this->setOrderId($options['orderId']);
+        $this->setOrderId($options['orderId']);
         $builder
                 ->add('delivery_date', DateType::class, [
                     'widget' => 'single_text',
@@ -74,6 +70,18 @@ class DeliveryType extends AbstractType {
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'Zamówienie',
+                ])
+                ->add('status', ChoiceType::class, [
+                    'choices' => [
+                        'Do zaplanowania' => 'toplan',
+                        'Brak materiału' => 'noitems',
+                        'Skompletowany do umówienia' => 'tocall',
+                        'Oczekuje na potwierdzenie' => 'waiting',
+                        'Umówiony' => 'plan',
+                        'Wysypany' => 'problem',
+                        'Zrealizowane' => 'done',
+                    ],
+                    'label' => 'Status'
                 ])
         ;
     }

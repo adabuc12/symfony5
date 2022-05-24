@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Delivery;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @method Delivery|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,6 +29,20 @@ class DeliveryRepository extends ServiceEntityRepository {
                         ->andWhere('o.id = :val')
                         ->setParameter('val', $value->getId())
                         ->orderBy('d.id', 'ASC')
+                        ->getQuery()
+                        ->getResult()
+        ;
+    }
+    
+    /**
+     * @return Delivery[] Returns an array of Delivery objects
+     */
+    public function findAllByDate($startDate, $endDate) {
+        return $this->createQueryBuilder('d')
+                        ->andWhere('d.delivery_date > :start')
+                        ->andWhere('d.delivery_date < :end')
+                        ->setParameter('start', new DateTime($startDate))
+                        ->setParameter('end', new DateTime($endDate))
                         ->getQuery()
                         ->getResult()
         ;
