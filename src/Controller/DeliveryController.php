@@ -86,8 +86,9 @@ class DeliveryController extends AbstractController {
         }
         $startDate = ($daysLastMonth - $minusdays) . '-' . ($monthNumber - 1) . '-' . $yearNumber;
         $endDate = $daysInThisMonth . '-' . $monthNumber . '-' . $yearNumber;
-        if (count($days) !== 36) {
-            for ($i = 1; $i < 37 - count($days); $i++) {
+        
+        if (count($days) !== 42) {
+            for ($i = 1; $i <= (46 - count($days)); $i++) {
                 $nextMontNumber = $monthNumber + 1;
                 $string = $i . '-' . $nextMontNumber . '-' . $yearNumber;
                 $endDate = $string;
@@ -102,7 +103,7 @@ class DeliveryController extends AbstractController {
             $deliveryDate = date_format($delivery->getDeliveryDate(), 'd-m-Y');
             array_push($days[$deliveryDate][2], $delivery);
         }
-        return $this->render('delivery/calendar.html.twig', [
+        return $this->render('calendar/calendar.html.twig', [
                     'days' => $days,
                     'thisdate' => $monthNumber . '-' . $yearNumber,
         ]);

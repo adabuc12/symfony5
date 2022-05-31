@@ -78,7 +78,7 @@ class ProductController extends AbstractController {
                 'Wyszukiwanie działa tylko do czterech wyrazów'
             );
         }
-        if($data){
+        if($data || count($parameters) > 0){
              $products = $repository->findByNameField($data, $parameters['factory']);
         }   
         else{
@@ -117,7 +117,7 @@ class ProductController extends AbstractController {
             echo ('brak pliku importu, skontaktuj się z Adamem');
         }
         $objDateTime = new DateTime('NOW');
-// decoding CSV contents
+        // decoding CSV contents
         foreach ($finder as $file) {
             $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
             // instantiation, when using it inside the Symfony framework
@@ -172,7 +172,7 @@ class ProductController extends AbstractController {
         $entityManager->flush();
         }
         return $this->render('product/index.html.twig', [
-        'products' => $productRepository->findAll(),
+            'products' => $productRepository->findAll(),
         ]);
     }
 
@@ -1017,7 +1017,7 @@ public function import(Request $request): Response {
  
     $form = $this->createForm(ProductImportType::class);
     $form->handleRequest($request);
-     $entityManager = $this->getDoctrine()->getManager();
+    $entityManager = $this->getDoctrine()->getManager();
     $repository = $this->getDoctrine()->getRepository(Product::class);
     $products = $repository->findAll();
     $existingProducts = [];
@@ -1029,6 +1029,7 @@ public function import(Request $request): Response {
         $someNewFilename = 'products_'.date('m-d-Y_His').'.csv';
 
         $file = $form->get('file')->getData();
+        
         
             try {$file->move(
                         $this->getParameter('import_upload_directory'),
@@ -1052,8 +1053,9 @@ public function import(Request $request): Response {
             $products_csv = $serializer->decode($contents, 'csv', $context);
 
             foreach ($products_csv as $key => $value) {
+
                 $id = $value['ID'];
-                
+               
                 if(key_exists($id, $existingProducts)){
                     $existingProducts[$id]->setName($value['Nazwa']);
                     $existingProducts[$id]->setManufacture($value['Fabryka']);
@@ -1069,11 +1071,11 @@ public function import(Request $request): Response {
                     $existingProducts[$id]->setSellPriceFactoryWholesale(floatval($value['Cena Hurt Fabryka']));
                     $existingProducts[$id]->setSellPricePitchWholesale(floatval($value['Cena Hurt Plac']));
                     $existingProducts[$id]->setIsCourier($value['Czy Kurier']);
-                    $existingProducts[$id]->setCourierCost($value['Cena Kurier']);
+                    $existingProducts[$id]->setCourierCost(floatval($value['Cena Kurier']));
                     $existingProducts[$id]->setIsNotAvailable($value['Towar Niedostępny']);
                     $existingProducts[$id]->setEstimatedAvailabilityDate(new DateTime($value['Przewidywany czas dostępnosci']));
                     $existingProducts[$id]->setNotices($value['Uwagi']);
-                    $existingProducts[$id]->setSprzedazJednostkowa($value['Sprzedaz jednostkowa']);
+                    $existingProducts[$id]->setSprzedazJednostkowa(floatval($value['Sprzedaz jednostkowa']));
                     $existingProducts[$id]->setWidth(intval($value['Szerokosc']));
                     $existingProducts[$id]->setIsOnPromotion($value['Na Promocji']);
                     $existingProducts[$id]->setIsOnPalet($value['Na Palecie']);
@@ -1097,11 +1099,11 @@ public function import(Request $request): Response {
                     $newProduct->setSellPriceFactoryWholesale(floatval($value['Cena Hurt Fabryka']));
                     $newProduct->setSellPricePitchWholesale(floatval($value['Cena Hurt Plac']));
                     $newProduct->setIsCourier($value['Czy Kurier']);
-                    $newProduct->setCourierCost($value['Cena Kurier']);
+                    $newProduct->setCourierCost(floatval($value['Cena Kurier']));
                     $newProduct->setIsNotAvailable($value['Towar Niedostępny']);
                     $newProduct->setEstimatedAvailabilityDate(new DateTime($value['Przewidywany czas dostępnosci']));
                     $newProduct->setNotices($value['Uwagi']);
-                    $newProduct->setSprzedazJednostkowa($value['Sprzedaz jednostkowa']);
+                    $newProduct->setSprzedazJednostkowa(floatval($value['Sprzedaz jednostkowa']));
                     $newProduct->setWidth(intval($value['Szerokosc']));
                     $newProduct->setIsOnPromotion($value['Na Promocji']);
                     $newProduct->setIsOnPalet($value['Na Palecie']);

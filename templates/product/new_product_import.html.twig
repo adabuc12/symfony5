@@ -5,6 +5,8 @@
 {% block body %}
     <h1>Import pliku</h1>
 
-    {{ include('product/_form.html.twig') }}
-
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('IMPERTUJ Z PLIKU') }}</button>
+{{ form_end(form) }}
 {% endblock %}

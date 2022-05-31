@@ -26,128 +26,42 @@ class ProductRepository extends ServiceEntityRepository
     {
         $nameExploded = explode(' ' , $name);
         
-                
-        if(count($nameExploded) > 1 && count($nameExploded) < 3){
+        $query = $this->createQueryBuilder('p')->andWhere('p.catalog_price > 0');
+
+        
+        if (count($nameExploded) == 1){
+                $query->andWhere('LOWER(p.name) LIKE LOWER(:val)')
+                ->setParameter('val', '%'.$nameExploded[0].'%');
+            }
+            
+            if (count($nameExploded) > 1 && count($nameExploded) < 3){
+                $query->andWhere('LOWER(p.name) LIKE LOWER(:val)')
+                ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
+                ->setParameter('val', '%'.$nameExploded[0].'%')
+                ->setParameter('val3', '%'.$nameExploded[1].'%');
+            }
+             
+            if (count($nameExploded) > 2 && count($nameExploded) < 4){
+                $query->andWhere('LOWER(p.name) LIKE LOWER(:val4)')
+                ->setParameter('val4', '%'.$nameExploded[2].'%');
+            }
+            if (count($nameExploded) > 3 && count($nameExploded) < 5){
+                $query->andWhere('LOWER(p.name) LIKE LOWER(:val4)')
+                ->andWhere('LOWER(p.name) LIKE LOWER(:val5)') 
+                ->setParameter('val4', '%'.$nameExploded[2].'%')
+                ->setParameter('val5', '%'.$nameExploded[3].'%');
+            }
+
            if(!empty($factory)){
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%')
-            ->setParameter('val1', '%'.$factory.'%')   
-            ->addOrderBy('p.Manufacture', 'DESC')
+                $query->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
+                ->setParameter('val1', '%'.$factory.'%');
+            }
+        
+        return $query->addOrderBy('p.Manufacture', 'DESC')
             ->addOrderBy('p.name', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
-       }else{
-           return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%') 
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       }
-        } elseif (count($nameExploded) > 2 && count($nameExploded) < 4){
-           if(!empty($factory)){
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val4)')    
-            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%')
-            ->setParameter('val4', '%'.$nameExploded[2].'%')
-            ->setParameter('val1', '%'.$factory.'%')   
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       }else{
-           return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val4)') 
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%') 
-            ->setParameter('val4', '%'.$nameExploded[2].'%')
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       } 
-        }elseif (count($nameExploded) > 3 && count($nameExploded) < 5){
-           if(!empty($factory)){
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val4)')    
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val5)') 
-            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%')
-            ->setParameter('val4', '%'.$nameExploded[2].'%')
-            ->setParameter('val5', '%'.$nameExploded[3].'%')
-            ->setParameter('val1', '%'.$factory.'%')   
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       }else{
-           return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val3)')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val4)') 
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val5)')
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$nameExploded[0].'%')
-            ->setParameter('val3', '%'.$nameExploded[1].'%') 
-            ->setParameter('val4', '%'.$nameExploded[2].'%')
-            ->setParameter('val5', '%'.$nameExploded[3].'%')
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       } 
-        }
-        if(!empty($factory)){
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('LOWER(p.Manufacture) LIKE LOWER(:val1)')    
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$name.'%')
-            ->setParameter('val1', '%'.$factory.'%')   
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       }else{
-           return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.name) LIKE LOWER(:val)')
-            ->andWhere('p.catalog_price > 0')
-            ->setParameter('val', '%'.$name.'%')  
-            ->addOrderBy('p.Manufacture', 'DESC')
-            ->addOrderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-       } 
-       
+            ->getResult();
+    
     }
 
     /**

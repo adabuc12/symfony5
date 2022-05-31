@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @method Task|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,17 @@ class TaskRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
+    }
+    
+    public function findAllByDate($startDate, $endDate) {
+        return $this->createQueryBuilder('t')
+                        ->andWhere('t.date_to_end > :start')
+                        ->andWhere('t.date_to_end < :end')
+                        ->setParameter('start', new DateTime($startDate))
+                        ->setParameter('end', new DateTime($endDate))
+                        ->getQuery()
+                        ->getResult()
+        ;
     }
 
     // /**
