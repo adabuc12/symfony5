@@ -85,7 +85,7 @@ class ProductController extends AbstractController {
                 $is_parameter =  true;
             }
         }
-        var_dump($parameters);
+     
         if($data || $is_parameter){
              $products = $repository->findByNameField($data, $parameters['factory']);
         }   
