@@ -78,7 +78,15 @@ class ProductController extends AbstractController {
                 'Wyszukiwanie działa tylko do czterech wyrazów'
             );
         }
-        if($data || count($parameters) > 0){
+        $is_parameter = false;
+        foreach($parameters as $parameter => $value){
+   
+            if($value !== null){
+                $is_parameter =  true;
+            }
+        }
+        var_dump($parameters);
+        if($data || $is_parameter){
              $products = $repository->findByNameField($data, $parameters['factory']);
         }   
         else{
@@ -1077,7 +1085,7 @@ public function import(Request $request): Response {
                     $existingProducts[$id]->setNotices($value['Uwagi']);
                     $existingProducts[$id]->setSprzedazJednostkowa(floatval($value['Sprzedaz jednostkowa']));
                     $existingProducts[$id]->setWidth(intval($value['Szerokosc']));
-                    $existingProducts[$id]->setIsOnPromotion($value['Na Promocji']);
+                    $existingProducts[$id]->setIsOnPromotion(floatval($value['Na Promocji']));
                     $existingProducts[$id]->setIsOnPalet($value['Na Palecie']);
                     $existingProducts[$id]->setIsSellCost($value['Czy Koszt Sprzedazy']);
                     $existingProducts[$id]->setWpid(intval($value['wpid']));
@@ -1105,7 +1113,7 @@ public function import(Request $request): Response {
                     $newProduct->setNotices($value['Uwagi']);
                     $newProduct->setSprzedazJednostkowa(floatval($value['Sprzedaz jednostkowa']));
                     $newProduct->setWidth(intval($value['Szerokosc']));
-                    $newProduct->setIsOnPromotion($value['Na Promocji']);
+                    $newProduct->setIsOnPromotion(floatval($value['Na Promocji']));
                     $newProduct->setIsOnPalet($value['Na Palecie']);
                     $newProduct->setIsSellCost($value['Czy Koszt Sprzedazy']);
                     $newProduct->setWpid(intval($value['wpid']));
