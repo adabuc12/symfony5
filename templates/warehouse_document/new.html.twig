@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New WarehouseDocument{% endblock %}
+
+{% block body %}
+    <h1>Nowy dokument magazynowy</h1>
+
+    {{ include('warehouse_document/_form.html.twig') }}
+
+    <a href="{{ path('warehouse_document_index') }}">Powrót do listy</a>
+{% endblock %}

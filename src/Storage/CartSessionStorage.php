@@ -30,6 +30,11 @@ class CartSessionStorage
      * @var string
      */
     const CART_KEY_NAME = 'cart_id';
+    
+    /**
+     * @var string
+     */
+    const CART_KEY_TYPE = 'offer';
 
     /**
      * CartSessionStorage constructor.
@@ -65,6 +70,7 @@ class CartSessionStorage
     public function setCart(Order $cart): void
     {
         $this->session->set(self::CART_KEY_NAME, $cart->getId());
+        $this->session->set(self::CART_KEY_TYPE, $cart->getStatus());
     }
 
     /**

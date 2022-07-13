@@ -1,0 +1,104 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-2">
+        {{ form_row(form.type) }}
+    </div>
+    <div class="col-2">
+        {{ form_row(form.date) }}
+    </div>
+
+    <div class="col-2">
+        {{ form_row(form.is_brutto) }}
+    </div>
+
+    <div class="col-2">
+        {{ form_row(form.kontrahent) }}
+    </div>
+    <div class="col-1">
+        <button class="btn btn-primary">Dodaj kontrahenta</button>
+    </div>
+</div>
+<h3>Produkty</h3>
+<ul class="tags"
+    data-index="{{ form.product_item|length > 0 ? form.product_item|last.vars.name + 1 : 0 }}"
+    data-prototype='<div id="warehouse_document_product_item_0">
+            <div class="row">
+                <div class="col-3">
+                    <div class="mb-3">
+                        <label class="form-label required" for="warehouse_document_product_item_0_product">Produkt</label>
+                        <select id="warehouse_document_product_item_0_product" name="warehouse_document[product_item][0][product]" required="required" class="form-select">
+                        </select>        
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="mb-3">
+                        <label for="warehouse_document_product_item_1_quantity" class="form-label">Ilość</label>
+                        <input type="text" id="warehouse_document_product_item_0_quantity" name="warehouse_document[product_item][0][quantity]" class="form-control">        
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="mb-3">
+                        <button type="submit" id="warehouse_document_product_item_0_remove" name="warehouse_document[product_item][0][remove]" class="btn-primary btn">Usuń</button>
+                    </div>
+                </div>
+            </div> 
+        </div>'
+    >
+    <li>
+
+        <div id="warehouse_document_product_item_0">
+            <div class="row">
+                <div class="col-3">
+                    <div class="mb-3">
+                        <label class="form-label required" for="warehouse_document_product_item_0_product">Produkt</label>
+                        <select id="warehouse_document_product_item_0_product" name="warehouse_document[product_item][0][product]" required="required" class="form-select">
+                        </select>        
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="mb-3">
+                        <label for="warehouse_document_product_item_1_quantity" class="form-label">Ilość</label>
+                        <input type="text" id="warehouse_document_product_item_0_quantity" name="warehouse_document[product_item][0][quantity]" class="form-control">        
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="mb-3">
+                        <button type="submit" id="warehouse_document_product_item_0_remove" name="warehouse_document[product_item][0][remove]" class="btn-primary btn">Usuń</button>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </li>
+</ul>
+<button type="button" class="add_item_link btn btn-primary" data-collection-holder-class="tags">Dodaj Produkt</button>
+<button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
+{{ form_end(form) }}
+
+
+<script>
+    const addFormToCollection = (e) => {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+        const item = document.createElement('li');
+
+        item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                        /__name__/g,
+                        collectionHolder.dataset.index
+                        );
+
+        collectionHolder.appendChild(item);
+
+        collectionHolder.dataset.index++;
+    };
+
+    document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+
+
+</script>

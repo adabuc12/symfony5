@@ -124,6 +124,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $fastDeals;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="users")
+     */
+    private $activeWarehause;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WarehouseDocument::class, mappedBy="owner")
+     */
+    private $warehouseDocuments;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -138,6 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->logs = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->fastDeals = new ArrayCollection();
+        $this->warehouseDocuments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -626,6 +637,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($fastDeal->getOwner() === $this) {
                 $fastDeal->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getActiveWarehause(): ?Warehouse
+    {
+        return $this->activeWarehause;
+    }
+
+    public function setActiveWarehause(?Warehouse $activeWarehause): self
+    {
+        $this->activeWarehause = $activeWarehause;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WarehouseDocument[]
+     */
+    public function getWarehouseDocuments(): Collection
+    {
+        return $this->warehouseDocuments;
+    }
+
+    public function addWarehouseDocument(WarehouseDocument $warehouseDocument): self
+    {
+        if (!$this->warehouseDocuments->contains($warehouseDocument)) {
+            $this->warehouseDocuments[] = $warehouseDocument;
+            $warehouseDocument->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouseDocument(WarehouseDocument $warehouseDocument): self
+    {
+        if ($this->warehouseDocuments->removeElement($warehouseDocument)) {
+            // set the owning side to null (unless already changed)
+            if ($warehouseDocument->getOwner() === $this) {
+                $warehouseDocument->setOwner(null);
             }
         }
 

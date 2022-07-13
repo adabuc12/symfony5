@@ -89,11 +89,23 @@ class Kontrahent
      */
     private $complaints;
 
+    /**
+     * @ORM\OneToMany(targetEntity=WarehouseDocument::class, mappedBy="kontrahent")
+     */
+    private $ProductItem;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WarehouseDocument::class, mappedBy="kontrahent")
+     */
+    private $warehouseDocuments;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->complaints = new ArrayCollection();
+        $this->ProductItem = new ArrayCollection();
+        $this->warehouseDocuments = new ArrayCollection();
     }
 
 
@@ -334,6 +346,36 @@ class Kontrahent
             // set the owning side to null (unless already changed)
             if ($complaint->getKontrahent() === $this) {
                 $complaint->setKontrahent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WarehouseDocument[]
+     */
+    public function getWarehouseDocuments(): Collection
+    {
+        return $this->warehouseDocuments;
+    }
+
+    public function addWarehouseDocument(WarehouseDocument $warehouseDocument): self
+    {
+        if (!$this->warehouseDocuments->contains($warehouseDocument)) {
+            $this->warehouseDocuments[] = $warehouseDocument;
+            $warehouseDocument->setKontrahent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouseDocument(WarehouseDocument $warehouseDocument): self
+    {
+        if ($this->warehouseDocuments->removeElement($warehouseDocument)) {
+            // set the owning side to null (unless already changed)
+            if ($warehouseDocument->getKontrahent() === $this) {
+                $warehouseDocument->setKontrahent(null);
             }
         }
 

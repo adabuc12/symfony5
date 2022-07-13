@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wybierz magazyn{% endblock %}
+
+{% block body %}
+    <h1>Zmień magazyn</h1>
+
+    <form>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label for="warehouse">Magazyn:</label>
+
+                <select class="custom-select" name="warehouse" id="warehouse">
+                    {% for warehouse in warehouses %}
+                        <option value="{{ warehouse.name }} ">{{ warehouse.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <input class="btn btn-primary" type="submit" value="Zatwierdź" name="submit"/>
+    </form>
+
+
+{% endblock %}

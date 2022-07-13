@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WarehouseDocument index{% endblock %}
+
+{% block body %}
+    <h1>Dokumenty Magazynowe</h1>
+    <div class="row">
+        <div class="col-2">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-primary"><a href=""><b>DOKUMENTY</b></a></li>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-secondary"><a href="">ZAKUP</a></li>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="">Dokumenty PZ</a></li>
+                        <li class="list-group-item"><a href="">Korekty KPZ</a></li>
+                    </ul>
+                    <li class="list-group-item list-group-item-secondary"><a href="">SPRZEDAŻ</a></li>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="">Dokumenty WZ</a></li>
+                        <li class="list-group-item"><a href="">Korekty KWZ</a></li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+        <div class="col-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Type</th>
+                        <th>Number</th>
+                        <th>Date</th>
+                        <th>Is_brutto</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for warehouse_document in warehouse_documents %}
+                        <tr>
+                            <td>{{ warehouse_document.id }}</td>
+                            <td>{{ warehouse_document.type }}</td>
+                            <td>{{ warehouse_document.number }}</td>
+                            <td>{{ warehouse_document.date ? warehouse_document.date|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ warehouse_document.isBrutto ? 'Yes' : 'No' }}</td>
+                            <td>
+                                <a href="{{ path('warehouse_document_show', {'id': warehouse_document.id}) }}">show</a>
+                                <a href="{{ path('warehouse_document_edit', {'id': warehouse_document.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{{ path('warehouse_document_new') }}">Create new</a>
+        </div>
+    </div>
+{% endblock %}

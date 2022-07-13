@@ -57,15 +57,27 @@
                             ZAMÓWIENIE FABRYKA
                         </a>
                     {% endif %}
-                    {% if app.session.has('cart_id') == true %}
+                    {% if app.session.has('cart_id') == true and app.session.get('cart_type') == 'offer' %}
                         <a href="{{ path('cart') }}" class="btn btn-warning">
-                            OFERTA/ZAMÓWIENIE
+                            OFERTA id {{ app.session.get('cart_id') }}
+                        </a>
+                    {% endif %}
+                    {% if app.session.has('cart_id') == true and app.session.get('cart_type') == 'order' %}
+                        <a href="{{ path('cart') }}" class="btn btn-warning">
+                            ZAMÓWIENIE id {{ app.session.get('cart_id') }}
                         </a>
                     {% endif %}
                     {% if app.session.has('kontrahent') == true %}
                         <a href="{{ path('kontrahent_index') }}" class="btn btn-secondary">
                             {{ app.session.get('kontrahent') }}
                         </a>
+                    {% endif %}
+                    {% if app.user %}
+                        {% if app.user.activeWarehause != null %}
+                            <a href="{{ path('warehouse_change') }}" class="btn btn-secondary">
+                                {{ app.user.activeWarehause.name }}
+                            </a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </li>
@@ -109,8 +121,9 @@
                                             <a class="nav-link" href="{{ path('product_index') }}">Produkty</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
+                                            <a class="nav-link" href="{{ path('transport_index') }}">Transporty ceny</a>
                                         </li>
+
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ path('offer_index',{'page':1}) }}">Oferty</a>
                                         </li>
@@ -120,6 +133,10 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ path('index_calendar') }}">Kalendarz</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="{{ path('kontrahent_index') }}" class="nav-link">Kontrahenci</a>
+                                        </li>
+                                        <!--
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ path('log_new') }}">Notatka</a>
                                         </li>
@@ -132,6 +149,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="">Ogrodzenia</a>
                                         </li>
+                                        -->
                                     </ul>
                                 </div>
                             </div>
@@ -145,7 +163,19 @@
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
-
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('warehouse_change') }}">Wybór Magazynu</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path('warehouse_document_index') }}">Dokumenty magazynowe</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Renament</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </nav>
                     </div>
@@ -156,7 +186,25 @@
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
-
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Sprzedaż</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Sprzedaż detaliczna</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Zakup</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Koszt</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Dokumenty Handlowe</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </nav>
                     </div>
@@ -222,6 +270,7 @@
                                                 <!-- <li><a class="dropdown-item" href="#">Api</a></li> -->
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item" href="{{ path('factory_index') }}">Fabryki</a></li>
+                                                <li><a class="dropdown-item" href="{{ path('warehouse_index') }}">Magazyny</a></li>
                                             </ul>
                                         </li>
                                     </ul>

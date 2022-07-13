@@ -153,6 +153,28 @@ return $this->renderForm('order/new.html.twig', [
 }
 
 /**
+     * @Route("/export/{id}", name="order_export", methods={"GET","POST"})
+     */
+    public function export(Order $order): Response
+    {
+    $url = "localhost:5000/api/table/?tablename=firma";
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+    print_r(json_decode($json));
+    exit;
+
+    return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+
+}
+
+/**
  * @Route("/show/{id}", name="order_show", methods={"GET"})
  */
 public function show(Order $order): Response {
@@ -169,6 +191,7 @@ $form = $this->createForm(CartType::class, $order);
 $form->handleRequest($request);
 
 $this->get('session')->set('cart_id', $order->getId());
+$this->get('session')->set('cart_type', $order->getStatus());
 
 return $this->redirectToRoute('cart');
 

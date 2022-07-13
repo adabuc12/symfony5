@@ -163,11 +163,17 @@ class Product
      */
     private $update_date;
 
+    /**
+     * @ORM\OneToMany(targetEntity=WarehouseStock::class, mappedBy="product")
+     */
+    private $warehouse;
+
     public function __construct()
     {
         $this->orderFactoryItems = new ArrayCollection();
         $this->productCategories = new ArrayCollection();
         $this->notifyUserIfAvaible = new ArrayCollection();
+        $this->warehouse = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -571,6 +577,36 @@ class Product
     public function setUpdateDate(?\DateTimeInterface $update_date): self
     {
         $this->update_date = $update_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WarehouseStock[]
+     */
+    public function getWarehouse(): Collection
+    {
+        return $this->warehouse;
+    }
+
+    public function addWarehouse(WarehouseStock $warehouse): self
+    {
+        if (!$this->warehouse->contains($warehouse)) {
+            $this->warehouse[] = $warehouse;
+            $warehouse->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouse(WarehouseStock $warehouse): self
+    {
+        if ($this->warehouse->removeElement($warehouse)) {
+            // set the owning side to null (unless already changed)
+            if ($warehouse->getProduct() === $this) {
+                $warehouse->setProduct(null);
+            }
+        }
 
         return $this;
     }
