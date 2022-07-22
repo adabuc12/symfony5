@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Kontrahent;
 use App\Form\ProductType;
 use App\Form\ProductImportType;
 use App\Form\ProductAvailibilityType;
@@ -264,6 +265,15 @@ return $this->renderForm('product/new.html.twig', [
         
         if($type=='cart'){
              $cart = $cartManager->getCurrentCart();
+             $kontrahent = $cart->getKontrahent();
+             if($kontrahent == NULL){
+                 $kontrahentRepository = $this->getDoctrine()->getRepository(Kontrahent::class);
+                 $detalKontrahent = $kontrahentRepository->findOneByName('Sprzedaż detaliczna');
+                 if($detalKontrahent !== NULL){
+                     $cart->setKontrahent($detalKontrahent);
+                 }
+             }
+
             if($product->getIsOnPalet()){
             $item2 = new OrderItem();
             $item2->setProduct($paletaProduct);

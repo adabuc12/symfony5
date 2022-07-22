@@ -63,7 +63,7 @@ class ProductCategoryController extends AbstractController
      */
     public function edit(Request $request, ProductCategory $productCategory, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProductCategoryType::class, $productCategory);
+        $form = $this->createForm(ProductCategoryType::class, $productCategory,['name'=>$productCategory->getName()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -8,47 +8,65 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-class KontrahentType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+class KontrahentType extends AbstractType {
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('name', TextType::class, [
+                ->add('name', TextType::class, [
                     'label' => 'Nazwa',
-                    'attr'=>['class' => 'form-control'],
+                    'attr' => ['class' => 'form-control'],
                 ])
-            ->add('Adress', TextType::class, [
+                ->add('Adress', TextType::class, [
                     'label' => 'Numer',
-                    'attr'=>['class' => 'form-control'],
-                'required' => false,
+                    'attr' => ['class' => 'form-control'],
+                    'required' => false,
                 ])
-            ->add('phone', TextType::class, [
+                ->add('phone', TextType::class, [
                     'label' => 'Telefon',
-                'required' => false,
+                    'required' => false,
                 ])
-            ->add('email', TextType::class, [
+                ->add('city', TextType::class, [
+                    'label' => 'Miasto',
+                    'required' => false,
+                ])
+                ->add('email', TextType::class, [
                     'label' => 'Email',
-                'required' => false,
+                    'required' => false,
                 ])
-            ->add('nip', TextType::class, [
+                ->add('is_supplier', CheckboxType::class, [
+                    'label' => 'Dostawca?',
+                    'required' => false,
+                    'attr' =>['checked'=>true]
+                ])
+                ->add('is_customer', CheckboxType::class, [
+                    'label' => 'Odbiorca?',
+                    'required' => false,
+                    'attr' =>['checked'=>true]
+                ])
+                ->add('email', TextType::class, [
+                    'label' => 'Email',
+                    'required' => false,
+                ])
+                ->add('nip', TextType::class, [
                     'label' => 'NIP',
-                    'attr'=>['class' => 'form-control'],
-                'required' => false,
+                    'attr' => ['class' => 'form-control'],
+                    'required' => false,
                 ])
-            ->add('notices', TextType::class, [
+                ->add('notices', TextType::class, [
                     'label' => 'Uwagi',
-                'required' => false,
+                    'required' => false,
                 ])
-            ->add('post_code', TextType::class, [
+                ->add('post_code', TextType::class, [
                     'label' => 'Kod Pocztowy',
-                'required' => false,
+                    'required' => false,
                 ])
-            ->add('street', TextType::class, [
-                    'label' => 'Ulica',
-                'required' => false,
+                ->add('street', TextType::class, [
+                    'label' => 'Ulica/Osiedle/Aleja',
+                    'required' => false,
                 ])
-            ->add('class_name', ChoiceType::class, [
+                ->add('class_name', ChoiceType::class, [
                     'choices' => [
                         'Detaliczna' => 'Detaliczna',
                         'Hurtowa' => 'Hurtowa',
@@ -56,7 +74,7 @@ class KontrahentType extends AbstractType
                     ],
                     'label' => 'Klasa'
                 ])
-            ->add('group_name', ChoiceType::class, [
+                ->add('group_name', ChoiceType::class, [
                     'choices' => [
                         'Detaliczna' => 'Detaliczna',
                         'Hurtowa' => 'Hurtowa',
@@ -67,10 +85,10 @@ class KontrahentType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => Kontrahent::class,
         ]);
     }
+
 }

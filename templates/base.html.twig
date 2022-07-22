@@ -57,14 +57,9 @@
                             ZAMÓWIENIE FABRYKA
                         </a>
                     {% endif %}
-                    {% if app.session.has('cart_id') == true and app.session.get('cart_type') == 'offer' %}
+                    {% if app.session.has('cart_id') == true %}
                         <a href="{{ path('cart') }}" class="btn btn-warning">
-                            OFERTA id {{ app.session.get('cart_id') }}
-                        </a>
-                    {% endif %}
-                    {% if app.session.has('cart_id') == true and app.session.get('cart_type') == 'order' %}
-                        <a href="{{ path('cart') }}" class="btn btn-warning">
-                            ZAMÓWIENIE id {{ app.session.get('cart_id') }}
+                            OFERTA/WYCENA ID NR {{ app.session.get('cart_id') }}
                         </a>
                     {% endif %}
                     {% if app.session.has('kontrahent') == true %}

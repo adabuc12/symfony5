@@ -1,35 +1,63 @@
 <div class="row">
-     {{ form_start(form) }}
-<div class="row">
-    <div class="col">
-    {{ form_row(form.name) }}
-    {{ form_row(form.nip) }}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.nip) }}
+        </div>
+        <div class="col-md-1">
+            <a href="" class="btn btn-secondary" style="margin-top:2em">Pobierz z GUS</a>
+        </div>
+        <div class="col-md-1">
+            <span  style="margin-top:2em">{{ form_row(form.is_supplier) }}</span>
+        </div>
+        <div class="col-md-1">
+            <span  style="margin-top:2em">{{ form_row(form.is_customer) }}</span>
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.class_name) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.group_name) }}
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col">
-    {{ form_row(form.phone) }}
-    {{ form_row(form.post_code) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+        
     </div>
-</div>
-<div class="row">
-    <div class="col">
-    {{ form_row(form.street) }}{{ form_row(form.Adress) }}
-    
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.post_code) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.city) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.street) }}
+
+        </div>
+        <div class="col">
+            {{ form_row(form.Adress) }}
+        </div>
+        
     </div>
-</div>
-<div class="row">
-    <div class="col">
-    {{ form_row(form.email) }}
-    {{ form_row(form.notices) }}
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.phone) }}
+            
+        </div>
+            <div class="col">
+            {{ form_row(form.email) }}
+            
+        </div>
+        <div class="col">
+            
+            {{ form_row(form.notices) }}
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col">
-    {{ form_row(form.class_name) }}
-    {{ form_row(form.group_name) }}
-    </div>
-</div>
+
     <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
-{{ form_end(form) }}
+    {{ form_end(form) }}
 </div>

@@ -20,13 +20,17 @@ class ProductCategoryType extends AbstractType {
                 ])
                 ->add('product', EntityType::class, [
                     'class' => Product::class,
-                    'query_builder' => function (EntityRepository $er) {
+                    'attr' => ['style'=>'height:100px'],
+                    'query_builder' => function (EntityRepository $er) use ($options) {
                         return $er->createQueryBuilder('p')
+                                ->join('p.productCategories', 'c')
+                                ->where('c.name = :name')
+                                ->setParameter('name',$options['name'])
                                 ->orderBy('p.name', 'ASC');
                     },
                     'choice_label' => 'name',
                      'multiple' => true,
-                     'expanded' => false,
+                     'expanded' => true,
                     'group_by' => 'Manufacture',
                 ])
         ;
@@ -35,6 +39,7 @@ class ProductCategoryType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => ProductCategory::class,
+            'name' => null,
         ]);
     }
 

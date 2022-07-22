@@ -7,5 +7,7 @@
 
     {{ include('kontrahent/_form.html.twig') }}
 
-    <a href="{{ path('kontrahent_index') }}" class='btn btn-primary'>Do Listy</a>
+{% endblock %}
+{% block footer %}
+    <li class="nav-item"> <a href="{{ path('kontrahent_index') }}"  class="nav-link btn btn-primary">Do listy</a></li>
 {% endblock %}

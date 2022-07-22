@@ -99,6 +99,21 @@ class Kontrahent
      */
     private $warehouseDocuments;
 
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_customer;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_supplier;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -378,6 +393,42 @@ class Kontrahent
                 $warehouseDocument->setKontrahent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getIsCustomer(): ?bool
+    {
+        return $this->is_customer;
+    }
+
+    public function setIsCustomer(?bool $is_customer): self
+    {
+        $this->is_customer = $is_customer;
+
+        return $this;
+    }
+
+    public function getIsSupplier(): ?bool
+    {
+        return $this->is_supplier;
+    }
+
+    public function setIsSupplier(?bool $is_supplier): self
+    {
+        $this->is_supplier = $is_supplier;
 
         return $this;
     }

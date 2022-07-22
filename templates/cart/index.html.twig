@@ -110,7 +110,7 @@
                     <div class="col">
 
                         {{ form_row(form.kontrahent) }}
-                        <a href="{{ path("kontrahent_new")}}" class="btn btn-success w-100 m-1">DODAJ NOWY</a>
+                        <a href="{{ path("kontrahent_new",{'id':cart.id})}}" class="btn btn-success w-100 m-1">DODAJ NOWY</a>
                         {{ form_row(form.phone) }}
                     </div>
                     <div class="col">

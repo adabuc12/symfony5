@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Manager\CartManager;
 
 /**
  * @Route("/kontrahent")
@@ -92,19 +93,29 @@ class KontrahentController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="kontrahent_new", methods={"GET","POST"})
+     * @Route("/new/cartid/{id}", name="kontrahent_new", methods={"GET","POST"}, defaults={"id": NULL})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, int $id, CartManager $cartManager): Response
     {
         $kontrahent = new Kontrahent();
         $form = $this->createForm(KontrahentType::class, $kontrahent);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($kontrahent);
             $entityManager->flush();
 
+            if($id !== NULL){
+                $cart = $cartManager->getCurrentCart();
+                
+                $cart->setKontrahent($kontrahent);
+                if($kontrahent->getPhone() !== NULL){
+                    $cart->setPhone($kontrahent->getPhone());
+                }
+                $cartManager->save($cart);
+                return $this->redirectToRoute('cart', [], Response::HTTP_SEE_OTHER);
+            }
             return $this->redirectToRoute('kontrahent_index', [], Response::HTTP_SEE_OTHER);
         }
 

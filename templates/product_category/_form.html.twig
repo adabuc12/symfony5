@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+<div>
+    {{ form_row(form.name) }}
+</div>
+<div style='height:200px;overflow:scroll'>
+    {{ form_row(form.product) }}
+</div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
