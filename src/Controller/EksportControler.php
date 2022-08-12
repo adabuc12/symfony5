@@ -21,11 +21,12 @@ class EksportControler extends AbstractController {
      */
     public function exportWapro(Order $order, DbLog $logger): Response {
 
-        $url = "185.185.208.103:5000/api/table/?tablename=firma";
+        $url = "127.0.0.1:5000/api/table/?tablename=firma";
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('api_key: 039100D6-D42B-4A06-875D-4E5466B12D45'));
         $json = curl_exec($ch);
         if(!$json) {
             echo curl_error($ch);

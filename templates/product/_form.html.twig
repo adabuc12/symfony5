@@ -1,102 +1,163 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col">
-        {{ form_row(form.name) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.Manufacture) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.packaging) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.package_weight) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.unit_weight) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.catalog_price) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.buy_price) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.sell_price_factory_detal) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.sell_price_pitch_detal) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.sell_price_factory_contractors) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.sell_price_pitch_contractors) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.sell_price_factory_wholesale) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.sell_price_pitch_wholesale) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.is_courier) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.is_not_available) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.courier_cost) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.estimated_availability_date) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.sprzedaz_jednostkowa) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.width) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.is_on_promotion) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.is_on_palet) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.is_sell_cost) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        {{ form_row(form.wpid) }}
-    </div>
-    <div class="col">
-        {{ form_row(form.notices) }}
-    </div>
-    <div class="col">
+    <div class="col-md-1">
         {{ form_row(form.productCategories) }}
         <a class="btn btn-secondary" href="{{ path('product_category_new') }}">Utwórz kategorię</a>
     </div>
-    
+    <div class="col-md-11">
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.Manufacture) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.packaging) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.package_weight) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.unit_weight) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.sprzedaz_jednostkowa) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.width) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.catalog_price) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.buy_price) }}
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col">
+                <span class="btn btn-info" id="show-prices">Pokaż ceny</span>
+            </div>
+        </div>
+        <div class="hide" id="prices_show">
+            <div class="row">
+                <div class="col">
+                    <select class="form-select" aria-label="opcja">
+                        <option value="1">Kalkulacja 1</option>
+                        <option value="1">Kalkulacja 2</option>
+                        <option value="1">Kalkulacja 3</option>
+                        <option value="1">Kalkulacja 4</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <span class="btn btn-warning" id="calculate">Przelicz automatycznie według szablonu</span>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.sell_price_factory_detal) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.sell_price_pitch_detal) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.sell_price_factory_contractors) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.sell_price_pitch_contractors) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.sell_price_factory_wholesale) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.sell_price_pitch_wholesale) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.is_courier) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.is_not_available) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="hide" id="courier-price">{{ form_row(form.courier_cost) }}</div>
+            </div>
+            <div class="col">
+                <div class="hide" id="availability">{{ form_row(form.estimated_availability_date) }}</div>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.is_on_promotion) }}
+                {{ form_row(form.is_on_palet) }}
+                {{ form_row(form.is_sell_cost) }}
+            </div>
+            <div class="col">
+
+            </div>
+            <div class="col">
+                {{ form_row(form.notices) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="btn btn-info" href="{{ path('product_category_new') }}">Ustawienia synchronizacji</span>
+            </div>
+            <div class="hide">
+                <div class="col">
+                    {{ form_row(form.wpid) }}
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
+    </div>
 </div>
-<button class="btn btn-primary">{{ button_label|default('Zapisz') }}</button>
 {{ form_end(form) }}
+
+<style>
+    .hide{
+        display:none;
+    }
+
+</style>
+<script>
+    $('#product_is_courier').click(function () {
+        if ($('#courier-price').hasClass('hide')) {
+            $('#courier-price').removeClass('hide');
+        } else {
+            $('#courier-price').addClass('hide');
+        }
+    });
+    $('#product_is_not_available').click(function () {
+        if ($('#availability').hasClass('hide')) {
+            $('#availability').removeClass('hide');
+        } else {
+            $('#availability').addClass('hide');
+        }
+    });
+    $('#show-prices').click(function () {
+        if ($('#prices_show').hasClass('hide')) {
+            $('#prices_show').removeClass('hide');
+        } else {
+            $('#prices_show').addClass('hide');
+        }
+    });
+
+</script>

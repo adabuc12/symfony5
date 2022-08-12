@@ -157,7 +157,7 @@ return $this->renderForm('order/new.html.twig', [
      */
     public function export(Order $order): Response
     {
-    $url = "localhost:5000/api/table/?tablename=firma";
+    $url = "91.218.202.254:5000/api/table/?tablename=firma";
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$url);
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);

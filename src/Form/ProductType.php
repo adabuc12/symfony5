@@ -106,11 +106,11 @@ class ProductType extends AbstractType
                     'required' => false,
                 ])
                 ->add('is_on_promotion', CheckboxType::class, [
-                    'label' => 'Na promocji ?',
+                    'label' => 'Na stronie startowej produktów ?',
                     'required' => false,
                 ])
                 ->add('is_on_palet', CheckboxType::class, [
-                    'label' => 'Na palecie ?',
+                    'label' => 'Sprzedawany na palecie ?',
                     'required' => false,
                 ])
                 ->add('is_sell_cost', CheckboxType::class, [
@@ -120,7 +120,7 @@ class ProductType extends AbstractType
                 ->add('productCategories', EntityType::class, [
                     'class' => ProductCategory::class,
                     'multiple' => true,
-                    'expanded' => false,
+                    'expanded' => true,
                     'label' => 'Kategoria',
                     'placeholder' => 'Wybierz kategorie'
                 ])
