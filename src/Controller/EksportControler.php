@@ -57,18 +57,18 @@ class EksportControler extends AbstractController {
         }
         curl_close($ch);
         $products_wapro = json_decode($json);
-        var_dump($products_wapro);
-        exit();
+        
         //get products from kolodomu panel
         $products_kolo = $productRepository->findAllPriceGreaterThanZero();
-        var_dump($products_kolo);
-        exit();
+        
         //check if products is in specific type database
         if($type == 'wapro'){
-            
+            var_dump($products_wapro);
+        exit();
         }
         if($type == 'kolo_panel'){
-            
+            var_dump($products_kolo);
+        exit();
         }
         //print result of synchronisation
         

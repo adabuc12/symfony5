@@ -124,6 +124,8 @@
     <li class="nav-item"> <a href="{{ path('exportexcel') }}" class="nav-link btn btn-primary">Utwórz plik excel</a></li>
     <li class="nav-item"> <a href="{{ path('createexportfile') }}" class="nav-link btn btn-primary">Export</a></li>
     <li class="nav-item"> <a href="{{ path('product_import') }}" class="nav-link btn btn-primary">Import</a></li>
+    <li class="nav-item"> <a href="{{ path('products_sync', {'type': 'wapro'}) }}" class="nav-link btn btn-primary">Synchronizuj Wapro</a></li>
+    <li class="nav-item"> <a href="{{ path('products_sync', {'type': 'kolo_panel'}) }}" class="nav-link btn btn-primary">Synchronizuj Panel</a></li>
     {% endif %}
     <li class="nav-item"> <a href="{{ path('task_new', {'type': 'product-list'}) }}" class="nav-link btn btn-warning">Utwórz zadanie</a></li>
 {% endblock %}
